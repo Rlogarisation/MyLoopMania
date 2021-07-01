@@ -8,18 +8,18 @@
 -  After a turn of attacks, if enemies are defeated relevant items/cards will be dropped.
 -  We assume that the character and allied soldiers can attack any enemies in the battle radius.
 2. Enemies <br>
-    Slug
+Slug <br>
 - Base HP : 10
 - enemy damage : 1
 - attack radius: 1 grid
 - support radius: 1 grid <br>
-    Zombie <br>
+Zombie <br>
 - Base HP : 30
 - enemy damage : 3
 -attack radius: 2 grid
 -support radius: 2 grid
 -critical attack chance: 10% - 6 (doubled damage) <br>
-    Vampire <br>
+Vampire <br>
 - Base HP : 50
 - enemy damage : 5
 - attack radius: 3 grids
