@@ -7,7 +7,7 @@
 -  Attack phase: character attacks first, then enemies and allies.
 -  After a turn of attacks, if enemies are defeated relevant items/cards will be dropped.
 -  We assume that the character and allied soldiers can attack any enemies in the battle radius.
-2. Enemies <br>
+2. Enemies
 Slug <br>
 - Base HP : 10
 - enemy damage : 1
