@@ -1,6 +1,118 @@
-Ë.š›b¢{5
-«iË^¬¬xwš–ØuÓHi«"pmiÉjf {]jÈœçÞžÇ´1¬bšé§ºfÞ®‡Ú–XžvÊ%v'«³•žjË.™ëajÛayÈZ­§-zºk¡ÇžvËa®‹ †Ø^©žŠ{azŠÝzºv†­µ§$¦¬zØ^»¢•Ø§‚)íz¶œ¶*'°miÉ)…«r«iË^­«miÉ,~*ì¶Ø^éÞš'¬jwZ–Xž°íz¶­º¹è}«miÉ,‰÷§zhž±ªÞuçÞj×­é^½©íŠ×¦³÷­Û0ŠY[yÚè¦—Yæ¬²éž¶­¶œ…ªÚr×«jwZ–XžvÊ%v'«±Æ§jÛZrF§ÉéÞš'¬Š{ay¶­¶W«iØ®³a'zhž±)n€¬xsõÑéÞ›'Z™¨Õ«miÉ+iØ®³X+‰Û.¦š+¶¶Šë5‚¸f‰›‰àZ±áÏßG§zljf {v­µ§$­§bºÍ ®'lºšh®ÚÚv+¬Ú
-âuÊâ¶'•«miÉ…©Ü{]:v‹›•ç]jf yV¦¦*Þ«þtzw¦ÉÖ¦j¹jÛZrJÚv+¬Þ
-âvË.¦š+¶¶Šë9‚¸±Êâ¶'•«miÉ…©Ü{tv‹›•ç]jf y§]ŠØ¨©\®+bq©]jf {}tv‹›•ç]jf z¶§v‰šuØ­Š‰Ú–{¦mêè}«miÉ,Û•žjË.™ëajÛaz·œjvÞ¢yr¢wžé²¥êíŠW¶Õ)ngš²Ë¦zØZµ«%º
-ÚÚ&—+)k	ì·
-iÈmŠg­…êek'«r‰©•ë^±§2rW¨~Ø^¥«aÛfh™¸žYæ¬²éž¶­¶©®†Ún)b·*iÊâ¶'•¸­z‡ÚÎ‰›‰è¬×@3¢fâzÚÚžÇè®g~º&jv¥–'²‰]‰êájÈ­²)â¶&¥…æ¥¶î–[-jh§kmÕjjb­åžjË.™ëajÜ!zvœ…ªÚr×«jÛZrK½©©Š·°ŠØlµ©¶jf z+¢æåyÕžjË.™ëajÛazšèm¦â–+r¡ö§¡Ç.®·§qêiÊâ¶'•¸­z+9jwm…çZ™¨¡ûay¸­z+5Ð	Ýj[(Â§iÊâ¶'•¸­{¬¡Ç.­ç[É«Úš˜«zØ^žé›zºjÛZrK"±·­Áç§Ù©ÝçpnŠWbžy«,ºg­…«m…êÞq©Ûz‰åÊ‰Þnè¥v)à¥êíŠW€–[r¥ë(}»¢•Ø§‚Ç·›º)mº›h×GšrõV)ej–y«,ºg­…«p…éí…ç!j¶œµêéjË²Øk¢è!jø¥•¨ŠÚÞ¨§²š–Ø[Ëm7Ù:Ú¤6¦j·ßpšš—â­àZ¶Ù^­§bºÍjf {[hJ[ °6¦j¹¶†h™¸ž±©ÝU©©Š·¬à¬‰Â-zky«,ºg­…«m…ç!j¶œµêÜjz'—(Z½ë©¶ôŠ×¦±gš²Ë¦zØZ¶Ø^r«iË^®¬k…©ÜzÚ zÖ§Š×¦Â§ŠÙ"–[éÞ›%žjš'±,(­×Z™¨é«miÉ+jxÙ+Z‘çZ™¨ãÆ j)ì¶ö¦¦¸žjÛZrJÚžµJÖŸ}Ö¦j·jÛZrJÚž¶¶¶§qîé®†Ún)b·%žjË.™ëajÛayÈZ­§-z·ž‰åÊ›­¢w°yªhž‰À®j.®ÅžjË.™ëajÛayÈZ­§-z·ž‰åÊ›­¢w©‰ç¡ö«š‹«²ž•Ø^–g­¢p+š‹«uçÞžÇ¹Ñ(bzWVy«,ºg­…«p…éí…ç!j¶œµêâ±ê®Šš^w­…«!‰é]¢yróJ¶œººÞž×Z™¨ŠËZ‘éÞ«%º­µ§$¶œ…ªÚr×«Áæ«Šxj¹¨º»hµ©]jf {]9Ó
+1. Character
+â€¢ Base Health: 100hp
+â€¢ Basic Attack Damage: 10
+â€¢ Basic Defense: 0
+â€¢ Maximum number of allied soldiers: 5
+â€¢ We assume that the character proceeds through the game in the order of do attack phase then building interactions.
+â€¢ Attack phase: character attacks first, then enemies and allies.
+â€¢ After a turn of attacks, if enemies are defeated relevant items/cards will be dropped.
+â€¢ We assume that the character and allied soldiers can attack any enemies in
+the battle radius.
+2. Enemies
+â€¢ Slug
+- Base HP : 10
+- enemy damage : 1
+-attack radius: 1 grid
+-support radius: 1 grid
+â€¢ Zombie
+- Base HP : 30
+- enemy damage : 3
+-attack radius: 2 grid
+-support radius: 2 grid
+-critical attack chance: 10% - 6 (doubled damage)
+â€¢ Vampire
+- Base HP : 50
+- enemy damage : 5
+- attack radius: 3 grids
+- support radius: 5 grids
+- critical attack chance: 5% - 10 (doubled damage)
+- additional critical damage: 3% - 10 (doubled damage)
+- random additional number of attacks: 2~5
+â€¢ We assume that there can be only one enemy per tile.
+2-1. Slug
+â€¢ We assume that a slug randomly spawns two each time the player completes
+a cycle of the path.
+2-2. Zombie
+â€¢ We assume that the probability of a critical bite of a zombie is 10%.
+â€¢ A zombie transformed from an allied soldier has its initial health(full stamina).
+2-3. Vampire
+â€¢ We assume that when a character attacks a vampire with â€˜stakeâ€™, the damage
+is doubled.
+â€¢ We assume that the probability of an occurrence of a critical bite is 5% and
+the damage of the bite is 10. And also, when a critical bite was occured by a
+vampire, the number of attacks is between 2 and 5.
+3. Buildings
+â€¢ We assume that there can be only one building per tile.
+â€¢ All types of buildings can be built up to 10 each.
+3-1. Village
+â€¢ We assume that when the character passes through a village, it regains
+health by 20.
+3-2. Trap
+â€¢ Damage : 3
+3-3. Campfire
+â€¢ Battle radius : 0
+â€¢ Damage : 1 to Slugs
+â€¢ Damage : 5 to Zombies and Vampires
+4. Basic Items
+â€¢ We assume that the character can only have up to 30 items.
+â€¢ We assume that the character has a 50% chance to get an item when it kills
+an enemy.
+
+â€¢ Sword
+- damage : 6
+- attack range : 2
+â€¢ Stake
+- damage : 4(8 against vamprie)
+- attack range : 1
+â€¢ Staff
+- damage : 3
+- attack range : 2
+- trance : 7% probability
+â€¢ We assume that the character can only put one weapon on.
+
+â€¢ We assume that the character can only put one piece of armour, shield,
+helmet on.
+â€¢ Armour
+- defense : 50%
+â€¢ Shield
+- We assume that when the character is equipped with a shield, only 80%
+of the current damage is taken.
+(e.g) a slug attack the character wearing a armour
+-> total damage = 1 * 0.5 * 0.8 = 0.4)
+â€¢ We assume that staff has a 7% chance to inflict a â€˜tranceâ€™ and the changed
+allied soldier lasts 25 seconds in the changed state.
+â€¢ Allied soldiers transformed from enemies have their initial health(full stamina).
+â€¢ We assume that if the soldier has changed to enemy and returns to his
+original form(didnâ€™t die from a battle), then it has the stamina which was the
+most recent stamina when it was an enemy.
+â€¢ Helmet - We assume that when the character is equipped with a helmet, the
+attack damage from the character and the damage from the enemy is
+reduced by 30%.
+4-2. Card
+â€¢ We assume that a character can have up to 10 cards and if it gets one extra
+card, a card is destroyed due to having too many cards.
+â€¢ We assume that when a card is destroyed, the character gets one out of
+20gold, 1 health potion, 1equipment, 100XP with the same probability(25%)
+â€¢ Card drop probability = 50%
+4-3 Health Potion
+â€¢ We assume that a health potion restores the characterâ€™s HP by 30.
+5. Rare Items
+â€¢ We assume that â€˜the one ringâ€™ can be obtained from any enemy.
+â€¢ We assume that when â€˜the one ringâ€™ is used, the character respawns at the
+same position in which it is dead.
+â€¢ We assume that the drop rate of â€˜the one ringâ€™ is 0.5%.
+6. Behaviour/Features
+â€¢ We assume that when the user presses â€˜insertâ€™ key, a health portion is used if
+it exists in the inventory.
+7. Goals
+â€¢ We assume that a goal can be achieved by the character for the world to be
+considered complete and there is the condition.
+* Condition for a goal
+â€¢ Obtaining 100000 experience points and (completing 80 cycles or amassing
+10000 gold)
+8. Other assumptions
+â€¢ We assume that the character has a 50% chance to get an item when it kills
+an enemy.
+â€¢ We assume that the character can sell the item for half the original price.
+â€¢ We assume that when the character is in the castle, we can purchase items
+by double clicking.
