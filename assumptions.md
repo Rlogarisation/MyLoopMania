@@ -1,13 +1,13 @@
 <Assumptions>
 1. Character
--  Base Health: 100hp
--  Basic Attack Damage: 10
--  Basic Defense: 0
--  Maximum number of allied soldiers: 5
--  We assume that the character proceeds through the game in the order of do attack phase then building interactions.
--  Attack phase: character attacks first, then enemies and allies.
--  After a turn of attacks, if enemies are defeated relevant items/cards will be dropped.
--  We assume that the character and allied soldiers can attack any enemies in the battle radius.
+- Base Health: 100hp
+- Basic Attack Damage: 10
+- Basic Defense: 0
+- Maximum number of allied soldiers: 5
+- We assume that the character proceeds through the game in the order of do attack phase then building interactions.
+- Attack phase: character attacks first, then enemies and allies.
+- After a turn of attacks, if enemies are defeated relevant items/cards will be dropped.
+- We assume that the character and allied soldiers can attack any enemies in the battle radius.
 2. Enemies
 Slug 
 - Base HP : 10
