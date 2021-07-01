@@ -11,6 +11,7 @@
     * We assume that the character proceeds through the game in the order of do attack phase then building interactions.
     * After a turn of attacks, if enemies are defeated relevant items/cards will be dropped.
     * We assume that the character and allied soldiers can attack any enemies in the battle radius.
+    * Character will move 1 step clockwise around the path after all attacking enemies are defeated an all interactions with buildings are complete.
 
 2. Enemies
     
