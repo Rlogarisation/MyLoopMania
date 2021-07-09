@@ -7,6 +7,7 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.cards.*;
 
 /**
  * A backend world.
@@ -106,7 +107,7 @@ public class LoopManiaWorld {
      * @return list of the enemies to be displayed on screen
      */
     public List<BasicEnemy> possiblySpawnEnemies(){
-        // TODO = expand this very basic version
+        //  = expand this very basic version
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
         if (pos != null){
@@ -132,7 +133,7 @@ public class LoopManiaWorld {
      * @return list of enemies which have been killed
      */
     public List<BasicEnemy> runBattles() {
-        // TODO = modify this - currently the character automatically wins all battles without any damage!
+        //  = modify this - currently the character automatically wins all battles without any damage!
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
         for (BasicEnemy e: enemies){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
