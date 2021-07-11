@@ -46,11 +46,23 @@ public class Vampire extends MovingEntity implements Enemy {
      */
     public MovingEntity applyEffect(Character character) {
 
-        // double chanceOfCriticalBite = (new Random()).nextDouble();
-        // if (chanceOfCriticalBite <= chanceOfEffect) {
-
-        // }
-
         return character;
+    }
+
+    /**
+     * The chance generator function takes in a value between 0 to 1.0 as double,
+     * which is the chance of selecting, 
+     * e.g: there is 30% of selecting if you enter 0.3.
+     * @param chance between 0 to 1 as percentage.
+     * @return ture if seleted else return false as boolean.
+     */
+    public boolean chanceGenerator(double chance) {
+        double chanceOfCriticalBite = (new Random()).nextDouble();
+        if (chanceOfCriticalBite <= chance) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
