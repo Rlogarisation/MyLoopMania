@@ -1,5 +1,7 @@
 package unsw.loopmania;
 
+import java.util.Random;
+
 /**
  * Public class for enemy type Zombie, Written by Zheng Luo.
  */
@@ -27,7 +29,13 @@ public class Zombie extends MovingEntity implements Enemy {
     }
 
     public void move() {
-
+        int directionChoice = (new Random()).nextInt(2);
+        if (directionChoice == 0){
+            moveUpPath();
+        }
+        else if (directionChoice == 1){
+            moveDownPath();
+        }
     }
 
 

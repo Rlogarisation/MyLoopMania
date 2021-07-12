@@ -6,10 +6,10 @@ package unsw.loopmania;
  */
 public interface Enemy {
 
-    
-
     /**
      * Move the enemy in different random direction.
+     * 50% for going clockwise direction,
+     * and 50% anti-clockwise direction.
      */
     public void move();
 

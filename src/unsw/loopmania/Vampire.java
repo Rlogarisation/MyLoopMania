@@ -31,7 +31,13 @@ public class Vampire extends MovingEntity implements Enemy {
     }
 
     public void move() {
-
+        int directionChoice = (new Random()).nextInt(2);
+        if (directionChoice == 0){
+            moveUpPath();
+        }
+        else if (directionChoice == 1){
+            moveDownPath();
+        }
     }
 
     public void setChanceOfEffect(double chance) {

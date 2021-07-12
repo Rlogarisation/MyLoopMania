@@ -1,6 +1,5 @@
 package unsw.loopmania;
 
-import javafx.scene.AmbientLight;
 
 /**
  * represents the main character in the backend of the game world
@@ -21,8 +20,6 @@ public class Character extends MovingEntity {
         this.setHp(initialHp);
         this.setDamage(initialDamage);
         this.setMovingSpeed(initialMovingSpeed);
-        
-        
     }
 
     /**
@@ -74,9 +71,6 @@ public class Character extends MovingEntity {
     }
 
 
-    // How to add all the armour
-
-
     /**
      * Get the total amount of armour for current character.
      * @return armour of current character.
@@ -85,7 +79,4 @@ public class Character extends MovingEntity {
         return this.armour;
     }
 
-
-
-    
 }
