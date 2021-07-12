@@ -47,6 +47,7 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of items
     private List<Entity> unequippedInventoryItems;
+    private List<Entity> equippedInventoryItems;
 
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
@@ -137,7 +138,7 @@ public class LoopManiaWorld {
         for (Enemy e: enemyList){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
-            if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < 4){
+            if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
                 // fight...
                 defeatedEnemies.add(e);
             }
@@ -213,7 +214,7 @@ public class LoopManiaWorld {
      */
     public void runTickMoves(){
         character.moveDownPath();
-        moveBasicEnemies();
+        moveAllEnemies();
     }
 
     /**
@@ -283,7 +284,7 @@ public class LoopManiaWorld {
     /**
      * move all enemies
      */
-    private void moveBasicEnemies() {
+    private void moveAllEnemies() {
         // TODO = expand to more types of enemy
         for (Enemy e: enemyList){
             e.move();
