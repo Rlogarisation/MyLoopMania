@@ -9,14 +9,15 @@ public class Vampire extends MovingEntity implements Enemy {
     final double initialHp = 10;
     final double initialDamage = 10;
     final double initialMovingSpeed = 2;
-    final double battleRadius = 3;
-    final double supportRadius = 3;
-    final double CritDamageMulti = 5;
+    double battleRadius = 3;
+    double supportRadius = 3;
+    double CritDamageMulti = 5;
 
-    // There is 30% chance of triggering a critical bite.
+    /**
+     * There is 30% chance of triggering a critical bite.
+     */
     double chanceOfEffect = 0.3;
 
-    
 
     public Vampire(PathPosition position) {
         // Set vampire's position.
@@ -25,25 +26,36 @@ public class Vampire extends MovingEntity implements Enemy {
         this.setHp(initialHp);
         this.setDamage(initialDamage);
         this.setMovingSpeed(initialMovingSpeed);
-        // this.setBattleRadius(battleRadius);
-        // this.setSupportRadius(supportRadius);
+        this.setBattleRadius(battleRadius);
+        this.setSupportRadius(supportRadius);
     }
 
     public void move() {
 
     }
 
-    /**
-     * The function can be used when setting different level of games.
-     * Current default chance of 30% is used for standard mode.
-     * ***Please set chanceOfEffect(double chance (0 - 1)) in the beginning of game*** 
-     */
     public void setChanceOfEffect(double chance) {
         this.chanceOfEffect = chance;
     }
 
     public double getChanceOfEffect() {
         return this.chanceOfEffect;
+    }
+
+    public void setBattleRadius(double battleRadius) {
+        this.battleRadius = battleRadius;
+    }
+
+    public double getBattleRadius() {
+        return this.battleRadius;
+    } 
+
+    public void setSupportRadius(double supportRadius) {
+        this.supportRadius = supportRadius;
+    }
+
+    public double getSupportRadius() {
+        return this.supportRadius;
     }
 
     /**

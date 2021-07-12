@@ -6,6 +6,8 @@ package unsw.loopmania;
  */
 public interface Enemy {
 
+    
+
     /**
      * Move the enemy in different random direction.
      */
@@ -15,6 +17,9 @@ public interface Enemy {
     /**
      * Set the chance of effect to be trigged,
      * the input chance is allowed between 0 to 1 as percentage.
+     * The function can be used when setting different level of games.
+     * Current default chance of 30% is used for standard mode.
+     * ***Please set chanceOfEffect(double chance (0 - 1)) in the beginning of game*** 
      * @param chance in double.
      */
     public void setChanceOfEffect(double chance);
@@ -27,6 +32,33 @@ public interface Enemy {
      */
     public double getChanceOfEffect();
 
+    /**
+     * Set the battle radius, 
+     * the radius has been initialised in each enemy function for default level,
+     * However please initialise again in controller for different difficulty.
+     * @param battleRadius as double.
+     */
+    public void setBattleRadius(double battleRadius);
+
+    /**
+     * Get the battle radius for current enemy.
+     * @return battle radius in terms of double.
+     */
+    public double getBattleRadius();
+
+    /**
+     * Set the support radius, 
+     * the radius has been initialised in each enemy function for default level,
+     * However please initialise again in controller for different difficulty.
+     * @param supportRadius as double.
+     */
+    public void setSupportRadius(double supportRadius);
+
+    /**
+     * Get the support radius for current enemy.
+     * @return support radius in terms of double.
+     */
+    public double getSupportRadius();
 
     /**
      * Apply the special effect to input character,

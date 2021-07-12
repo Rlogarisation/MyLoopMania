@@ -7,9 +7,12 @@ public class Slug extends MovingEntity implements Enemy{
     final double initialHp = 5;
     final double initialDamage = 2;
     final double initialMovingSpeed = 1;
-    final double battleRadius = 1;
-    final double supportRadius = 1;
+    double battleRadius = 1;
+    double supportRadius = 1;
 
+    /**
+     * There is 30% chance of triggering a critical bite.
+     */
     double chanceOfEffect = 0.3;
 
     public Slug(PathPosition position) {
@@ -19,25 +22,37 @@ public class Slug extends MovingEntity implements Enemy{
         this.setHp(initialHp);
         this.setDamage(initialDamage);
         this.setMovingSpeed(initialMovingSpeed);
-        // this.setBattleRadius(battleRadius);
-        // this.setSupportRadius(supportRadius);
+        this.setBattleRadius(battleRadius);
+        this.setSupportRadius(supportRadius);
     }
 
     public void move() {
 
     }
 
-    /**
-     * The function can be used when setting different level of games.
-     * Current default chance of 30% is used for standard mode.
-     * ***Please set chanceOfEffect(double chance (0 - 1)) in the beginning of game*** 
-     */
+ 
     public void setChanceOfEffect(double chance) {
         this.chanceOfEffect = chance;
     }
 
     public double getChanceOfEffect() {
         return this.chanceOfEffect;
+    }
+
+    public void setBattleRadius(double battleRadius) {
+        this.battleRadius = battleRadius;
+    }
+
+    public double getBattleRadius() {
+        return this.battleRadius;
+    } 
+
+    public void setSupportRadius(double supportRadius) {
+        this.supportRadius = supportRadius;
+    }
+
+    public double getSupportRadius() {
+        return this.supportRadius;
     }
 
     /**
