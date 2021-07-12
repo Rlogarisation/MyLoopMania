@@ -35,7 +35,19 @@ public class Zombie extends MovingEntity implements Enemy {
         return this.chanceOfEffect;
     }
 
+    /**
+     * A critical bite from a zombie against an allied soldier 
+     * (which has a random chance of occurring) will 
+     * transform the allied soldier into a zombie, 
+     * which will then proceed to fight against the Character until it is killed.
+     * 
+     * ***Please check input character isInstance of Ally && ***
+     * ***chanceGenerator before using***
+     */
     public MovingEntity applyEffect(Character character) {
+        // Delete current character.
+        // Add one zombie.
+        // Then return zombie.
         return character;
     }
 }

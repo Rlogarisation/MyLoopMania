@@ -11,9 +11,12 @@ public class Vampire extends MovingEntity implements Enemy {
     final double initialMovingSpeed = 2;
     final double battleRadius = 3;
     final double supportRadius = 3;
+    final double CritDamageMulti = 5;
 
     // There is 30% chance of triggering a critical bite.
     double chanceOfEffect = 0.3;
+
+    
 
     public Vampire(PathPosition position) {
         // Set vampire's position.
@@ -43,9 +46,17 @@ public class Vampire extends MovingEntity implements Enemy {
      *  from a vampire causes random additional damage 
      *  with every vampire attack, 
      *  for a random number of vampire attacks
+     * 
+     *  In vampire case, only vampire's damage increased
+     *  no effect to the character at the moment.
      */
     public MovingEntity applyEffect(Character character) {
-
+        // Random next double will generate a number between 0 to 1 as double,
+        // and times with a multiplier, which can be changed at anytime.
+        double addtionalDamage = (new Random()).nextDouble() * CritDamageMulti;
+        double totalDamage = this.getDamage() + addtionalDamage;
+        this.setDamage(totalDamage);
+        
         return character;
     }
 

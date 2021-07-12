@@ -35,6 +35,9 @@ public class Slug extends MovingEntity implements Enemy{
         return this.chanceOfEffect;
     }
 
+    /**
+     * Slug has no effect.
+     */
     public MovingEntity applyEffect(Character character) {
         return character;
     }
