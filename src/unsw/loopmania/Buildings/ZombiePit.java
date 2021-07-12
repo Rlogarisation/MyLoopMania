@@ -1,7 +1,8 @@
-package unsw.loopmania;
+package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.Building;
+import unsw.loopmania.StaticEntity;
+
 
 public class ZombiePit extends Building{
 
