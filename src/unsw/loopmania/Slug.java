@@ -1,21 +1,16 @@
 package unsw.loopmania;
 
-import java.util.Random;
 
 /**
  * Public class for enemy type Slug, Written by Zheng Luo.
  */
-public class Slug extends MovingEntity implements Enemy{
+public class Slug extends Enemy{
     final double initialHp = 5;
     final double initialDamage = 2;
     final double initialMovingSpeed = 1;
     double battleRadius = 1;
     double supportRadius = 1;
 
-    /**
-     * There is 30% chance of triggering a critical bite.
-     */
-    double chanceOfEffect = 0.3;
 
     public Slug(PathPosition position) {
         // Set slug's position.
@@ -28,24 +23,6 @@ public class Slug extends MovingEntity implements Enemy{
         this.setSupportRadius(supportRadius);
     }
 
-    public void move() {
-        int directionChoice = (new Random()).nextInt(2);
-        if (directionChoice == 0){
-            moveUpPath();
-        }
-        else if (directionChoice == 1){
-            moveDownPath();
-        }
-    }
-
- 
-    public void setChanceOfEffect(double chance) {
-        this.chanceOfEffect = chance;
-    }
-
-    public double getChanceOfEffect() {
-        return this.chanceOfEffect;
-    }
 
     public void setBattleRadius(double battleRadius) {
         this.battleRadius = battleRadius;
