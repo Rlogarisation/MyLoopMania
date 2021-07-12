@@ -10,7 +10,7 @@ public class Zombie extends MovingEntity implements Enemy {
     final double battleRadius = 1;
     final double supportRadius = 1;
 
-    double chanceOfEffect = 0;
+    double chanceOfEffect = 0.3;
 
     public Zombie(PathPosition position) {
         // Set zombie's position.
@@ -27,6 +27,11 @@ public class Zombie extends MovingEntity implements Enemy {
 
     }
 
+    /**
+     * The function can be used when setting different level of games.
+     * Current default chance of 30% is used for standard mode.
+     * ***Please set chanceOfEffect(double chance (0 - 1)) in the beginning of game*** 
+     */
     public void setChanceOfEffect(double chance) {
         this.chanceOfEffect = chance;
     }
