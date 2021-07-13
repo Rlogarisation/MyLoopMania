@@ -5,18 +5,13 @@ import java.util.Random;
 /**
  * Public class for enemy type Vampire, Written by Zheng Luo.
  */
-public class Vampire extends MovingEntity implements Enemy {
+public class Vampire extends Enemy {
     final double initialHp = 10;
     final double initialDamage = 10;
     final double initialMovingSpeed = 2;
     double battleRadius = 3;
     double supportRadius = 3;
     double CritDamageMulti = 5;
-
-    /**
-     * There is 30% chance of triggering a critical bite.
-     */
-    double chanceOfEffect = 0.3;
 
 
     public Vampire(PathPosition position) {
@@ -28,24 +23,6 @@ public class Vampire extends MovingEntity implements Enemy {
         this.setMovingSpeed(initialMovingSpeed);
         this.setBattleRadius(battleRadius);
         this.setSupportRadius(supportRadius);
-    }
-
-    public void move() {
-        int directionChoice = (new Random()).nextInt(2);
-        if (directionChoice == 0){
-            moveUpPath();
-        }
-        else if (directionChoice == 1){
-            moveDownPath();
-        }
-    }
-
-    public void setChanceOfEffect(double chance) {
-        this.chanceOfEffect = chance;
-    }
-
-    public double getChanceOfEffect() {
-        return this.chanceOfEffect;
     }
 
     public void setBattleRadius(double battleRadius) {
