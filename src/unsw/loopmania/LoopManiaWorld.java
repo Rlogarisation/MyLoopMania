@@ -7,6 +7,7 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.cards.*;
 
 /**
  * A backend world.
@@ -163,7 +164,7 @@ public class LoopManiaWorld {
             removeCard(0);
         }
         VampireCastleCard vampireCastleCard = new VampireCastleCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
-        cardEntities.add(vampireCastleCard);
+        // cardEntities.add(vampireCastleCard);
         return vampireCastleCard;
     }
 

@@ -28,6 +28,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import unsw.loopmania.cards.*;
+
 import java.util.EnumMap;
 
 import java.io.File;
