@@ -14,4 +14,12 @@ public class Tower extends Building{
         super.setType("Tower");
     }
 
+    public int getBattleRadius(){
+        return this.battleRadius;
+    }
+
+    public int getDamage(){
+        return this.damage;
+    }
+
 }

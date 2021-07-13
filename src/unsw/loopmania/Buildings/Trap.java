@@ -13,4 +13,8 @@ public class Trap extends Building{
         super.setType("Trap");
     }
 
+    public int getDamage(){
+        return this.damage;
+    }
+
 }

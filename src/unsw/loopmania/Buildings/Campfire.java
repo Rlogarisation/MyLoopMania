@@ -13,4 +13,8 @@ public class Campfire extends Building{
         super.setType("Campfire");
     }
 
+    public int getBattleRadius(){
+        return this.battleRadius;
+    }
+
 }

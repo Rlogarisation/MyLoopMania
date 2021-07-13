@@ -13,4 +13,8 @@ public class Village extends Building{
         super.setType("Village");
     }
 
+    public int getHealth(){
+        return this.health;
+    }
+
 }
