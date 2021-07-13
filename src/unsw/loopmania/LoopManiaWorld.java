@@ -42,6 +42,7 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of enemies
     private List<Enemy> enemyList;
+    private List<Ally> allyList;
 
     // TODO = expand the range of cards
     private List<Card> cardEntities;
@@ -137,6 +138,23 @@ public class LoopManiaWorld {
         enemyList.add(enemy);
     }
 
+    /**
+     * Add ally into ally list 
+     * @param position where it has been spawn.
+     */
+    // public void addAlly(PathPosition position) {
+    //     Ally newAlly = new Ally(position);
+    //     allyList.add(newAlly);
+    // }
+
+    /**
+     * Remove an ally from the ally list.
+     * @param selectedAlly ally need to be removed.
+     */
+    public void removeAlly(Ally selectedAlly) {
+        allyList.remove(selectedAlly);
+    }
+
 
     /**
      * Run the expected battles in the world, based on current world state.
@@ -147,28 +165,14 @@ public class LoopManiaWorld {
      */
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
-        /**
-         * Search for enemy who is within battle range with character.
-         */
-        for (Enemy e: enemyList){
-            // Pythagoras: a^2+b^2 < radius^2 to see if character is within battle radius
-            if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
-                // Searching for backup enemy who can support current enemy, 
-                // in which backup enemy must in support radius.
-                for (Enemy backupEnemy: enemyList) {
-                    if (backupEnemy != e && 
-                    (Math.pow((backupEnemy.getX()-e.getX()), 2) +  Math.pow((backupEnemy.getY()-e.getY()), 2) < Math.pow(backupEnemy.getSupportRadius(), 2))) {
-                        // current backup enemy will fight with ally first, then character.
-                        // TODO = Check attack priority.
-
-                    }
-                }
-
-
-
-                // defeatedEnemies.add(e);
-            }
+        List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
+        for (Enemy e: enemiesJoiningBattle) {
+            // Attack ally first, eventually character if all allies are dead.
+            
+            
         }
+
+        // defeatedEnemies.add(e);
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
@@ -176,6 +180,45 @@ public class LoopManiaWorld {
             killEnemy(e);
         }
         return defeatedEnemies;
+    }
+
+
+    /**
+     * This function determines the amount of enemy will engaged into the battle.
+     * This function search for enemy who is within battle range with character,
+     * if so, search all enemy who is within the support radius of current enemy,
+     * add all the enemies who will engaged into the battle into array. 
+     * @return array of enemies who will battle within this fight.
+     */
+    public List<Enemy> determineEnemyEngagement() {
+        List<Enemy> enemyJoiningBattle = new ArrayList<Enemy>();
+        
+        // Search for enemy who is within battle range with character.
+        for (Enemy e: enemyList){
+            if (withinRange(e, character, e.getBattleRadius())){
+                // Searching for backup enemy who can support current enemy, 
+                // in which backup enemy must in support radius.
+                for (Enemy backupEnemy: enemyList) {
+                    if (backupEnemy.getHp() > 0 && 
+                    withinRange(backupEnemy, e, backupEnemy.getSupportRadius()) &&
+                    !enemyJoiningBattle.contains(backupEnemy)) {
+                        enemyJoiningBattle.add(backupEnemy);
+                    }
+                }
+            }
+        }
+        return enemyJoiningBattle;
+    }
+
+    /**
+     * Function to determine the whether a and b are within distance.
+     * @param a First Entity.
+     * @param b Second Entity.
+     * @param distance The distance between these two entity.
+     * @return
+     */
+    public boolean withinRange(Entity a, Entity b, double distance) {
+        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) < Math.pow(distance, 2);
     }
 
     /**

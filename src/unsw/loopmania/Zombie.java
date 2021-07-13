@@ -50,6 +50,7 @@ public class Zombie extends Enemy {
     public void applyEffect(Character character) {
         // if (character instanceof Ally) {
         //     // TODO = Delete current ally.
+            
         //     Zombie z = new Zombie(character.getPathPosition());
         // }
     }
