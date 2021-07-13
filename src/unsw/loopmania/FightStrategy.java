@@ -1,5 +1,6 @@
 package unsw.loopmania;
 
 public interface FightStrategy {
-    public double attack(BasicEnemy enemy);
+    //Add if statment, if character has helmet reduce attacks down 
+    public void attack(double initialDamage, BasicEnemy enemy);
 }
