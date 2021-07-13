@@ -1,18 +1,35 @@
 package unsw.loopmania;
 
+import java.util.Random;
+
 /**
- * Interface for enemy, including different enemies' behaviours 
+ * Abstract class for enemy, including different enemies' behaviours 
  * Written by Zheng Luo (z5206267)
  */
-public interface Enemy {
+public abstract class Enemy extends MovingEntity{
+    /**
+     * There is 30% chance of triggering a critical bite.
+     */
+    double chanceOfEffect = 0.3;
+
+    public Enemy(PathPosition position) {
+        super(position);
+    }
 
     /**
      * Move the enemy in different random direction.
      * 50% for going clockwise direction,
      * and 50% anti-clockwise direction.
      */
-    public void move();
-
+    public void move() {
+        int directionChoice = (new Random()).nextInt(2);
+        if (directionChoice == 0){
+            moveUpPath();
+        }
+        else if (directionChoice == 1){
+            moveDownPath();
+        }
+    }
 
     /**
      * Set the chance of effect to be trigged,
@@ -22,7 +39,9 @@ public interface Enemy {
      * ***Please set chanceOfEffect(double chance (0 - 1)) in the beginning of game*** 
      * @param chance in double.
      */
-    public void setChanceOfEffect(double chance);
+    public void setChanceOfEffect(double chance) {
+        this.chanceOfEffect = chance;
+    }
 
     /**
      * get the chance of effect, 
@@ -30,7 +49,9 @@ public interface Enemy {
      * 
      * @return the possibility in the range of 0 to 1.
      */
-    public double getChanceOfEffect();
+    public double getChanceOfEffect() {
+        return this.chanceOfEffect;
+    }
 
     /**
      * Set the battle radius, 
@@ -38,13 +59,13 @@ public interface Enemy {
      * However please initialise again in controller for different difficulty.
      * @param battleRadius as double.
      */
-    public void setBattleRadius(double battleRadius);
+    public abstract void setBattleRadius(double battleRadius);
 
     /**
      * Get the battle radius for current enemy.
      * @return battle radius in terms of double.
      */
-    public double getBattleRadius();
+    public abstract double getBattleRadius();
 
     /**
      * Set the support radius, 
@@ -52,13 +73,13 @@ public interface Enemy {
      * However please initialise again in controller for different difficulty.
      * @param supportRadius as double.
      */
-    public void setSupportRadius(double supportRadius);
+    public abstract void setSupportRadius(double supportRadius);
 
     /**
      * Get the support radius for current enemy.
      * @return support radius in terms of double.
      */
-    public double getSupportRadius();
+    public abstract double getSupportRadius();
 
     /**
      * Apply the special effect to input character,
@@ -68,7 +89,7 @@ public interface Enemy {
      * since zombie can transform character into enemy, 
      * hence the return type become MovingEntity.
      */
-    public MovingEntity applyEffect(Character character);
+    public abstract MovingEntity applyEffect(Character character);
 
     
 }
