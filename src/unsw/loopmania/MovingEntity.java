@@ -78,4 +78,8 @@ public abstract class MovingEntity extends Entity {
         return this.movingSpeed;
     }
 
+    public PathPosition getPathPosition() {
+        return this.position;
+    }
+
 }

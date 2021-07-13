@@ -130,18 +130,43 @@ public class LoopManiaWorld {
     }
 
     /**
-     * run the expected battles in the world, based on current world state
+     * The function addEnemy is used for adding transformed enemy by zombie's effect
+     * @param enemy the enemy will be added to the enemyList.
+     */
+    public void addEnemy(Enemy enemy) {
+        enemyList.add(enemy);
+    }
+
+
+    /**
+     * Run the expected battles in the world, based on current world state.
+     * runBattle function will end until either surrounding enemies all dead, or character is dead.
+     * a battle will commence when the Character moves within the battle radius of an enemy on the path.
+     * Those enemies for which the Character is within their support radius will join the battle.
      * @return list of enemies which have been killed
      */
     public List<Enemy> runBattles() {
-        // TODO = modify this - currently the character automatically wins all battles without any damage!
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
+        /**
+         * Search for enemy who is within battle range with character.
+         */
         for (Enemy e: enemyList){
-            // Pythagoras: a^2+b^2 < radius^2 to see if within radius
-            // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
+            // Pythagoras: a^2+b^2 < radius^2 to see if character is within battle radius
             if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
-                // fight...
-                defeatedEnemies.add(e);
+                // Searching for backup enemy who can support current enemy, 
+                // in which backup enemy must in support radius.
+                for (Enemy backupEnemy: enemyList) {
+                    if (backupEnemy != e && 
+                    (Math.pow((backupEnemy.getX()-e.getX()), 2) +  Math.pow((backupEnemy.getY()-e.getY()), 2) < Math.pow(backupEnemy.getSupportRadius(), 2))) {
+                        // current backup enemy will fight with ally first, then character.
+                        // TODO = Check attack priority.
+
+                    }
+                }
+
+
+
+                // defeatedEnemies.add(e);
             }
         }
         for (Enemy e: defeatedEnemies){
