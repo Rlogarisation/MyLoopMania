@@ -6,7 +6,7 @@ import unsw.loopmania.StaticEntity;
 /**
  * a basic form of building in the world
  */
-public class Building extends StaticEntity {
+public abstract class Building extends StaticEntity {
     // add more types of building, and make sure buildings have effects on entities as required by the spec
     private String type;
 

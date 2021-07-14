@@ -18,7 +18,7 @@ public class Barracks extends Building{
         return this.createAlly;
     }
 
-    public void shouldBarrackCreateAlly(Character character){
+    public void buildingEffect(Character character){
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
             this.createAlly = true;

@@ -8,6 +8,7 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.cards.*;
+import unsw.loopmania.Buildings.*;
 
 /**
  * A backend world.
@@ -52,7 +53,8 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
-
+    private List<Building> buildingList;
+    private HeroCastle heroCastle;
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
      */
@@ -151,6 +153,53 @@ public class LoopManiaWorld {
             killEnemy(e);
         }
         return defeatedEnemies;
+    }
+
+    public void buildingInterations(){
+        for (Building b : buildingList){
+            switch(b.getType()){
+                case "Barracks":
+                    Barracks barracks = (Barracks)b;
+                    barracks.buildingEffect(this.character);
+                    if (barracks.getCreateAlly()){
+                        //addAlly(Nearest Position to Building)
+                    }
+
+                case "Campfire":
+                    Campfire campfire = (Campfire)b; 
+                    campfire.buildingEffect(this.character);
+
+                case "Tower":
+                    Tower tower = (Tower)b; 
+                    tower.buildingEffect(this.character);
+
+                case "Trap":
+                    Trap trap = (Trap)b; 
+                    trap.buildingEffect(this.enemyList);
+                    if (trap.getDestroyTrap()){
+                        if (trap.getToBeKilled() != null){
+                            killEnemy(trap.getToBeKilled());
+                        }
+                        buildingList.remove(b);
+                    }
+
+                case "VampireCastle":
+                    VampireCastle vampireCastle = (VampireCastle)b; 
+                    if (vampireCastle.getSpawnVampire()){
+                        createVampire(Nearest Position to Building)
+                    }
+
+                case "Village":
+                    Village village = (Village)b; 
+                    village.buildingEffect(this.character);
+
+                case "ZombiePit":
+                    ZombiePit zombiePit = (ZombiePit)b;
+                    if (zombiePit.getSpawnZombie()){
+                        createZombie(Nearest Position to Building)
+                    }
+            }
+        }
     }
 
     /**
