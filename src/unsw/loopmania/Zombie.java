@@ -47,11 +47,11 @@ public class Zombie extends Enemy {
      * ***Please check input character isInstance of Ally && ***
      * ***chanceGenerator before using***
      */
-    public void applyEffect(Character character) {
+    public void applyEffect(MovingEntity character) {
         // if (character instanceof Ally) {
         //     // TODO = Delete current ally.
-            
         //     Zombie z = new Zombie(character.getPathPosition());
         // }
+        
     }
 }

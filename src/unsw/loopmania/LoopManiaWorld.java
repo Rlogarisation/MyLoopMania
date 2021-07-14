@@ -166,13 +166,30 @@ public class LoopManiaWorld {
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
         List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
-        for (Enemy e: enemiesJoiningBattle) {
+        int i = 0;
+        while (i != enemiesJoiningBattle.size()) {
+            Enemy e = enemiesJoiningBattle.get(0);
             // Attack ally first, eventually character if all allies are dead.
-            
-            
-        }
+            if (!allyList.isEmpty()) {
+                Ally selectedAlly = allyList.get(0);
+                // Enemy wins the battle
+                if (e.attack(selectedAlly)) {
+                    removeAlly(selectedAlly);
+                }
+                else {
+                    // next enemy fight.
+                    i++;
+                    defeatedEnemies.add(e);
+                }
 
-        // defeatedEnemies.add(e);
+            }
+        }
+            
+        
+
+        // WHAT SHOULD WE DO IF CHARACTER DEAD?
+
+        
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException

@@ -90,7 +90,7 @@ public abstract class Enemy extends MovingEntity{
      * and change its properties based on the effect.
      * @param character
      */
-    public abstract void applyEffect(Character character);
+    public abstract void applyEffect(MovingEntity character);
 
     /**
      * The chance generator function takes in a value between 0 to 1.0 as double,
@@ -113,8 +113,9 @@ public abstract class Enemy extends MovingEntity{
     /**
      * Enemy will attack the input character or ally until either is dead.
      * @param character who is fighting with current enemy.
+     * @return boolean if true then enemy attack success and win, false then current enemy dead.
      */
-    public void attack(Character character) {
+    public boolean attack(MovingEntity character) {
         while (character.getHp() > 0 && this.getHp() > 0) {
             if (chanceGenerator(chanceOfEffect)) {
                 this.applyEffect(character);
@@ -124,6 +125,14 @@ public abstract class Enemy extends MovingEntity{
             // How should I apply armour in here?
             character.setHp(character.getHp() - this.getDamage());
         }
+
+        if (this.getHp() <= 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+
     }
     
 }
