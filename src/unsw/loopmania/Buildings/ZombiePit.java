@@ -26,4 +26,11 @@ public class ZombiePit extends Building{
         return this.spawnZombie;
     }
 
+    public void buildingEffect(){
+        if (this.spawnZombie == true){
+            //spawn zombie
+            this.spawnZombie = false;
+        }
+    }
+
 }

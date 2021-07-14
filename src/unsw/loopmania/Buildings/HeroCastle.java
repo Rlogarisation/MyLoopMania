@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.StaticEntity;
 import java.util.ArrayList;
 import java.util.List;
+import unsw.loopmania.Character;
 
 
 public class HeroCastle extends Building{
@@ -32,6 +33,13 @@ public class HeroCastle extends Building{
         }
         for (ZombiePit building : zombiePits){
             building.incrNumCycles();
+        }
+    }
+
+    public void buildingEffect(Character character){
+        if (this.getX() == character.getX() && this.getY() == character.getY()){
+            updateObservers();
+            //shop
         }
     }
 

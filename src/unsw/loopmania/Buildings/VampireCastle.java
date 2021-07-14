@@ -36,4 +36,11 @@ public class VampireCastle extends Building{
             spawnVampire = false;
         }
     }
+
+    public void buildingEffect(){
+        if (this.spawnVampire == true){
+            //spawn vampire
+            this.spawnVampire = false;
+        }
+    }
 }
