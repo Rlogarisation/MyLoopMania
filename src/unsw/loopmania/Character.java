@@ -32,6 +32,13 @@ public class Character extends MovingEntity {
     }
 
     /**
+     * Will do damage to an enemy
+     */    
+    public void attack(double initialDamage, Enemy enemy){
+        fightStrategy.attack(initialDamage, enemy);
+    }
+
+    /**
      * Add certain amount of xp as increment.
      * @param xpIncrement the amount of xp gained during each battle as double.
      */

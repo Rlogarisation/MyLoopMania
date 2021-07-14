@@ -2,9 +2,12 @@ package unsw.loopmania;
 
 public class BasicFightStrategy implements FightStrategy {
 
-    @Override
+    /**
+     * Does initial damage value
+     */
     public void attack(double initialDamage, Enemy enemy) {
-        // TODO Auto-generated method stub
+        double currentHp = enemy.getHp();
+        enemy.setHp(currentHp-initialDamage);
         
     }
 

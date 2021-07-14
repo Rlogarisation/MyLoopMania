@@ -1,15 +1,38 @@
 package unsw.loopmania;
 
-public class Ally implements FightStrategy{
+public class Ally extends MovingEntity{
+    /**
+     * Ally class baseHealth = 20 and baseAttack = 5
+     */
 
-    final private double baseHealth = 0;
-    final private double baseAttack = 0;
+    final private double baseHealth = 20;
+    final private double baseAttack = 5;
+    final private double initialMovingSpeed = 2;
+    private FightStrategy fightStrategy;
 
-    @Override
-    public void attack(double initialDamage, Enemy enemy) {
-        // TODO Auto-generated method stub
-        
+    public Ally(PathPosition position) {
+        super(position);
+        setDamage(baseAttack);
+        setHp(baseHealth);
+        setMovingSpeed(initialMovingSpeed);
+        setFightStrategy(new BasicFightStrategy());
     }
+    
+    /**
+     * Set fight strategy for Ally
+     */    
+    public void setFightStrategy(FightStrategy fStrategy){
+        this.fightStrategy = fStrategy;
+    }
+
+    /**
+     * Will do basic damage to an enemy
+     */    
+    public void attack(double initialDamage, Enemy enemy){
+        fightStrategy.attack(initialDamage, enemy);
+    }
+
+
     
     
 }
