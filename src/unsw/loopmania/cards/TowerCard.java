@@ -7,7 +7,7 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import unsw.loopmania.VampireCastleBuilding;
+import unsw.loopmania.Buildings.*;
 
 public class TowerCard extends Card{
     public TowerCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -15,8 +15,8 @@ public class TowerCard extends Card{
         setImage(new Image((new File("src/images/tower_card.png")).toURI().toString()));
     }    
 
-    public VampireCastleBuilding toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        VampireCastleBuilding newBuilding = new VampireCastleBuilding(x, y);
+    public Tower toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        Tower newBuilding = new Tower(x, y);
         return newBuilding;
     }
 

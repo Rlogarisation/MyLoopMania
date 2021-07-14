@@ -7,7 +7,7 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import unsw.loopmania.VampireCastleBuilding;
+import unsw.loopmania.Buildings.*;
 
 /**
  * represents a vampire castle card in the backend game world
@@ -21,8 +21,8 @@ public class VampireCastleCard extends Card {
     } 
 
 
-    public VampireCastleBuilding toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        VampireCastleBuilding newBuilding = new VampireCastleBuilding(x, y);
+    public VampireCastle toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        VampireCastle newBuilding = new VampireCastle(x, y);
         return newBuilding;
     }
 

@@ -6,7 +6,7 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import unsw.loopmania.VampireCastleBuilding;
+import unsw.loopmania.Buildings.*;
 
 public class BarracksCard extends Card {
     public BarracksCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -15,9 +15,9 @@ public class BarracksCard extends Card {
     }
 
     @Override
-    public VampireCastleBuilding toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        // TODO Auto-generated method stub
-        return null;
+    public Barracks toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        Barracks barracks = new Barracks(x, y);
+        return barracks;
     }
 
     @Override

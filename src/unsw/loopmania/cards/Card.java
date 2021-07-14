@@ -7,6 +7,7 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
 import unsw.loopmania.StaticEntity;
+import unsw.loopmania.Buildings.*;
 import unsw.loopmania.*;
 
 /**
@@ -26,7 +27,7 @@ public abstract class Card extends StaticEntity{
     }
 
     //Returns corresponding building object 
-    public abstract VampireCastleBuilding toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y);
+    public abstract Building toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y);
 
 
     //check if card is in a valid drop

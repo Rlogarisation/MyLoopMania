@@ -7,15 +7,16 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import unsw.loopmania.VampireCastleBuilding;
+import unsw.loopmania.Buildings.*;
+
 public class TrapCard extends Card{
     public TrapCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         setImage(new Image((new File("src/images/trap_card.png")).toURI().toString()));
     }   
     
-    public VampireCastleBuilding toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        VampireCastleBuilding newBuilding = new VampireCastleBuilding(x, y);
+    public Trap toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        Trap newBuilding = new Trap(x, y);
         return newBuilding;
     }
 
