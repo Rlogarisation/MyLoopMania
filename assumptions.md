@@ -139,3 +139,12 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     an enemy.
     * We assume that the character can sell the item for half the original price.
     * We assume that when the character is in the castle, we can purchase items by double clicking.
+
+9. Ally
+    
+    * Base health = 20
+    * Base attack = 5
+    * Moving speed = 2;
+
+    * Assume Ally is a moving entity and follows the character in the world
+    * Tranced Ally last 3 attacks before returning back to enemy
