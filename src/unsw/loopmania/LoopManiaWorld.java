@@ -155,14 +155,18 @@ public class LoopManiaWorld {
         return defeatedEnemies;
     }
 
-    public void buildingInterations(){
+    /**
+     * Iterate through the list of buildings and run the method building effect
+     * If there are the right changes to relevent fields, call methods on LoopManiaWorld
+     */
+    public void buildingInteractions(){
         for (Building b : buildingList){
             switch(b.getType()){
                 case "Barracks":
                     Barracks barracks = (Barracks)b;
                     barracks.buildingEffect(this.character);
                     if (barracks.getCreateAlly()){
-                        //addAlly(Nearest Position to Building)
+                        //addAlly(nearestValidPathPosition(b))
                     }
 
                 case "Campfire":
@@ -186,7 +190,7 @@ public class LoopManiaWorld {
                 case "VampireCastle":
                     VampireCastle vampireCastle = (VampireCastle)b; 
                     if (vampireCastle.getSpawnVampire()){
-                        createVampire(Nearest Position to Building)
+                        //createVampire(NearestValidPathPosition(b))
                     }
 
                 case "Village":
@@ -196,10 +200,37 @@ public class LoopManiaWorld {
                 case "ZombiePit":
                     ZombiePit zombiePit = (ZombiePit)b;
                     if (zombiePit.getSpawnZombie()){
-                        createZombie(Nearest Position to Building)
+                        //createZombie(NearestValidPathPosition(b))
                     }
             }
         }
+    }
+
+    public Pair<Integer, Integer> nearestValidPathPostion(Building b){
+        int buildingX = b.getX();
+        int buildingY = b.getY();
+        Pair<Integer, Integer> nearestOne = null;
+
+        for (Pair<Integer, Integer> pathTile : orderedPath){
+            if (!isEnemyOnPath(pathTile.getValue0(), pathTile.getValue1())) continue;
+            else if (nearestOne == null){
+                nearestOne = pathTile;
+            } 
+
+            else if((Math.pow((pathTile.getValue0()-buildingX), 2) +  Math.pow((pathTile.getValue1()-buildingY), 2)) < (Math.pow((nearestOne.getValue0()-buildingX), 2) +  Math.pow((nearestOne.getValue1()-buildingY), 2))){
+                nearestOne = pathTile;
+            }
+        }
+
+        return nearestOne;
+
+    }
+
+    public boolean isEnemyOnPath (int pathX, int pathY){
+        for (Enemy e : enemyList){
+            if (e.getX() == pathX && e.getY() == pathY) return false;
+        }
+        return true;
     }
 
     /**
