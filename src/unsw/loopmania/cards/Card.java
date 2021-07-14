@@ -5,10 +5,8 @@ import java.util.List;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Buildings.*;
-import unsw.loopmania.*;
 
 /**
  * a Card in the world
@@ -16,15 +14,27 @@ import unsw.loopmania.*;
  */
 
 
-public abstract class Card extends StaticEntity{
-    Image cardImage;
+public abstract class Card extends StaticEntity {
     public Card(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
 
-    public void setImage(Image newImage){
-        this.cardImage = newImage;
+    protected boolean isAdjacent(Pair<Integer, Integer> location1, Pair<Integer, Integer> location2){
+        if(Math.abs(location1.getValue0()-location2.getValue0()) < 1 && Math.abs(location1.getValue1()-location2.getValue1()) < 1){
+            return true;
+        }
+        return false;
     }
+
+    protected boolean isPath(Pair<Integer, Integer> location, List<Pair<Integer, Integer>> orderedPath){
+        for (int i=0; i<orderedPath.size(); i++){
+            if(location == orderedPath.get(i)){
+                return true;
+            }
+        }
+        return false;
+    }  
+    
 
     //Returns corresponding building object 
     public abstract Building toBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y);

@@ -1,17 +1,14 @@
 package unsw.loopmania.cards;
-import java.io.File;
 import java.util.List;
 
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
 import unsw.loopmania.Buildings.*;
 
 public class CampFireCard extends Card {
     public CampFireCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        setImage(new Image((new File("src/images/campfire_card.png")).toURI().toString()));
     }
 
     @Override
@@ -22,8 +19,11 @@ public class CampFireCard extends Card {
 
     @Override
     public boolean validDrop(List<Pair<Integer, Integer>> orderedPath, Pair<Integer, Integer> dropLocation) {
-        // TODO Auto-generated method stub
-        return false;
+        //Checks if dropLocation is on the path, if so return false; Must be non-path tile
+        if(isPath(dropLocation, orderedPath)){
+            return false;
+        }
+        return true;
     }    
 
     

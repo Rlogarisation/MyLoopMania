@@ -5,13 +5,11 @@ import java.util.List;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
 import unsw.loopmania.Buildings.*;
 
 public class BarracksCard extends Card {
     public BarracksCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        setImage(new Image((new File("src/images/barracks_card.png")).toURI().toString()));
     }
 
     @Override
@@ -22,7 +20,9 @@ public class BarracksCard extends Card {
 
     @Override
     public boolean validDrop(List<Pair<Integer, Integer>> orderedPath, Pair<Integer, Integer> dropLocation) {
-        // TODO Auto-generated method stub
+        if(isPath(dropLocation, orderedPath)){
+            return true;
+        }
         return false;
     }  
 
