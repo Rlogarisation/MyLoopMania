@@ -1,5 +1,6 @@
 package unsw.loopmania;
 
+import java.util.ArrayList;
 
 /**
  * represents the main character in the backend of the game world
@@ -11,8 +12,8 @@ public class Character extends MovingEntity {
     final double initialXp = 0; 
     final double initialGold = 0; 
     final double initialArmour = 0;
-
     private double xp, gold, armour;
+    private FightStrategy fightStrategy;
 
 
     public Character(PathPosition position) {
@@ -20,6 +21,7 @@ public class Character extends MovingEntity {
         this.setHp(initialHp);
         this.setDamage(initialDamage);
         this.setMovingSpeed(initialMovingSpeed);
+        this.setFightStrategy(new BasicFightStrategy());
     }
 
     /**
@@ -77,6 +79,14 @@ public class Character extends MovingEntity {
      */
     public double getTotalArmour() {
         return this.armour;
+    }
+
+
+    /**
+     * Set fight strategy for character
+     */    
+    public void setFightStrategy(FightStrategy fStrategy){
+        this.fightStrategy = fStrategy;
     }
 
 }
