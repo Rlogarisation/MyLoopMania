@@ -4,10 +4,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.StaticEntity;
 import java.util.ArrayList;
 import java.util.List;
+
 import unsw.loopmania.Character;
 
 
-public class HeroCastle extends Building{
+public class HeroCastle extends Building{ 
 
     private List<VampireCastle> vampireCastles;
     private List<ZombiePit> zombiePits;
@@ -19,26 +20,26 @@ public class HeroCastle extends Building{
         this.zombiePits = new ArrayList<ZombiePit>();
     }
 
-    public void addVampireCastle(VampireCastle building){
+    public void attach(VampireCastle building){
         this.vampireCastles.add(building);
     }
 
-    public void addZombiePit(ZombiePit building){
+    public void attach(ZombiePit building){
         this.zombiePits.add(building);
     }
 
-    public void updateObservers(){
+    public void notifyAllObservers(){
         for (VampireCastle building : vampireCastles){
-            building.incrNumCycles();
+            building.update();
         }
         for (ZombiePit building : zombiePits){
-            building.incrNumCycles();
+            building.update();
         }
     }
 
     public void buildingEffect(Character character){
         if (this.getX() == character.getX() && this.getY() == character.getY()){
-            updateObservers();
+            notifyAllObservers();
             //shop
         }
     }

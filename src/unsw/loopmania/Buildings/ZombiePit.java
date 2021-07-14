@@ -14,7 +14,7 @@ public class ZombiePit extends Building{
         this.spawnZombie = false;
     }
 
-    public void incrNumCycles(){
+    public void update(){
         this.spawnZombie = true;
     }
 

@@ -27,7 +27,7 @@ public class VampireCastle extends Building{
         this.spawnVampire = yesNo;
     }
 
-    public void incrNumCycles(){
+    public void update(){
         this.numCycles = this.numCycles++;
         if (this.numCycles == 5){
             this.spawnVampire = true;
