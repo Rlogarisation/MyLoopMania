@@ -37,12 +37,13 @@ public class VampireCastle extends Building{
     }
 
     public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+        List<Pair<Integer, Integer>> orderedPath = lmw.getOrderedPath();
         if (this.spawnVampire){
-            Pair<Integer, Integer> pos = lmw.getSpecificSpawnPosition(this);
+            Pair<Integer, Integer> pos = this.getSpecificSpawnPosition(this, orderedPath, lmw.getEnemyList());
             Enemy newVampire = null;
             if (pos != null){
-                int indexInPath = lmw.getOrderedPath().indexOf(pos);
-                newVampire = new Vampire(new PathPosition(indexInPath, lmw.getOrderedPath()));
+                int indexInPath = orderedPath.indexOf(pos);
+                newVampire = new Vampire(new PathPosition(indexInPath, orderedPath));
                 lmw.addEnemyToEnemyList(newVampire);
                 newChanges.addNewEnemy(newVampire);
                 this.spawnVampire = false;
