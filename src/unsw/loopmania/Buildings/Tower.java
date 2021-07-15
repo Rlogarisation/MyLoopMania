@@ -1,7 +1,7 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
+import unsw.loopmania.*;
 import unsw.loopmania.Character;
 
 
@@ -23,7 +23,9 @@ public class Tower extends Building{
         return this.damage;
     }
 
-    public void buildingEffect(Character character){
+    public void buildingEffect(LoopManiaWorld lmw){
+        Character character = lmw.getCharacter();
+
         if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) < this.getBattleRadius()){
             //character.setTowerDamge(character.getTowerDamage() + this.getDamge())
         }

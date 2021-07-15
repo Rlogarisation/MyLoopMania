@@ -1,7 +1,7 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
+import unsw.loopmania.*;
 
 
 public class ZombiePit extends Building{
@@ -18,17 +18,18 @@ public class ZombiePit extends Building{
         this.spawnZombie = true;
     }
 
-    public void setSpawnZombie(boolean yesNo){
-        this.spawnZombie = yesNo;
-    }
-
     public boolean getSpawnZombie(){
         return this.spawnZombie;
     }
 
-    public void buildingEffect(){
+    public void setSpawnZombie(boolean yesNo){
+        this.spawnZombie = yesNo;
+    }
+
+    public void buildingEffect(LoopManiaWorld lmw){
         if (this.spawnZombie == true){
             //spawn zombie
+            //createZombie(NearestValidPathPosition(b))
             this.spawnZombie = false;
         }
     }

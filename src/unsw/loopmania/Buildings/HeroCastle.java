@@ -1,11 +1,11 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
+import unsw.loopmania.*;
+import unsw.loopmania.Character;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import unsw.loopmania.Character;
 
 
 public class HeroCastle extends Building{ 
@@ -37,7 +37,9 @@ public class HeroCastle extends Building{
         }
     }
 
-    public void buildingEffect(Character character){
+    public void buildingEffect(LoopManiaWorld lmw){
+        Character character = lmw.getCharacter();
+
         if (this.getX() == character.getX() && this.getY() == character.getY()){
             notifyAllObservers();
             //shop

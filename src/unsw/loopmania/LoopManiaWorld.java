@@ -95,6 +95,14 @@ public class LoopManiaWorld {
         this.character = character;
     }
 
+    public Character getCharacter(){
+        return this.character;
+    }
+
+    public List<Enemy> getEnemyList(){
+        return this.enemyList;
+    }
+
     /**
      * add a generic entity (without it's own dedicated method for adding to the world)
      * @param entity
@@ -126,7 +134,7 @@ public class LoopManiaWorld {
      * kill an enemy
      * @param enemy enemy to be killed
      */
-    private void killEnemy(Enemy enemy){
+    public void killEnemy(Enemy enemy){
         enemy.destroy();
         enemyList.remove(enemy);
     }
@@ -161,49 +169,9 @@ public class LoopManiaWorld {
      */
     public void buildingInteractions(){
         for (Building b : buildingList){
-            switch(b.getType()){
-                case "Barracks":
-                    Barracks barracks = (Barracks)b;
-                    barracks.buildingEffect(this.character);
-                    if (barracks.getCreateAlly()){
-                        //addAlly(nearestValidPathPosition(b))
-                    }
-
-                case "Campfire":
-                    Campfire campfire = (Campfire)b; 
-                    campfire.buildingEffect(this.character);
-
-                case "Tower":
-                    Tower tower = (Tower)b; 
-                    tower.buildingEffect(this.character);
-
-                case "Trap":
-                    Trap trap = (Trap)b; 
-                    trap.buildingEffect(this.enemyList);
-                    if (trap.getDestroyTrap()){
-                        if (trap.getToBeKilled() != null){
-                            killEnemy(trap.getToBeKilled());
-                        }
-                        buildingList.remove(b);
-                    }
-
-                case "VampireCastle":
-                    VampireCastle vampireCastle = (VampireCastle)b; 
-                    if (vampireCastle.getSpawnVampire()){
-                        //createVampire(NearestValidPathPosition(b))
-                    }
-
-                case "Village":
-                    Village village = (Village)b; 
-                    village.buildingEffect(this.character);
-
-                case "ZombiePit":
-                    ZombiePit zombiePit = (ZombiePit)b;
-                    if (zombiePit.getSpawnZombie()){
-                        //createZombie(NearestValidPathPosition(b))
-                    }
-            }
+            b.buildingEffect(this);
         }
+        heroCastle.buildingEffect(this);
     }
 
     public Pair<Integer, Integer> nearestValidPathPostion(Building b){

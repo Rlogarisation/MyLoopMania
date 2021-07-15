@@ -1,7 +1,7 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
+import unsw.loopmania.*;
 
 public class VampireCastle extends Building{
 
@@ -13,10 +13,6 @@ public class VampireCastle extends Building{
         super.setType("VampireCastle");
         this.numCycles = 0;
         this.spawnVampire = false;
-    }
-
-    public int getNumCycles(){
-        return this.numCycles;
     }
 
     public boolean getSpawnVampire(){
@@ -33,13 +29,14 @@ public class VampireCastle extends Building{
             this.spawnVampire = true;
             this.numCycles = 0;
         } else{
-            spawnVampire = false;
+            this.spawnVampire = false;
         }
     }
 
-    public void buildingEffect(){
-        if (this.spawnVampire == true){
+    public void buildingEffect(LoopManiaWorld lmw){
+        if (this.spawnVampire){
             //spawn vampire
+            //createVampire(NearestValidPathPosition(b))
             this.spawnVampire = false;
         }
     }
