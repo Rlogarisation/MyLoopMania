@@ -56,9 +56,6 @@ public class LoopManiaWorld {
     private List<Building> buildingList;
     private HeroCastle heroCastle;
 
-    private List<Building> trapsDestroyed;
-    private List<Enemy> newEnemies;
-    private List<Enemy> enemiesKilledByTrap;
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
      */
@@ -91,20 +88,20 @@ public class LoopManiaWorld {
         return height;
     }
 
-    /**
-     * set the character. This is necessary because it is loaded as a special entity out of the file
-     * @param character the character
-     */
-    public void setCharacter(Character character) {
-        this.character = character;
-    }
-
     public Character getCharacter(){
         return this.character;
     }
 
     public List<Enemy> getEnemyList(){
         return this.enemyList;
+    }
+
+    /**
+     * set the character. This is necessary because it is loaded as a special entity out of the file
+     * @param character the character
+     */
+    public void setCharacter(Character character) {
+        this.character = character;
     }
 
     /**
@@ -178,35 +175,62 @@ public class LoopManiaWorld {
         for (Building b : buildingList){
             b.buildingEffect(this, newChanges);
         }
+
         heroCastle.buildingEffect(this);
 
         return newChanges;
     }
 
-    public Pair<Integer, Integer> nearestValidPathPostion(Building b){
-        int buildingX = b.getX();
-        int buildingY = b.getY();
-        Pair<Integer, Integer> nearestOne = null;
-        double currentNearestDistance = 0;
+    public Enemy spawnOneEnemy(Building building){
+        Pair<Integer, Integer> pos = getSpecificSpawnPosition(building);
+        Enemy newEnemy = null;
+        if (pos != null){
+            int indexInPath = orderedPath.indexOf(pos);
+            if (building instanceof VampireCastle) {
+                newEnemy = new Vampire(new PathPosition(indexInPath, orderedPath));
+                enemyList.add(newEnemy);
+            }
+            if (building instanceof ZombiePit) {
+                newEnemy = new Zombie(new PathPosition(indexInPath, orderedPath));
+                enemyList.add(newEnemy);
+            }
+        }    
+        return newEnemy;
+    }
+    
+    public Pair<Integer, Integer> getSpecificSpawnPosition(Building building){
+        int buildingX = building.getX();
+        int buildingY = building.getY();
 
-        for (Pair<Integer, Integer> pathTile : orderedPath){
-            if (!isEnemyOnPath(pathTile.getValue0(), pathTile.getValue1())) continue;
-            else if (nearestOne == null){
-                nearestOne = pathTile;
-                currentNearestDistance = (Math.pow((nearestOne.getValue0()-buildingX), 2) +  Math.pow((nearestOne.getValue1()-buildingY), 2));
-            } 
-            else if((Math.pow((pathTile.getValue0()-buildingX), 2) +  Math.pow((pathTile.getValue1()-buildingY), 2)) < currentNearestDistance){
-                nearestOne = pathTile;
+        // check if there is a path to the top, bottom, left or right of the vampire castle
+        for (Pair<Integer, Integer> onePath : orderedPath) {
+            
+            //check if onePath has an enemy
+            if (isEnemyOnPath(onePath)) continue;
+
+            // case1) top
+            if (onePath.equals(new Pair<Integer, Integer>(buildingX, buildingY-1))) {
+                return onePath;
+            }
+            // case2) bottom
+            if (onePath.equals(new Pair<Integer, Integer>(buildingX, buildingY+1))) {
+                return onePath;
+            }
+            // case3) left
+            if (onePath.equals(new Pair<Integer, Integer>(buildingX-1, buildingY))) {
+                return onePath;
+            }
+            // case4) right
+            if (onePath.equals(new Pair<Integer, Integer>(buildingX+1, buildingY))) {
+                return onePath;
             }
         }
-
-        return nearestOne;
-
+        return null;
     }
 
-    public boolean isEnemyOnPath (int pathX, int pathY){
+    public boolean isEnemyOnPath (Pair<Integer, Integer> path){
         for (Enemy e : enemyList){
-            if (e.getX() == pathX && e.getY() == pathY) return false;
+            if (e.getX() == path.getValue0() && e.getY() == path.getValue1()) return false;
         }
         return true;
     }

@@ -31,9 +31,11 @@ public class ZombiePit extends Building{
 
     public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         if (this.spawnZombie == true){
-            //spawn zombie
-            //newChanges.addNewEnemy(createZombie(nearestValidPathPosition(this)));
-            this.spawnZombie = false;
+            Enemy newZombie = lmw.spawnOneEnemy(this);
+            if (newZombie != null){
+                newChanges.addNewEnemy(newZombie);
+                this.spawnZombie = false;
+            }
         }
 
     }

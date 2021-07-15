@@ -38,9 +38,11 @@ public class VampireCastle extends Building{
 
     public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         if (this.spawnVampire){
-            //spawn vampire
-            //newChanges.addNewEnemy(createVampire(NearestValidPathPosition(b)));
-            this.spawnVampire = false;
+            Enemy newVampire = lmw.spawnOneEnemy(this);
+            if (newVampire != null){
+                newChanges.addNewEnemy(newVampire);
+                this.spawnVampire = false;
+            }
         }
     }
 }
