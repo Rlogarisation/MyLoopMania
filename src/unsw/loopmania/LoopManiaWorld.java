@@ -96,6 +96,14 @@ public class LoopManiaWorld {
         return this.enemyList;
     }
 
+    public List<Pair<Integer, Integer>> getOrderedPath(){
+        return this.orderedPath;
+    }
+
+    public void addEnemyToEnemyList(Enemy e){
+        this.enemyList.add(e);
+    }
+
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
      * @param character the character
@@ -181,23 +189,6 @@ public class LoopManiaWorld {
         return newChanges;
     }
 
-    public Enemy spawnOneEnemy(Building building){
-        Pair<Integer, Integer> pos = getSpecificSpawnPosition(building);
-        Enemy newEnemy = null;
-        if (pos != null){
-            int indexInPath = orderedPath.indexOf(pos);
-            if (building instanceof VampireCastle) {
-                newEnemy = new Vampire(new PathPosition(indexInPath, orderedPath));
-                enemyList.add(newEnemy);
-            }
-            if (building instanceof ZombiePit) {
-                newEnemy = new Zombie(new PathPosition(indexInPath, orderedPath));
-                enemyList.add(newEnemy);
-            }
-        }    
-        return newEnemy;
-    }
-    
     public Pair<Integer, Integer> getSpecificSpawnPosition(Building building){
         int buildingX = building.getX();
         int buildingY = building.getY();

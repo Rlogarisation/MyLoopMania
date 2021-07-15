@@ -30,14 +30,17 @@ public class ZombiePit extends Building{
     }
 
     public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
-        if (this.spawnZombie == true){
-            Enemy newZombie = lmw.spawnOneEnemy(this);
-            if (newZombie != null){
+        if (this.spawnZombie){
+            Pair<Integer, Integer> pos = lmw.getSpecificSpawnPosition(this);
+            Enemy newZombie = null;
+            if (pos != null){
+                int indexInPath = lmw.getOrderedPath().indexOf(pos);
+                newZombie = new Zombie(new PathPosition(indexInPath, lmw.getOrderedPath()));
+                lmw.addEnemyToEnemyList(newZombie);
                 newChanges.addNewEnemy(newZombie);
                 this.spawnZombie = false;
             }
         }
-
     }
 
 }
