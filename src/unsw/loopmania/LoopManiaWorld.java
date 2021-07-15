@@ -176,6 +176,7 @@ public class LoopManiaWorld {
      * Iterate through the list of buildings and run the method building effect
      * Apply relevant changes to the newChanges class
      * The controller can interpret the data in newChanges
+     * @return newChanges - Lists of newEnemies, enemiesKille and trapsDestroyed
      */
     public BuildingInfo buildingInteractions(){
 
