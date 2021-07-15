@@ -174,7 +174,8 @@ public class LoopManiaWorld {
 
     /**
      * Iterate through the list of buildings and run the method building effect
-     * If there are the right changes to relevent fields, call methods on LoopManiaWorld
+     * Apply relevant changes to the newChanges class
+     * The controller can interpret the data in newChanges
      */
     public BuildingInfo buildingInteractions(){
 
