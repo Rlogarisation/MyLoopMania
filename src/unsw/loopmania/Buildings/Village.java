@@ -17,7 +17,7 @@ public class Village extends Building{
         super.setType("Village");
     }
 
-    public List<Pair<Building, Enemy>> buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy){
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         Character character = lmw.getCharacter();
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
@@ -29,8 +29,6 @@ public class Village extends Building{
             character.setHp(100);
             }
         }
-
-        return trapAndEnemy;
     }
 
 }

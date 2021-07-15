@@ -29,14 +29,13 @@ public class ZombiePit extends Building{
         this.spawnZombie = yesNo;
     }
 
-    public List<Pair<Building, Enemy>> buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy){
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         if (this.spawnZombie == true){
             //spawn zombie
-            //createZombie(NearestValidPathPosition(b))
+            //newChanges.addNewEnemy(createZombie(nearestValidPathPosition(this)));
             this.spawnZombie = false;
         }
 
-        return trapAndEnemy;
     }
 
 }

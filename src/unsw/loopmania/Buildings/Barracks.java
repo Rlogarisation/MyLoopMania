@@ -20,15 +20,13 @@ public class Barracks extends Building{
         return this.createAlly;
     }
 
-    public List<Pair<Building, Enemy>> buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy){
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
 
         Character character = lmw.getCharacter();
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
             //addAlly(nearestValidPathPosition(b))
         }
-
-        return trapAndEnemy;
     }
 
 }

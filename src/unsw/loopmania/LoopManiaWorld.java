@@ -55,6 +55,10 @@ public class LoopManiaWorld {
     private List<VampireCastleBuilding> buildingEntities;
     private List<Building> buildingList;
     private HeroCastle heroCastle;
+
+    private List<Building> trapsDestroyed;
+    private List<Enemy> newEnemies;
+    private List<Enemy> enemiesKilledByTrap;
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
      */
@@ -167,16 +171,16 @@ public class LoopManiaWorld {
      * Iterate through the list of buildings and run the method building effect
      * If there are the right changes to relevent fields, call methods on LoopManiaWorld
      */
-    public List<Pair<Building, Enemy>> buildingInteractions(){
+    public BuildingInfo buildingInteractions(){
 
-        List<Pair<Building, Enemy>> trapAndEnemy = new ArrayList<Pair<Building, Enemy>>();
+        BuildingInfo newChanges = new BuidlingInfo();
 
         for (Building b : buildingList){
-            trapAndEnemy = b.buildingEffect(this, trapAndEnemy);
+            b.buildingEffect(this, newChanges);
         }
         heroCastle.buildingEffect(this);
 
-        return trapAndEnemy;
+        return newChanges;
     }
 
     public Pair<Integer, Integer> nearestValidPathPostion(Building b){

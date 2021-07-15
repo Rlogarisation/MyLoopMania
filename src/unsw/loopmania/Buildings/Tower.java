@@ -26,14 +26,12 @@ public class Tower extends Building{
         return this.damage;
     }
 
-    public List<Pair<Building, Enemy>> buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy){
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         Character character = lmw.getCharacter();
 
         if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) < this.getBattleRadius()){
             //character.setTowerDamge(character.getTowerDamage() + this.getDamge())
         }
-
-        return trapAndEnemy;
     }
 
 }

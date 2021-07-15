@@ -22,23 +22,21 @@ public class Trap extends Building{
     }
 
 
-    public List<Pair<Building, Enemy>> buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy){
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         List<Enemy> enemies = lmw.getEnemyList();
-        Pair<Building, Enemy> newTrapAndEnemy = new Pair<Building,Enemy>(this, null);
+
         for (Enemy enemy : enemies){
             if (this.getX() == enemy.getX() && this.getY() == enemy.getY()){
                 enemy.setDamage(enemy.getDamage() + this.getDamage());
                 if (enemy.getHp() <= 0){
                     lmw.killEnemy(enemy);
-                    newTrapAndEnemy.setAt1(enemy);
+                    newChanges.addEnemyKilled(enemy);
                     //Figure out how to implement killed enemy with LoopManiaWorldController
                 }
-                trapAndEnemy.add(newTrapAndEnemy);
+                newChanges.addTrapDestroyed(this);
                 //implement removeBuilding(Building b);
                 break;
             }
         }
-
-        return trapAndEnemy;
     }
 }

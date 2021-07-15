@@ -25,5 +25,5 @@ public abstract class Building extends StaticEntity {
         this.type = type;
     }
 
-    public abstract void buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy);
+    public abstract void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges);
 }
