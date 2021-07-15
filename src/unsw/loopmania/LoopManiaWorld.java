@@ -187,14 +187,15 @@ public class LoopManiaWorld {
         int buildingX = b.getX();
         int buildingY = b.getY();
         Pair<Integer, Integer> nearestOne = null;
+        double currentNearestDistance = 0;
 
         for (Pair<Integer, Integer> pathTile : orderedPath){
             if (!isEnemyOnPath(pathTile.getValue0(), pathTile.getValue1())) continue;
             else if (nearestOne == null){
                 nearestOne = pathTile;
+                currentNearestDistance = (Math.pow((nearestOne.getValue0()-buildingX), 2) +  Math.pow((nearestOne.getValue1()-buildingY), 2));
             } 
-
-            else if((Math.pow((pathTile.getValue0()-buildingX), 2) +  Math.pow((pathTile.getValue1()-buildingY), 2)) < (Math.pow((nearestOne.getValue0()-buildingX), 2) +  Math.pow((nearestOne.getValue1()-buildingY), 2))){
+            else if((Math.pow((pathTile.getValue0()-buildingX), 2) +  Math.pow((pathTile.getValue1()-buildingY), 2)) < currentNearestDistance){
                 nearestOne = pathTile;
             }
         }
