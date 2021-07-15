@@ -173,7 +173,7 @@ public class LoopManiaWorld {
      */
     public BuildingInfo buildingInteractions(){
 
-        BuildingInfo newChanges = new BuidlingInfo();
+        BuildingInfo newChanges = new BuildingInfo();
 
         for (Building b : buildingList){
             b.buildingEffect(this, newChanges);
