@@ -2,6 +2,9 @@ package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
+import org.javatuples.Pair;
+
+import java.util.List;
 
 
 public class ZombiePit extends Building{
@@ -26,12 +29,14 @@ public class ZombiePit extends Building{
         this.spawnZombie = yesNo;
     }
 
-    public void buildingEffect(LoopManiaWorld lmw){
+    public List<Pair<Building, Enemy>> buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy){
         if (this.spawnZombie == true){
             //spawn zombie
             //createZombie(NearestValidPathPosition(b))
             this.spawnZombie = false;
         }
+
+        return trapAndEnemy;
     }
 
 }

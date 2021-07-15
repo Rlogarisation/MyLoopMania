@@ -2,6 +2,9 @@ package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
+import org.javatuples.Pair;
+
+import java.util.List;
 
 /**
  * a basic form of building in the world
@@ -22,5 +25,5 @@ public abstract class Building extends StaticEntity {
         this.type = type;
     }
 
-    public abstract void buildingEffect(LoopManiaWorld lmw);
+    public abstract void buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy);
 }

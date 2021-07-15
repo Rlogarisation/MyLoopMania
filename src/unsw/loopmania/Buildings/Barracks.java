@@ -3,6 +3,9 @@ package unsw.loopmania.Buildings;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
+import org.javatuples.Pair;
+
+import java.util.List;
 
 public class Barracks extends Building{
 
@@ -17,13 +20,15 @@ public class Barracks extends Building{
         return this.createAlly;
     }
 
-    public void buildingEffect(LoopManiaWorld lmw){
+    public List<Pair<Building, Enemy>> buildingEffect(LoopManiaWorld lmw, List<Pair<Building, Enemy>> trapAndEnemy){
 
         Character character = lmw.getCharacter();
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
             //addAlly(nearestValidPathPosition(b))
         }
+
+        return trapAndEnemy;
     }
 
 }

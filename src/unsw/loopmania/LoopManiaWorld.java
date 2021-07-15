@@ -167,11 +167,16 @@ public class LoopManiaWorld {
      * Iterate through the list of buildings and run the method building effect
      * If there are the right changes to relevent fields, call methods on LoopManiaWorld
      */
-    public void buildingInteractions(){
+    public List<Pair<Building, Enemy>> buildingInteractions(){
+
+        List<Pair<Building, Enemy>> trapAndEnemy = new ArrayList<Pair<Building, Enemy>>();
+
         for (Building b : buildingList){
-            b.buildingEffect(this);
+            trapAndEnemy = b.buildingEffect(this, trapAndEnemy);
         }
         heroCastle.buildingEffect(this);
+
+        return trapAndEnemy;
     }
 
     public Pair<Integer, Integer> nearestValidPathPostion(Building b){
