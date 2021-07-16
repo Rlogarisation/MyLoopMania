@@ -43,7 +43,6 @@ public class Slug extends Enemy{
     /**
      * Slug has no effect.
      */
-    public MovingEntity applyEffect(Character character) {
-        return character;
+    public void applyEffect(MovingEntity character) {
     }
 }
