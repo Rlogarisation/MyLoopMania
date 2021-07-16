@@ -371,6 +371,10 @@ public class LoopManiaWorldController {
             Image trapCardImage = new Image((new File("src/images/trap_card.png")).toURI().toString());
             view = new ImageView(trapCardImage);
         }
+        if(card instanceof VillageCard){
+            Image villageCardImage = new Image((new File("src/images/village_card.png")).toURI().toString());
+            view = new ImageView(villageCardImage);
+        }
         if(card instanceof ZombiePitCard){
             Image zombiePitCard = new Image((new File("src/images/zombie_pit.png")).toURI().toString());
             view = new ImageView(zombiePitCard);
@@ -431,6 +435,10 @@ public class LoopManiaWorldController {
         if(building instanceof Trap){
             Image trapImage = new Image((new File("src/images/trap.png")).toURI().toString());
             view = new ImageView(trapImage);
+        }
+        if(building instanceof Village){
+            Image villageImage = new Image((new File("src/images/village.png")).toURI().toString());
+            view = new ImageView(villageImage);
         }
         if(building instanceof ZombiePit){
             Image zombiePit = new Image((new File("src/images/zombie_pit.png")).toURI().toString());
