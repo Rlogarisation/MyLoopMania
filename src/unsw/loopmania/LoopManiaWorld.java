@@ -196,38 +196,53 @@ public class LoopManiaWorld {
      */
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
-        // List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
-        // int i = 0;
-        // while (i != enemiesJoiningBattle.size()) {
-        //     Enemy e = enemiesJoiningBattle.get(i);
-        //     // Attack ally first, eventually character if all allies are dead.
-        //     if (!allyList.isEmpty()) {
-        //         Ally selectedAlly = allyList.get(0);
-        //         // Enemy wins the battle with ally
-        //         if (e.attack(selectedAlly)) {
-        //             removeAlly(selectedAlly);
-        //         }
-        //         else {
-        //             // ally wins, so next enemy fight.
-        //             i++;
-        //             defeatedEnemies.add(e);
-        //         }
+        List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
+        int allyIndex = 0;
+        int enemyIndex = 0;
 
-        //     } 
-        //     else {
-        //         // Enemy killed by character.
-        //         if (e.attack(character)) {
-        //             i++;
-        //             defeatedEnemies.add(e);
-        //         }
-        //         else {
-        //             // Character is killed.
-        //             // NEED TO CONNECT THIS WITH ENDING GAME!
-        //             characterIsAlive = false;
-        //             break;
-        //         }
-        //     }
-        // }
+
+        // Battle between ally and enemy.
+        while (allyIndex < allyList.size()) {
+            Ally currentAlly = allyList.get(allyIndex);
+            Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+
+            currentAlly.attack(currentAlly.getDamage(), currentEnemy);
+            currentEnemy.attack(currentEnemy.getDamage(), currentAlly);
+            // Transform the currentAlly into another Zombie.
+            if (currentEnemy instanceof Zombie && chanceGenerator(0.3)) {
+                removeAlly(currentAlly);
+                currentAlly.setHp(0);
+                Zombie newZombie = new Zombie(currentAlly.getPathPosition());
+                enemiesJoiningBattle.add(newZombie);
+                enemyList.add(newZombie);
+            }
+
+            if (currentAlly.getHp() <= 0) {
+                allyIndex++;
+            }
+            if (currentEnemy.getHp() <= 0) {
+                enemyIndex++;
+                defeatedEnemies.add(currentEnemy);
+            }
+        }
+
+        // Battle with character and enemy when all allies are dead.
+        while (enemyIndex < enemiesJoiningBattle.size()) {
+            Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+
+            character.attack(character.getDamage(), currentEnemy);
+            currentEnemy.attack(currentEnemy.getDamage(), character);
+
+            if (character.getHp() <= 0) {
+                characterIsAlive = false;
+                break;
+            }
+            if (currentEnemy.getHp() <= 0) {
+                enemyIndex++;
+                defeatedEnemies.add(currentEnemy);
+            }
+
+        }
 
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
@@ -267,17 +282,22 @@ public class LoopManiaWorld {
     }
 
     /**
-     * ranBattleBetween takes in 2 moving entity, calculate and return the won entity in the end.
-     * @param a Either Character or ally.
-     * @param b Enemy.
-     * @return the movingEntity who won the fight.
+     * The chance generator function takes in a value between 0 to 1.0 as double,
+     * which is the chance of selecting, 
+     * e.g: there is 30% of selecting if you enter 0.3.
+     * @param chance between 0 to 1 as percentage.
+     * @return ture if seleted else return false as boolean.
      */
-    // public MovingEntity runBattleBetween(MovingEntity a, MovingEntity b) {
-    //     while (a.getHp() > 0 && b.getHp() > 0) {
-            
-    //     }
+    public boolean chanceGenerator(double chance) {
+        double chanceOfCriticalBite = (new Random()).nextDouble();
+        if (chanceOfCriticalBite <= chance) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
-    // }
 
     /**
      * Function to determine the whether a and b are within distance.

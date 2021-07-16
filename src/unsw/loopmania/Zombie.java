@@ -19,7 +19,7 @@ public class Zombie extends Enemy {
         this.setMovingSpeed(initialMovingSpeed);
         this.setBattleRadius(battleRadius);
         this.setSupportRadius(supportRadius);
-        this.setFightStrategy(new ZombieStrategy());
+        this.setFightStrategy(new BasicFightStrategy());
     }
 
 
