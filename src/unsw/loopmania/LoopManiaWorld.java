@@ -286,9 +286,16 @@ public class LoopManiaWorld {
             b.buildingEffect(this, newChanges);
         }
 
-        heroCastle.buildingEffect(this);
-
         return newChanges;
+    }
+
+    /**
+     * Run the building effect of Hero's Castle
+     * It will notify zombiePit and vampireCastle to update numCycle
+     * @return true if shop should be opened, false otherwise
+     */
+    public boolean runHeroCastle(){
+        return heroCastle.buildingEffect(this);
     }
 
     /**

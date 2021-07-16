@@ -13,11 +13,15 @@ public class HeroCastle extends StaticEntity{
 
     private List<VampireCastle> vampireCastles;
     private List<ZombiePit> zombiePits;
+    private int numCyclesComplete;
+    private int numCyclesGoal;
 
     public HeroCastle (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
         this.vampireCastles = new ArrayList<VampireCastle>();
         this.zombiePits = new ArrayList<ZombiePit>();
+        this.numCyclesComplete = 0;
+        this.numCyclesGoal = 1;
     }
 
     public void attach(VampireCastle building){
@@ -37,13 +41,20 @@ public class HeroCastle extends StaticEntity{
         }
     }
 
-    public void buildingEffect(LoopManiaWorld lmw){
+    public boolean buildingEffect(LoopManiaWorld lmw){
         Character character = lmw.getCharacter();
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
             notifyAllObservers();
-            //shop
+            if (this.numCyclesComplete == this.numCyclesGoal){
+                this.numCyclesComplete = 0;
+                this.numCyclesGoal = this.numCyclesGoal++;
+                return true;
+            }
+            this.numCyclesComplete = this.numCyclesComplete++;
         }
+
+        return false;
     }
 
 }

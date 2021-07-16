@@ -251,6 +251,10 @@ public class LoopManiaWorldController {
             for (Enemy defeatedEnemy: newChanges.getEnemiesKilledByTrap()){
                 reactToEnemyDefeat(defeatedEnemy);
             }
+            boolean openShop = world.runHeroCastle();
+            if (openShop){
+                //Openshop
+            }
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
