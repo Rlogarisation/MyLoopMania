@@ -14,6 +14,8 @@ public class Character extends MovingEntity {
     final double initialArmour = 0;
     private double xp, gold, armour;
     private FightStrategy fightStrategy;
+    private int towerDamage;
+    private boolean campfireInRange;
 
 
     public Character(PathPosition position) {
@@ -22,6 +24,8 @@ public class Character extends MovingEntity {
         this.setDamage(initialDamage);
         this.setMovingSpeed(initialMovingSpeed);
         this.setFightStrategy(new BasicFightStrategy());
+        this.towerDamage = 0;
+        this.campfireInRange = false;
     }
 
     /**
@@ -94,6 +98,38 @@ public class Character extends MovingEntity {
      */    
     public void setFightStrategy(FightStrategy fStrategy){
         this.fightStrategy = fStrategy;
+    }
+
+    /**
+     * Get the total damage from towers in range
+     * @return total tower damage
+     */
+    public int getTowerDamage(){
+        return this.towerDamage;
+    }
+
+    /**
+     * Set the current tower damage in range
+     * @param towerDamage new total trap damage
+     */
+    public void setTowerDamage(int towerDamage){
+        this.towerDamage = towerDamage;
+    }
+
+    /**
+     * Get a true or false if campfire is in range
+     * @return boolean campfireInRange
+     */
+    public boolean getCampfireInRange(){
+        return this.campfireInRange;
+    }
+
+    /**
+     * Set a true or false if campfire is in range
+     * @param yesNo new result for campfireInRange
+     */
+    public void setCampfireInRange(boolean yesNo){
+        this.campfireInRange = yesNo;
     }
 
 }
