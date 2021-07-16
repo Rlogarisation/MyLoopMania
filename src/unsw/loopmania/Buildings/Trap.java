@@ -1,8 +1,10 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
-import unsw.loopmania.BasicEnemy;
+import unsw.loopmania.*;
+import unsw.loopmania.Enemy;
+import org.javatuples.Pair;
+
 import java.util.List;
 
 
@@ -19,15 +21,22 @@ public class Trap extends Building{
         return this.damage;
     }
 
-    public void buildingEffect(List<BasicEnemy> enemies){
-        for (BasicEnemy e : enemies){
-            if (this.getX() == e.getX() && this.getY() == e.getY()){
-                //deal damage to enemy
-                //check if enemy is dead
-                //remove trap
+
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+        List<Enemy> enemies = lmw.getEnemyList();
+
+        for (Enemy enemy : enemies){
+            if (this.getX() == enemy.getX() && this.getY() == enemy.getY()){
+                enemy.setDamage(enemy.getDamage() + this.getDamage());
+                if (enemy.getHp() <= 0){
+                    lmw.killEnemy(enemy);
+                    newChanges.addEnemyKilled(enemy);
+                    //Figure out how to implement killed enemy with LoopManiaWorldController
+                }
+                newChanges.addTrapDestroyed(this);
+                //implement removeBuilding(Building b);
                 break;
             }
         }
     }
-
 }

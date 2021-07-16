@@ -51,6 +51,7 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
 3. Buildings
     * We assume that there can be only one building per tile.
     * All types of buildings can be built up to 10 each.
+    * Assume that vampireCastle and Zombie Pit will only spawn an enemy in the positions that are adjacent to it and only if there is no enemy there.
 
     3.1. Village
     * We assume that when the character passes through a village, it regains health by 20.
