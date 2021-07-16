@@ -1,7 +1,10 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
+import unsw.loopmania.*;
+import org.javatuples.Pair;
+
+import java.util.List;
 
 public class VampireCastle extends Building{
 
@@ -15,10 +18,6 @@ public class VampireCastle extends Building{
         this.spawnVampire = false;
     }
 
-    public int getNumCycles(){
-        return this.numCycles;
-    }
-
     public boolean getSpawnVampire(){
         return this.spawnVampire;
     }
@@ -27,20 +26,28 @@ public class VampireCastle extends Building{
         this.spawnVampire = yesNo;
     }
 
-    public void incrNumCycles(){
+    public void update(){
         this.numCycles = this.numCycles++;
         if (this.numCycles == 5){
             this.spawnVampire = true;
             this.numCycles = 0;
         } else{
-            spawnVampire = false;
+            this.spawnVampire = false;
         }
     }
 
-    public void buildingEffect(){
-        if (this.spawnVampire == true){
-            //spawn vampire
-            this.spawnVampire = false;
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+        List<Pair<Integer, Integer>> orderedPath = lmw.getOrderedPath();
+        if (this.spawnVampire){
+            Pair<Integer, Integer> pos = this.getSpecificSpawnPosition(this, orderedPath, lmw.getEnemyList());
+            Enemy newVampire = null;
+            if (pos != null){
+                int indexInPath = orderedPath.indexOf(pos);
+                newVampire = new Vampire(new PathPosition(indexInPath, orderedPath));
+                lmw.addEnemyToEnemyList(newVampire);
+                newChanges.addNewEnemy(newVampire);
+                this.spawnVampire = false;
+            }
         }
     }
 }

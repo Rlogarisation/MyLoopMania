@@ -1,7 +1,10 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
+import unsw.loopmania.*;
+import org.javatuples.Pair;
+
+import java.util.List;
 
 
 public class ZombiePit extends Building{
@@ -14,22 +17,30 @@ public class ZombiePit extends Building{
         this.spawnZombie = false;
     }
 
-    public void incrNumCycles(){
+    public void update(){
         this.spawnZombie = true;
-    }
-
-    public void setSpawnZombie(boolean yesNo){
-        this.spawnZombie = yesNo;
     }
 
     public boolean getSpawnZombie(){
         return this.spawnZombie;
     }
 
-    public void buildingEffect(){
-        if (this.spawnZombie == true){
-            //spawn zombie
-            this.spawnZombie = false;
+    public void setSpawnZombie(boolean yesNo){
+        this.spawnZombie = yesNo;
+    }
+
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+        List<Pair<Integer, Integer>> orderedPath = lmw.getOrderedPath();
+        if (this.spawnZombie){
+            Pair<Integer, Integer> pos = this.getSpecificSpawnPosition(this, orderedPath, lmw.getEnemyList());
+            Enemy newZombie = null;
+            if (pos != null){
+                int indexInPath = orderedPath.indexOf(pos);
+                newZombie = new Zombie(new PathPosition(indexInPath, orderedPath));
+                lmw.addEnemyToEnemyList(newZombie);
+                newChanges.addNewEnemy(newZombie);
+                this.spawnZombie = false;
+            }
         }
     }
 

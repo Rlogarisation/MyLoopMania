@@ -1,8 +1,10 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
+import unsw.loopmania.*;
 import unsw.loopmania.Character;
+import org.javatuples.Pair;
+
 import java.util.List;
 
 
@@ -15,15 +17,17 @@ public class Village extends Building{
         super.setType("Village");
     }
 
-    public int getHealth(){
-        return this.health;
-    }
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+        Character character = lmw.getCharacter();
 
-    public void buildingEffect(Character character){
         if (this.getX() == character.getX() && this.getY() == character.getY()){
-            double currentHp = character.getHp();
-            currentHp = currentHp + this.getHealth();
-            character.setHp(currentHp);
+            double newHp = character.getHp() + this.health;
+            //If health is capped at 100
+            if (newHp < 100){
+                character.setHp(newHp);
+            } else{
+            character.setHp(100);
+            }
         }
     }
 

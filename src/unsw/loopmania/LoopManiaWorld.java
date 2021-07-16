@@ -8,6 +8,7 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.cards.*;
+import unsw.loopmania.Buildings.*;
 
 /**
  * A backend world.
@@ -52,6 +53,8 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
+    private List<Building> buildingList;
+    private HeroCastle heroCastle;
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
@@ -83,6 +86,22 @@ public class LoopManiaWorld {
 
     public int getHeight() {
         return height;
+    }
+
+    public Character getCharacter(){
+        return this.character;
+    }
+
+    public List<Enemy> getEnemyList(){
+        return this.enemyList;
+    }
+
+    public List<Pair<Integer, Integer>> getOrderedPath(){
+        return this.orderedPath;
+    }
+
+    public void addEnemyToEnemyList(Enemy e){
+        this.enemyList.add(e);
     }
 
     /**
@@ -124,7 +143,7 @@ public class LoopManiaWorld {
      * kill an enemy
      * @param enemy enemy to be killed
      */
-    private void killEnemy(Enemy enemy){
+    public void killEnemy(Enemy enemy){
         enemy.destroy();
         enemyList.remove(enemy);
     }
@@ -151,6 +170,25 @@ public class LoopManiaWorld {
             killEnemy(e);
         }
         return defeatedEnemies;
+    }
+
+    /**
+     * Iterate through the list of buildings and run the method building effect
+     * Apply relevant changes to the newChanges class
+     * The controller can interpret the data in newChanges
+     * @return newChanges - Lists of newEnemies, enemiesKille and trapsDestroyed
+     */
+    public BuildingInfo buildingInteractions(){
+
+        BuildingInfo newChanges = new BuildingInfo();
+
+        for (Building b : buildingList){
+            b.buildingEffect(this, newChanges);
+        }
+
+        heroCastle.buildingEffect(this);
+
+        return newChanges;
     }
 
     /**

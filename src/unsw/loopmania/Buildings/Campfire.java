@@ -1,7 +1,11 @@
 package unsw.loopmania.Buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
+import unsw.loopmania.*;
+import unsw.loopmania.Character;
+import org.javatuples.Pair;
+
+import java.util.List;
 
 
 public class Campfire extends Building{
@@ -13,8 +17,14 @@ public class Campfire extends Building{
         super.setType("Campfire");
     }
 
-    public int getBattleRadius(){
-        return this.battleRadius;
-    }
+    //decide to do range check for character here or in run battles
+    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+        Character character = lmw.getCharacter();
+
+        if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) < this.battleRadius){
+            //character.setCampfireInRange(true)
+        }      
+
+    }    
 
 }
