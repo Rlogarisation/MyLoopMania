@@ -1,5 +1,6 @@
 package unsw.loopmania;
 
+
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
@@ -12,6 +13,7 @@ public abstract class MovingEntity extends Entity {
      */
     private PathPosition position;
     private double hp, damage, movingSpeed;
+    
 
 
     /**
@@ -76,6 +78,10 @@ public abstract class MovingEntity extends Entity {
 
     public double getMovingSpeed() {
         return this.movingSpeed;
+    }
+
+    public PathPosition getPathPosition() {
+        return this.position;
     }
 
 }
