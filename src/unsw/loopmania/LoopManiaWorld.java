@@ -168,7 +168,7 @@ public class LoopManiaWorld {
         List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
         int i = 0;
         while (i != enemiesJoiningBattle.size()) {
-            Enemy e = enemiesJoiningBattle.get(0);
+            Enemy e = enemiesJoiningBattle.get(i);
             // Attack ally first, eventually character if all allies are dead.
             if (!allyList.isEmpty()) {
                 Ally selectedAlly = allyList.get(0);
@@ -182,12 +182,15 @@ public class LoopManiaWorld {
                     defeatedEnemies.add(e);
                 }
 
+            } else {
+                e.attack(character);
             }
         }
             
         
 
         // WHAT SHOULD WE DO IF CHARACTER DEAD?
+        // END THE GAME?
 
         
         for (Enemy e: defeatedEnemies){
