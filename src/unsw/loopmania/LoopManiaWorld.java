@@ -75,6 +75,7 @@ public class LoopManiaWorld {
         nonSpecifiedEntities = new ArrayList<>();
         character = null;
         enemyList= new ArrayList<>();
+        allyList = new ArrayList<>();
         cardEntities = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
