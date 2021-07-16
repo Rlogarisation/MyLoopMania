@@ -11,7 +11,7 @@ public class Vampire extends Enemy {
     final double initialMovingSpeed = 2;
     double battleRadius = 3;
     double supportRadius = 3;
-    
+    private boolean campfireInRange;
 
 
     public Vampire(PathPosition position) {
@@ -24,6 +24,7 @@ public class Vampire extends Enemy {
         this.setBattleRadius(battleRadius);
         this.setSupportRadius(supportRadius);
         this.setFightStrategy(new VampireStrategy());
+        this.campfireInRange = false;
     }
 
     public void setBattleRadius(double battleRadius) {
@@ -42,4 +43,21 @@ public class Vampire extends Enemy {
         return this.supportRadius;
     }
 
+    /**
+     * Get a true or false if campfire is in range
+     * @return boolean campfireInRange
+     */
+    public boolean getCampfireInRange(){
+        return this.campfireInRange;
+    }
+
+    /**
+     * Set a true or false if campfire is in range
+     * @param yesNo new result for campfireInRange
+     */
+    public void setCampfireInRange(boolean yesNo){
+        this.campfireInRange = yesNo;
+    }
+
+    
 }

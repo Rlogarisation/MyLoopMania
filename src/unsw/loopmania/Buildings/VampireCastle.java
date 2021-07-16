@@ -13,7 +13,6 @@ public class VampireCastle extends Building{
 
     public VampireCastle (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
-        super.setType("VampireCastle");
         this.numCycles = 0;
         this.spawnVampire = false;
     }

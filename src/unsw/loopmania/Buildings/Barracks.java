@@ -3,9 +3,6 @@ package unsw.loopmania.Buildings;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
-import org.javatuples.Pair;
-
-import java.util.List;
 
 public class Barracks extends Building{
 
@@ -13,7 +10,6 @@ public class Barracks extends Building{
 
     public Barracks (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
-        super.setType("Barracks");
     }
 
     public boolean getCreateAlly(){

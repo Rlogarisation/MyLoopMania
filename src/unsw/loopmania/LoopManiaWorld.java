@@ -7,7 +7,6 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.Buildings.Barracks;
 import unsw.loopmania.Buildings.Building;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
@@ -319,6 +318,7 @@ public class LoopManiaWorld {
     public BuildingInfo buildingInteractions(){
 
         BuildingInfo newChanges = new BuildingInfo();
+        character.setTowerDamage(0);
 
         for (Building b : buildingList){
             b.buildingEffect(this, newChanges);
@@ -489,6 +489,10 @@ public class LoopManiaWorld {
         // TODO = expand to more types of enemy
         for (Enemy e: enemyList){
             e.move();
+            //Reset the campfireInRange for vampire
+            if (e instanceof Vampire){
+                ((Vampire)e).setCampfireInRange(false);
+            }
         }
     }
 

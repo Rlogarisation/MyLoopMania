@@ -3,7 +3,6 @@ package unsw.loopmania.Buildings;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
-import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
