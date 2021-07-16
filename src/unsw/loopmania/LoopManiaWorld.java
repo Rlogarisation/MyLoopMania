@@ -55,7 +55,6 @@ public class LoopManiaWorld {
     private List<Entity> equippedInventoryItems;
 
     // TODO = expand the range of buildings
-    private List<VampireCastleBuilding> buildingEntities;
     private List<Building> buildingList;
     private HeroCastle heroCastle;
 
@@ -80,7 +79,7 @@ public class LoopManiaWorld {
         cardEntities = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
-        buildingEntities = new ArrayList<>();
+        buildingList = new ArrayList<>();
         this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
     }
 
@@ -510,7 +509,7 @@ public class LoopManiaWorld {
         // now spawn building
         Building newBuilding = card.toBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingList.add(newBuilding);
-        System.out.println(buildingEntities);
+        System.out.println(buildingList);
 
         //attach zombiePit and vampireCastle as observers to Hero's Castle
         if (newBuilding instanceof VampireCastle){
