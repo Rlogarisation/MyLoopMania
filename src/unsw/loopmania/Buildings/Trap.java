@@ -31,10 +31,8 @@ public class Trap extends Building{
                 if (enemy.getHp() <= 0){
                     lmw.killEnemy(enemy);
                     newChanges.addEnemyKilled(enemy);
-                    //Figure out how to implement killed enemy with LoopManiaWorldController
                 }
-                newChanges.addTrapDestroyed(this);
-                //implement removeBuilding(Building b);
+                lmw.removeBuilding(this);
                 break;
             }
         }
