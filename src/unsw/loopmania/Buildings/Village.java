@@ -3,10 +3,6 @@ package unsw.loopmania.Buildings;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
-import org.javatuples.Pair;
-
-import java.util.List;
-
 
 public class Village extends Building{
     //needs to be decided
@@ -14,7 +10,6 @@ public class Village extends Building{
 
     public Village (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
-        super.setType("Village");
     }
 
     public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){

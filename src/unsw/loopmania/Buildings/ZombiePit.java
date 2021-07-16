@@ -13,7 +13,6 @@ public class ZombiePit extends Building{
 
     public ZombiePit (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
-        super.setType("ZombiePit");
         this.spawnZombie = false;
     }
 
