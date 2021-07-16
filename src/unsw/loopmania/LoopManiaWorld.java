@@ -512,6 +512,14 @@ public class LoopManiaWorld {
         buildingList.add(newBuilding);
         System.out.println(buildingEntities);
 
+        //attach zombiePit and vampireCastle as observers to Hero's Castle
+        if (newBuilding instanceof VampireCastle){
+            this.heroCastle.attach((VampireCastle)newBuilding);
+        }
+        else if (newBuilding instanceof ZombiePit){
+            this.heroCastle.attach((ZombiePit)newBuilding);
+        }
+
         // destroy the card
         card.destroy();
         cardEntities.remove(card);
