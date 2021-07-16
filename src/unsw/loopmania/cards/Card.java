@@ -20,7 +20,7 @@ public abstract class Card extends StaticEntity {
     }
 
     protected boolean isAdjacent(Pair<Integer, Integer> location1, Pair<Integer, Integer> location2){
-        if(Math.abs(location1.getValue0()-location2.getValue0()) < 1 && Math.abs(location1.getValue1()-location2.getValue1()) < 1){
+        if(Math.abs(location1.getValue0()-location2.getValue0()) <= 1 && Math.abs(location1.getValue1()-location2.getValue1()) <= 1){
             return true;
         }
         return false;
@@ -28,7 +28,7 @@ public abstract class Card extends StaticEntity {
 
     protected boolean isPath(Pair<Integer, Integer> location, List<Pair<Integer, Integer>> orderedPath){
         for (int i=0; i<orderedPath.size(); i++){
-            if(location == orderedPath.get(i)){
+            if(location.equals(orderedPath.get(i))){
                 return true;
             }
         }
