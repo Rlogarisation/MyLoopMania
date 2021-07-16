@@ -55,7 +55,6 @@ public class LoopManiaWorld {
     private List<Entity> equippedInventoryItems;
 
     // TODO = expand the range of buildings
-    private List<VampireCastleBuilding> buildingEntities;
     private List<Building> buildingList;
     private HeroCastle heroCastle;
 
@@ -80,7 +79,8 @@ public class LoopManiaWorld {
         cardEntities = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
-        buildingEntities = new ArrayList<>();
+        buildingList = new ArrayList<>();
+        this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
     }
 
     public int getWidth() {
@@ -149,6 +149,15 @@ public class LoopManiaWorld {
     public void killEnemy(Enemy enemy){
         enemy.destroy();
         enemyList.remove(enemy);
+    }
+
+    /**
+     * remove a building
+     * @param building building to be removed
+     */
+    public void removeBuilding(Building building){
+        building.destroy();
+        buildingList.remove(building);
     }
 
     /**
@@ -276,9 +285,16 @@ public class LoopManiaWorld {
             b.buildingEffect(this, newChanges);
         }
 
-        heroCastle.buildingEffect(this);
-
         return newChanges;
+    }
+
+    /**
+     * Run the building effect of Hero's Castle
+     * It will notify zombiePit and vampireCastle to update numCycle
+     * @return true if shop should be opened, false otherwise
+     */
+    public boolean runHeroCastle(){
+        return heroCastle.buildingEffect(this);
     }
 
     /**
@@ -493,7 +509,15 @@ public class LoopManiaWorld {
         // now spawn building
         Building newBuilding = card.toBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingList.add(newBuilding);
-        System.out.println(buildingEntities);
+        System.out.println(buildingList);
+
+        //attach zombiePit and vampireCastle as observers to Hero's Castle
+        if (newBuilding instanceof VampireCastle){
+            this.heroCastle.attach((VampireCastle)newBuilding);
+        }
+        else if (newBuilding instanceof ZombiePit){
+            this.heroCastle.attach((ZombiePit)newBuilding);
+        }
 
         // destroy the card
         card.destroy();
