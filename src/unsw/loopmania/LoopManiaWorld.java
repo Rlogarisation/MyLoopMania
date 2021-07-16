@@ -38,7 +38,7 @@ public class LoopManiaWorld {
     private List<Entity> nonSpecifiedEntities;
 
     private Character character;
-
+    private boolean characterIsAlive;
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
     // TODO = expand the range of enemies
@@ -111,6 +111,7 @@ public class LoopManiaWorld {
      */
     public void setCharacter(Character character) {
         this.character = character;
+        characterIsAlive = true;
     }
 
     /**
@@ -191,27 +192,32 @@ public class LoopManiaWorld {
             // Attack ally first, eventually character if all allies are dead.
             if (!allyList.isEmpty()) {
                 Ally selectedAlly = allyList.get(0);
-                // Enemy wins the battle
+                // Enemy wins the battle with ally
                 if (e.attack(selectedAlly)) {
                     removeAlly(selectedAlly);
                 }
                 else {
-                    // next enemy fight.
+                    // ally wins, so next enemy fight.
                     i++;
                     defeatedEnemies.add(e);
                 }
 
-            } else {
-                e.attack(character);
+            } 
+            else {
+                // Enemy killed by character.
+                if (e.attack(character)) {
+                    i++;
+                    defeatedEnemies.add(e);
+                }
+                else {
+                    // Character is killed.
+                    // NEED TO CONNECT THIS WITH ENDING GAME!
+                    characterIsAlive = false;
+                    break;
+                }
             }
         }
-            
-        
 
-        // WHAT SHOULD WE DO IF CHARACTER DEAD?
-        // END THE GAME?
-
-        
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
@@ -248,6 +254,19 @@ public class LoopManiaWorld {
         }
         return enemyJoiningBattle;
     }
+
+    /**
+     * ranBattleBetween takes in 2 moving entity, calculate and return the won entity in the end.
+     * @param a Either Character or ally.
+     * @param b Enemy.
+     * @return the movingEntity who won the fight.
+     */
+    // public MovingEntity runBattleBetween(MovingEntity a, Enemy b) {
+    //     while (a.getHp() > 0 && b.getHp() > 0) {
+            
+    //     }
+
+    // }
 
     /**
      * Function to determine the whether a and b are within distance.

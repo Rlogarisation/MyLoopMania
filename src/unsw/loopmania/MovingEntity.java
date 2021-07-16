@@ -13,6 +13,7 @@ public abstract class MovingEntity extends Entity {
      */
     private PathPosition position;
     private double hp, damage, movingSpeed;
+    private boolean campfireInRange;
     
 
 
