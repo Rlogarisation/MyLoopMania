@@ -19,6 +19,7 @@ public class Zombie extends Enemy {
         this.setMovingSpeed(initialMovingSpeed);
         this.setBattleRadius(battleRadius);
         this.setSupportRadius(supportRadius);
+        // this.setFightStrategy();
     }
 
 
@@ -47,11 +48,11 @@ public class Zombie extends Enemy {
      * ***Please check input character isInstance of Ally && ***
      * ***chanceGenerator before using***
      */
-    public void applyEffect(MovingEntity character) {
-        // if (character instanceof Ally) {
-        //     // TODO = Delete current ally.
-        //     Zombie z = new Zombie(character.getPathPosition());
-        // }
+    // public void applyEffect(MovingEntity character) {
+    //     // if (character instanceof Ally) {
+    //     //     // TODO = Delete current ally.
+    //     //     Zombie z = new Zombie(character.getPathPosition());
+    //     // }
         
-    }
+    // }
 }

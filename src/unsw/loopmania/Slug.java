@@ -21,6 +21,7 @@ public class Slug extends Enemy{
         this.setMovingSpeed(initialMovingSpeed);
         this.setBattleRadius(battleRadius);
         this.setSupportRadius(supportRadius);
+        this.setFightStrategy(new BasicFightStrategy());
     }
 
 
@@ -40,9 +41,5 @@ public class Slug extends Enemy{
         return this.supportRadius;
     }
 
-    /**
-     * Slug has no effect.
-     */
-    public void applyEffect(MovingEntity character) {
-    }
+
 }

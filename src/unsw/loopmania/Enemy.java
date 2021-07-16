@@ -85,12 +85,6 @@ public abstract class Enemy extends MovingEntity{
      */
     public abstract double getSupportRadius();
 
-    /**
-     * Apply the special effect to input character,
-     * and change its properties based on the effect.
-     * @param character
-     */
-    public abstract void applyEffect(MovingEntity character);
 
     /**
      * The chance generator function takes in a value between 0 to 1.0 as double,
@@ -117,9 +111,9 @@ public abstract class Enemy extends MovingEntity{
      */
     public boolean attack(MovingEntity character) {
         while (character.getHp() > 0 && this.getHp() > 0) {
-            if (chanceGenerator(chanceOfEffect)) {
-                this.applyEffect(character);
-            }
+            // if (chanceGenerator(chanceOfEffect)) {
+            //     this.applyEffect(character);
+            // }
             
             this.setHp(this.getHp() - character.getDamage());
             // How should I apply armour in here?
