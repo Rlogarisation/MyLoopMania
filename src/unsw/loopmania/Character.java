@@ -13,7 +13,6 @@ public class Character extends MovingEntity {
     final double initialGold = 0; 
     final double initialArmour = 0;
     private double xp, gold, armour;
-    private FightStrategy fightStrategy;
     private int towerDamage;
     private boolean campfireInRange;
 
@@ -35,12 +34,6 @@ public class Character extends MovingEntity {
         this.moveDownPath();
     }
 
-    /**
-     * Will do damage to an enemy
-     */    
-    public void attack(double initialDamage, Enemy enemy){
-        fightStrategy.attack(initialDamage, enemy);
-    }
 
     /**
      * Add certain amount of xp as increment.
@@ -93,12 +86,6 @@ public class Character extends MovingEntity {
     }
 
 
-    /**
-     * Set fight strategy for character
-     */    
-    public void setFightStrategy(FightStrategy fStrategy){
-        this.fightStrategy = fStrategy;
-    }
 
     /**
      * Get the total damage from towers in range

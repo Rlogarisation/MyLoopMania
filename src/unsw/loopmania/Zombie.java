@@ -19,6 +19,7 @@ public class Zombie extends Enemy {
         this.setMovingSpeed(initialMovingSpeed);
         this.setBattleRadius(battleRadius);
         this.setSupportRadius(supportRadius);
+        this.setFightStrategy(new BasicFightStrategy());
     }
 
 
@@ -38,20 +39,4 @@ public class Zombie extends Enemy {
         return this.supportRadius;
     }
 
-    /**
-     * A critical bite from a zombie against an allied soldier 
-     * (which has a random chance of occurring) will 
-     * transform the allied soldier into a zombie, 
-     * which will then proceed to fight against the Character until it is killed.
-     * 
-     * ***Please check input character isInstance of Ally && ***
-     * ***chanceGenerator before using***
-     */
-    public void applyEffect(MovingEntity character) {
-        // if (character instanceof Ally) {
-        //     // TODO = Delete current ally.
-        //     Zombie z = new Zombie(character.getPathPosition());
-        // }
-        
-    }
 }

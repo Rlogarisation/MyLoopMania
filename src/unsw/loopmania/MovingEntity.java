@@ -13,6 +13,8 @@ public abstract class MovingEntity extends Entity {
      */
     private PathPosition position;
     private double hp, damage, movingSpeed;
+    private boolean campfireInRange;
+    private FightStrategy fightStrategy;
     
 
 
@@ -82,6 +84,20 @@ public abstract class MovingEntity extends Entity {
 
     public PathPosition getPathPosition() {
         return this.position;
+    }
+
+    /**
+     * Set fight strategy for MovingEntity
+     */    
+    public void setFightStrategy(FightStrategy fStrategy){
+        this.fightStrategy = fStrategy;
+    }
+
+    /**
+     * Will do basic damage to an movingEntity
+     */    
+    public void attack(double initialDamage, MovingEntity entity) {
+        fightStrategy.attack(initialDamage, entity);
     }
 
 }

@@ -39,7 +39,7 @@ public class LoopManiaWorld {
     private List<Entity> nonSpecifiedEntities;
 
     private Character character;
-
+    private boolean characterIsAlive;
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
     // TODO = expand the range of enemies
@@ -112,6 +112,7 @@ public class LoopManiaWorld {
      */
     public void setCharacter(Character character) {
         this.character = character;
+        characterIsAlive = true;
     }
 
     /**
@@ -171,10 +172,10 @@ public class LoopManiaWorld {
      * Add ally into ally list 
      * @param position where it has been spawn.
      */
-    // public void addAlly(PathPosition position) {
-    //     Ally newAlly = new Ally(position);
-    //     allyList.add(newAlly);
-    // }
+    public void addAlly(PathPosition position) {
+        Ally newAlly = new Ally(position);
+        allyList.add(newAlly);
+    }
 
     /**
      * Remove an ally from the ally list.
@@ -195,33 +196,53 @@ public class LoopManiaWorld {
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
         List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
-        int i = 0;
-        while (i != enemiesJoiningBattle.size()) {
-            Enemy e = enemiesJoiningBattle.get(i);
-            // Attack ally first, eventually character if all allies are dead.
-            if (!allyList.isEmpty()) {
-                Ally selectedAlly = allyList.get(0);
-                // Enemy wins the battle
-                if (e.attack(selectedAlly)) {
-                    removeAlly(selectedAlly);
-                }
-                else {
-                    // next enemy fight.
-                    i++;
-                    defeatedEnemies.add(e);
-                }
+        int allyIndex = 0;
+        int enemyIndex = 0;
 
-            } else {
-                e.attack(character);
+
+        // Battle between ally and enemy.
+        while (allyIndex < allyList.size()) {
+            Ally currentAlly = allyList.get(allyIndex);
+            Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+
+            currentAlly.attack(currentAlly.getDamage(), currentEnemy);
+            currentEnemy.attack(currentEnemy.getDamage(), currentAlly);
+            // Transform the currentAlly into another Zombie.
+            if (currentEnemy instanceof Zombie && chanceGenerator(0.3)) {
+                removeAlly(currentAlly);
+                currentAlly.setHp(0);
+                Zombie newZombie = new Zombie(currentAlly.getPathPosition());
+                enemiesJoiningBattle.add(newZombie);
+                enemyList.add(newZombie);
+            }
+
+            if (currentAlly.getHp() <= 0) {
+                allyIndex++;
+            }
+            if (currentEnemy.getHp() <= 0) {
+                enemyIndex++;
+                defeatedEnemies.add(currentEnemy);
             }
         }
-            
-        
 
-        // WHAT SHOULD WE DO IF CHARACTER DEAD?
-        // END THE GAME?
+        // Battle with character and enemy when all allies are dead.
+        while (enemyIndex < enemiesJoiningBattle.size()) {
+            Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
 
-        
+            character.attack(character.getDamage(), currentEnemy);
+            currentEnemy.attack(currentEnemy.getDamage(), character);
+
+            if (character.getHp() <= 0) {
+                characterIsAlive = false;
+                break;
+            }
+            if (currentEnemy.getHp() <= 0) {
+                enemyIndex++;
+                defeatedEnemies.add(currentEnemy);
+            }
+
+        }
+
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
@@ -258,6 +279,24 @@ public class LoopManiaWorld {
         }
         return enemyJoiningBattle;
     }
+
+    /**
+     * The chance generator function takes in a value between 0 to 1.0 as double,
+     * which is the chance of selecting, 
+     * e.g: there is 30% of selecting if you enter 0.3.
+     * @param chance between 0 to 1 as percentage.
+     * @return ture if seleted else return false as boolean.
+     */
+    public boolean chanceGenerator(double chance) {
+        double chanceOfCriticalBite = (new Random()).nextDouble();
+        if (chanceOfCriticalBite <= chance) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
     /**
      * Function to determine the whether a and b are within distance.
