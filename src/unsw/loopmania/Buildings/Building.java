@@ -11,18 +11,9 @@ import java.util.List;
  */
 public abstract class Building extends StaticEntity {
     // add more types of building, and make sure buildings have effects on entities as required by the spec
-    private String type;
 
     public Building(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-    }
-
-    public String getType(){
-        return type;
-    }
-
-    public void setType(String type){
-        this.type = type;
     }
 
     public abstract void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges);
@@ -45,19 +36,19 @@ public abstract class Building extends StaticEntity {
             //check if onePath has an enemy
             if (isEnemyOnPath(onePath, enemyList)) continue;
 
-            // case1) top
+            // (case1) top
             if (onePath.equals(new Pair<Integer, Integer>(buildingX, buildingY-1))) {
                 return onePath;
             }
-            // case2) bottom
+            // (case2) bottom
             if (onePath.equals(new Pair<Integer, Integer>(buildingX, buildingY+1))) {
                 return onePath;
             }
-            // case3) left
+            // (case3) left
             if (onePath.equals(new Pair<Integer, Integer>(buildingX-1, buildingY))) {
                 return onePath;
             }
-            // case4) right
+            // (case4) right
             if (onePath.equals(new Pair<Integer, Integer>(buildingX+1, buildingY))) {
                 return onePath;
             }

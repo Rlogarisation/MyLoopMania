@@ -3,10 +3,6 @@ package unsw.loopmania.Buildings;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
-import org.javatuples.Pair;
-
-import java.util.List;
-
 
 public class Tower extends Building{
     //To be decided
@@ -15,7 +11,6 @@ public class Tower extends Building{
 
     public Tower (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
-        super.setType("Tower");
     }
 
     public int getBattleRadius(){
@@ -30,7 +25,7 @@ public class Tower extends Building{
         Character character = lmw.getCharacter();
 
         if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) < this.getBattleRadius()){
-            //character.setTowerDamge(character.getTowerDamage() + this.getDamge())
+            character.setTowerDamage(character.getTowerDamage() + this.getDamage());
         }
     }
 
