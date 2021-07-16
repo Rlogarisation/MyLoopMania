@@ -96,7 +96,7 @@ public abstract class MovingEntity extends Entity {
     /**
      * Will do basic damage to an movingEntity
      */    
-    public void attack(double initialDamage, MovingEntity entity){
+    public void attack(double initialDamage, MovingEntity entity) {
         fightStrategy.attack(initialDamage, entity);
     }
 

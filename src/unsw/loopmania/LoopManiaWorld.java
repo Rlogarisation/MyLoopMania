@@ -173,10 +173,10 @@ public class LoopManiaWorld {
      * Add ally into ally list 
      * @param position where it has been spawn.
      */
-    // public void addAlly(PathPosition position) {
-    //     Ally newAlly = new Ally(position);
-    //     allyList.add(newAlly);
-    // }
+    public void addAlly(PathPosition position) {
+        Ally newAlly = new Ally(position);
+        allyList.add(newAlly);
+    }
 
     /**
      * Remove an ally from the ally list.
@@ -196,38 +196,38 @@ public class LoopManiaWorld {
      */
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
-        List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
-        int i = 0;
-        while (i != enemiesJoiningBattle.size()) {
-            Enemy e = enemiesJoiningBattle.get(i);
-            // Attack ally first, eventually character if all allies are dead.
-            if (!allyList.isEmpty()) {
-                Ally selectedAlly = allyList.get(0);
-                // Enemy wins the battle with ally
-                if (e.attack(selectedAlly)) {
-                    removeAlly(selectedAlly);
-                }
-                else {
-                    // ally wins, so next enemy fight.
-                    i++;
-                    defeatedEnemies.add(e);
-                }
+        // List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
+        // int i = 0;
+        // while (i != enemiesJoiningBattle.size()) {
+        //     Enemy e = enemiesJoiningBattle.get(i);
+        //     // Attack ally first, eventually character if all allies are dead.
+        //     if (!allyList.isEmpty()) {
+        //         Ally selectedAlly = allyList.get(0);
+        //         // Enemy wins the battle with ally
+        //         if (e.attack(selectedAlly)) {
+        //             removeAlly(selectedAlly);
+        //         }
+        //         else {
+        //             // ally wins, so next enemy fight.
+        //             i++;
+        //             defeatedEnemies.add(e);
+        //         }
 
-            } 
-            else {
-                // Enemy killed by character.
-                if (e.attack(character)) {
-                    i++;
-                    defeatedEnemies.add(e);
-                }
-                else {
-                    // Character is killed.
-                    // NEED TO CONNECT THIS WITH ENDING GAME!
-                    characterIsAlive = false;
-                    break;
-                }
-            }
-        }
+        //     } 
+        //     else {
+        //         // Enemy killed by character.
+        //         if (e.attack(character)) {
+        //             i++;
+        //             defeatedEnemies.add(e);
+        //         }
+        //         else {
+        //             // Character is killed.
+        //             // NEED TO CONNECT THIS WITH ENDING GAME!
+        //             characterIsAlive = false;
+        //             break;
+        //         }
+        //     }
+        // }
 
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list

@@ -7,7 +7,7 @@ public class BasicFightStrategy implements FightStrategy {
      */
     public void attack(double initialDamage, MovingEntity entity) {
         double currentHp = entity.getHp();
-        entity.setHp(currentHp-initialDamage);
+        entity.setHp(currentHp - initialDamage);
         
     }
 
