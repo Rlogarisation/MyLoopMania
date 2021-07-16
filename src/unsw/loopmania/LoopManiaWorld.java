@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Buildings.Barracks;
 import unsw.loopmania.Buildings.Building;
 import unsw.loopmania.cards.*;
+import unsw.loopmania.Buildings.*;
 
 /**
  * A backend world.
@@ -44,6 +45,7 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of enemies
     private List<Enemy> enemyList;
+    private List<Ally> allyList;
 
     // TODO = expand the range of cards
     private List<Card> cardEntities;
@@ -53,7 +55,9 @@ public class LoopManiaWorld {
     private List<Entity> equippedInventoryItems;
 
     // TODO = expand the range of buildings
-    private List<Building> buildingEntities;
+    private List<VampireCastleBuilding> buildingEntities;
+    private List<Building> buildingList;
+    private HeroCastle heroCastle;
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
@@ -87,12 +91,20 @@ public class LoopManiaWorld {
         return height;
     }
 
-    public List<Card> getCardList() {
-        return cardEntities;
+    public Character getCharacter(){
+        return this.character;
     }
 
-    public List<Building> getBuildingList() {
-        return buildingEntities;
+    public List<Enemy> getEnemyList(){
+        return this.enemyList;
+    }
+
+    public List<Pair<Integer, Integer>> getOrderedPath(){
+        return this.orderedPath;
+    }
+
+    public void addEnemyToEnemyList(Enemy e){
+        this.enemyList.add(e);
     }
 
     /**
@@ -134,26 +146,74 @@ public class LoopManiaWorld {
      * kill an enemy
      * @param enemy enemy to be killed
      */
-    private void killEnemy(Enemy enemy){
+    public void killEnemy(Enemy enemy){
         enemy.destroy();
         enemyList.remove(enemy);
     }
 
     /**
-     * run the expected battles in the world, based on current world state
+     * The function addEnemy is used for adding transformed enemy by zombie's effect
+     * @param enemy the enemy will be added to the enemyList.
+     */
+    public void addEnemy(Enemy enemy) {
+        enemyList.add(enemy);
+    }
+
+    /**
+     * Add ally into ally list 
+     * @param position where it has been spawn.
+     */
+    // public void addAlly(PathPosition position) {
+    //     Ally newAlly = new Ally(position);
+    //     allyList.add(newAlly);
+    // }
+
+    /**
+     * Remove an ally from the ally list.
+     * @param selectedAlly ally need to be removed.
+     */
+    public void removeAlly(Ally selectedAlly) {
+        allyList.remove(selectedAlly);
+    }
+
+
+    /**
+     * Run the expected battles in the world, based on current world state.
+     * runBattle function will end until either surrounding enemies all dead, or character is dead.
+     * a battle will commence when the Character moves within the battle radius of an enemy on the path.
+     * Those enemies for which the Character is within their support radius will join the battle.
      * @return list of enemies which have been killed
      */
     public List<Enemy> runBattles() {
-        // TODO = modify this - currently the character automatically wins all battles without any damage!
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
-        for (Enemy e: enemyList){
-            // Pythagoras: a^2+b^2 < radius^2 to see if within radius
-            // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
-            if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < 4){
-                // fight...
-                defeatedEnemies.add(e);
+        List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
+        int i = 0;
+        while (i != enemiesJoiningBattle.size()) {
+            Enemy e = enemiesJoiningBattle.get(i);
+            // Attack ally first, eventually character if all allies are dead.
+            if (!allyList.isEmpty()) {
+                Ally selectedAlly = allyList.get(0);
+                // Enemy wins the battle
+                if (e.attack(selectedAlly)) {
+                    removeAlly(selectedAlly);
+                }
+                else {
+                    // next enemy fight.
+                    i++;
+                    defeatedEnemies.add(e);
+                }
+
+            } else {
+                e.attack(character);
             }
         }
+            
+        
+
+        // WHAT SHOULD WE DO IF CHARACTER DEAD?
+        // END THE GAME?
+
+        
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
@@ -161,6 +221,64 @@ public class LoopManiaWorld {
             killEnemy(e);
         }
         return defeatedEnemies;
+    }
+
+
+    /**
+     * This function determines the amount of enemy will engaged into the battle.
+     * This function search for enemy who is within battle range with character,
+     * if so, search all enemy who is within the support radius of current enemy,
+     * add all the enemies who will engaged into the battle into array. 
+     * @return array of enemies who will battle within this fight.
+     */
+    public List<Enemy> determineEnemyEngagement() {
+        List<Enemy> enemyJoiningBattle = new ArrayList<Enemy>();
+        
+        // Search for enemy who is within battle range with character.
+        for (Enemy e: enemyList){
+            if (withinRange(e, character, e.getBattleRadius())){
+                // Searching for backup enemy who can support current enemy, 
+                // in which backup enemy must in support radius.
+                for (Enemy backupEnemy: enemyList) {
+                    if (backupEnemy.getHp() > 0 && 
+                    withinRange(backupEnemy, e, backupEnemy.getSupportRadius()) &&
+                    !enemyJoiningBattle.contains(backupEnemy)) {
+                        enemyJoiningBattle.add(backupEnemy);
+                    }
+                }
+            }
+        }
+        return enemyJoiningBattle;
+    }
+
+    /**
+     * Function to determine the whether a and b are within distance.
+     * @param a First Entity.
+     * @param b Second Entity.
+     * @param distance The distance between these two entity.
+     * @return
+     */
+    public boolean withinRange(Entity a, Entity b, double distance) {
+        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) < Math.pow(distance, 2);
+    }
+
+    /**
+     * Iterate through the list of buildings and run the method building effect
+     * Apply relevant changes to the newChanges class
+     * The controller can interpret the data in newChanges
+     * @return newChanges - Lists of newEnemies, enemiesKille and trapsDestroyed
+     */
+    public BuildingInfo buildingInteractions(){
+
+        BuildingInfo newChanges = new BuildingInfo();
+
+        for (Building b : buildingList){
+            b.buildingEffect(this, newChanges);
+        }
+
+        heroCastle.buildingEffect(this);
+
+        return newChanges;
     }
 
     /**
@@ -374,7 +492,7 @@ public class LoopManiaWorld {
 
         // now spawn building
         Building newBuilding = card.toBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
-        buildingEntities.add(newBuilding);
+        buildingList.add(newBuilding);
         System.out.println(buildingEntities);
 
         // destroy the card

@@ -51,6 +51,7 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
 3. Buildings
     * We assume that there can be only one building per tile.
     * All types of buildings can be built up to 10 each.
+    * Assume that vampireCastle and Zombie Pit will only spawn an enemy in the positions that are adjacent to it and only if there is no enemy there.
 
     3.1. Village
     * We assume that when the character passes through a village, it regains health by 20.
@@ -139,3 +140,12 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     an enemy.
     * We assume that the character can sell the item for half the original price.
     * We assume that when the character is in the castle, we can purchase items by double clicking.
+
+9. Ally
+    
+    * Base health = 20
+    * Base attack = 5
+    * Moving speed = 2;
+
+    * Assume Ally is a moving entity and follows the character in the world
+    * Tranced Ally last 3 attacks before returning back to enemy

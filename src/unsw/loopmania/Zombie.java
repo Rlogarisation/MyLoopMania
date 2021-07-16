@@ -1,6 +1,5 @@
 package unsw.loopmania;
 
-
 /**
  * Public class for enemy type Zombie, Written by Zheng Luo.
  */
@@ -48,10 +47,11 @@ public class Zombie extends Enemy {
      * ***Please check input character isInstance of Ally && ***
      * ***chanceGenerator before using***
      */
-    public MovingEntity applyEffect(Character character) {
-        // Delete current character.
-        // Add one zombie.
-        // Then return zombie.
-        return character;
+    public void applyEffect(MovingEntity character) {
+        // if (character instanceof Ally) {
+        //     // TODO = Delete current ally.
+        //     Zombie z = new Zombie(character.getPathPosition());
+        // }
+        
     }
 }
