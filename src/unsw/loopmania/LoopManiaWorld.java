@@ -272,7 +272,7 @@ public class LoopManiaWorld {
      * @param b Enemy.
      * @return the movingEntity who won the fight.
      */
-    // public MovingEntity runBattleBetween(MovingEntity a, Enemy b) {
+    // public MovingEntity runBattleBetween(MovingEntity a, MovingEntity b) {
     //     while (a.getHp() > 0 && b.getHp() > 0) {
             
     //     }

@@ -11,7 +11,7 @@ public abstract class Enemy extends MovingEntity{
      * There is 30% chance of triggering a critical bite.
      */
     double chanceOfEffect = 0.3;
-    private boolean isTranced;
+    private boolean isTranced = false;
     public Enemy(PathPosition position) {
         super(position);
     }
@@ -54,7 +54,7 @@ public abstract class Enemy extends MovingEntity{
     }
 
     public void setIsTranced(boolean isEnemyTranced) {
-        isTranced = isEnemyTranced;
+        this.isTranced = isEnemyTranced;
     }
 
     /**
