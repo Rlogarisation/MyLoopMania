@@ -108,6 +108,18 @@ public class LoopManiaWorld {
         this.enemyList.add(e);
     }
 
+    public List<Building> getBuildingList(){
+        return this.buildingList;
+    }
+
+    public void addBuildingToBuildingList(Building b){
+        this.buildingList.add(b);
+    }
+
+    public List<Ally> getAllyList(){
+        return this.allyList;
+    }
+
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
      * @param character the character
