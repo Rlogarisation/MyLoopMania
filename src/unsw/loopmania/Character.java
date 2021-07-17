@@ -67,6 +67,12 @@ public class Character extends MovingEntity {
         return this.gold;
     }
 
+    /**
+     * Set the gold of current character.
+     */
+    public void setGold(double gold) {
+        this.gold = gold;
+    }
 
     /**
      * Add certain amount of armour as increment.

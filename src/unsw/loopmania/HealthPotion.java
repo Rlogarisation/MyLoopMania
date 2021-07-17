@@ -9,20 +9,19 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class HealthPotion extends StaticEntity {
 
-    private final int price = 200;
+    private int price = 200;
 
     public HealthPotion(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x,y);
-        /* if (gameMode = survival) {
-            this.setPrice(price*2);
-        } else {
-            this.setPrice(price);
-        }
-        */
+        this.setPrice(price);
     }    
     
     public int getPrice() {
         return this.price;
+    }
+
+    public int setPrice(int price) {
+        return this.price = price;
     }
 
     /*
