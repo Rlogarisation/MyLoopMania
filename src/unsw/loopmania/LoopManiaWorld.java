@@ -146,6 +146,20 @@ public class LoopManiaWorld {
         return this.allyList;
     }
 
+
+    /**
+     * @return list of trancedAlly in allyList
+     */
+    public List<Ally> getTrancedAllyList(){
+        List<Ally> trancedAllies = new ArrayList<Ally>();
+        for(Ally a: getAllyList()){
+            if(a instanceof TrancedAlly){
+                trancedAllies.add(a);
+            }
+        }    
+        return trancedAllies;
+    }
+
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
      * @param character the character
@@ -247,9 +261,20 @@ public class LoopManiaWorld {
      * Add ally into ally list 
      * @param position where it has been spawn.
      */
-    public void addAlly(PathPosition position) {
+    public Ally addAlly(PathPosition position) {
         Ally newAlly = new Ally(position);
         allyList.add(newAlly);
+        return newAlly;
+    }
+
+    /**
+     * Add TrancedAlly into ally list 
+     * @param position where it has been spawn.
+     */
+    public TrancedAlly addTrancedAlly(PathPosition position, Enemy currentEnemy) {
+        TrancedAlly newAlly = new TrancedAlly(position, currentEnemy);
+        allyList.add(newAlly);
+        return newAlly;
     }
 
     /**
@@ -283,6 +308,16 @@ public class LoopManiaWorld {
 
             currentAlly.attack(currentAlly.getDamage(), currentEnemy);
             currentEnemy.attack(currentEnemy.getDamage(), currentAlly);
+
+            for(Ally ta: getTrancedAllyList()){
+                //After 1 attack, return back to enemy
+                if(ta.getAttackCount()>=1){
+                    removeAlly(currentAlly);
+                    Enemy newEnemy = ta.toEnemy();
+                    enemiesJoiningBattle.add(newEnemy);
+                    enemyList.add(newEnemy);
+                }
+            }
             // Transform the currentAlly into another Zombie.
             if (currentEnemy instanceof Zombie && chanceGenerator(0.3)) {
                 removeAlly(currentAlly);
@@ -291,8 +326,8 @@ public class LoopManiaWorld {
                 enemiesJoiningBattle.add(newZombie);
                 enemyList.add(newZombie);
             }
-
             if (currentAlly.getHp() <= 0) {
+                removeAlly(currentAlly);
                 allyIndex++;
             }
             if (currentEnemy.getHp() <= 0) {
@@ -302,7 +337,7 @@ public class LoopManiaWorld {
         }
 
         // Battle with character and enemy when all allies are dead.
-        while (enemyIndex < enemiesJoiningBattle.size()) {
+        while (enemyIndex < enemiesJoiningBattle.size())  {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
             //add towerDamage to character's initial damage
             int towerDamage = character.getTowerDamage();
@@ -312,7 +347,16 @@ public class LoopManiaWorld {
                 character.attack(character.getDamage(), currentEnemy);
             }
 
+            //If enemy tranced, turn into trancedAlly and remove enemy, move onto next enemy
+            if(currentEnemy.getTrancedStatus()){   
+                addTrancedAlly(character.getPathPosition(), currentEnemy);
+                defeatedEnemies.add(currentEnemy);
+                enemyIndex++;
+                continue;
+            }
+
             currentEnemy.attack(currentEnemy.getDamage(), character);
+            
 
             if (character.getHp() <= 0) {
                 characterIsAlive = false;
