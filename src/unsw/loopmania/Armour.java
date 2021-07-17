@@ -20,12 +20,7 @@ public class Armour extends DefenseEquipment {
      */
     public Armour(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x,y);
+        this.setPrice(price);
         this.setDefense(defense);
-        /* if (gameMode = berserker) {
-            this.setPrice(price*1.5);
-        } else {
-            this.setPrice(price);
-        }
-        */
     }    
 }

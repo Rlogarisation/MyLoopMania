@@ -1,6 +1,7 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -62,6 +63,33 @@ public class LoopManiaWorld {
      */
     private List<Pair<Integer, Integer>> orderedPath;
 
+    // variables related to game mode 
+
+    /**
+     * checker for game mode
+     */
+    private GAME_MODE gameMode;
+
+    /**
+     * three different game modes 
+     * 
+     */
+    public enum GAME_MODE{
+        STANDARD,
+        SURVIVAL,
+        BERSERKER
+    }
+
+    /** 
+     * checker for survival game mode
+     */
+    private Boolean gotOnePotionFromShop;
+
+    /** 
+     * checker for berserker game mode
+     */
+    private Boolean gotOneEquipmentFromShop;
+
     /**
      * create the world (constructor)
      * 
@@ -81,6 +109,8 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingList = new ArrayList<>();
         this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        heroCastle = null;
+        gameMode = GAME_MODE.STANDARD;
     }
 
     public int getWidth() {
@@ -112,6 +142,42 @@ public class LoopManiaWorld {
         this.character = character;
         characterIsAlive = true;
     }
+
+    /**
+     * set the hero castle. This is necessary because it is loaded as a special entity out of the file
+     * @param heroCastle
+     */
+    public void setHeroCastle(HeroCastle heroCastle) {
+        this.heroCastle = heroCastle;
+    }
+
+    /**
+     * set the gamemode. This is necessary because it is loaded as a special condition out of the file
+     * @param entity
+     */
+    public void setGameMode(GAME_MODE gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    /**
+     * set the checker which checks if the character 
+     * already got one health potion this time in survival mode. 
+     * @param gotOnePotionFromShop
+     */
+    public void setgotOnePotionFromShop(Boolean gotOnePotionFromShop) {
+        this.gotOnePotionFromShop = gotOnePotionFromShop;
+    }
+
+    /**
+     * set the checker which checks if the character 
+     * already got one equipment this time in berserker mode. 
+     * @param gotOneEquipmentFromShop
+
+     */
+    public void setgotOneEquipmentFromShop(Boolean gotOneEquipmentFromShop) {
+        this.gotOneEquipmentFromShop = gotOneEquipmentFromShop;
+    }
+
 
     /**
      * add a generic entity (without it's own dedicated method for adding to the world)
@@ -567,5 +633,110 @@ public class LoopManiaWorld {
         shiftCardsDownFromXCoordinate(cardNodeX);
 
         return newBuilding;
+    }
+
+    /**
+     * it sells one item from unequipped inventory items 
+     * and the character receives gold as a reward.
+     * @param itemNodeX indicates the x-coordinate of the chosen item
+     * @param itemNodeY indicates the y-coordinate of the chosen item
+     */
+    public void sellOneItemBycoordinates(int itemNodeX, int itemNodeY) {
+        Entity chosenItem = null;
+        int itemPrice = 0;
+        for (Entity item: unequippedInventoryItems) {
+            if (itemNodeX == item.getX() && itemNodeY == item.getY()) {
+                chosenItem = item;
+                if (chosenItem instanceof Equipment) {
+                    itemPrice = ((Equipment) item).getPrice();
+                    break;
+                }
+                if (chosenItem instanceof HealthPotion) {
+                    itemPrice = ((HealthPotion) item).getPrice();
+                    break;
+                }    
+                if (chosenItem instanceof RareItem) {
+                    itemPrice = ((RareItem) item).getPrice();
+                    break;
+                }
+            }
+        }
+        if (chosenItem != null) {
+            chosenItem.destroy();
+            removeUnequippedInventoryItem(chosenItem);
+            this.character.addGold((double) (itemPrice / 2));
+        }    
+        
+    }
+
+    /**
+     * character buys one item from the shop in hero castle 
+     * and the character pay gold as a currency for the item.
+     * @param itemNodeX indicates the x-coordinate of the chosen item in the shop
+     * @param itemNodeY indicates the y-coordinate of the chosen item in the shop
+     */
+    public void buyOneItemBycoordinates(int itemNodeX, int itemNodeY) {
+        
+        HashMap<String,StaticEntity> itemShop = this.heroCastle.getShopItems();
+        StaticEntity chosenItem = null;
+        Double characterGold = this.character.getGold();
+        int itemPrice = 0;
+        
+        
+        for (StaticEntity item : itemShop.values()) {
+            if (itemNodeX == item.getX() && itemNodeY == item.getY()) {
+                chosenItem = item;
+                
+                // if the game mode is berserker, set the equipement checker
+                // which checks if the character already got one equipment on this turn 
+                if (gameMode == GAME_MODE.BERSERKER && this.gotOneEquipmentFromShop == null) {
+                    this.setgotOneEquipmentFromShop(false);
+                }
+
+                // if the game mode is berserker, set the potion checker
+                // which checks if the character already got one potion on this turn
+                if (gameMode == GAME_MODE.SURVIVAL && this.gotOnePotionFromShop == null) {
+                    this.setgotOnePotionFromShop(false);
+                }
+
+                // case1) get an equipment
+                if (chosenItem instanceof Equipment) {
+                    itemPrice = ((Equipment) chosenItem).getPrice();
+                    if (gameMode == GAME_MODE.BERSERKER && !gotOneEquipmentFromShop 
+                        && characterGold >= itemPrice) {
+                        this.addUnequippedSword();
+                        // if the game mode is berserker, the equipment price is 50% more expensive
+                        this.character.setGold(characterGold - (1.5)*itemPrice);
+                        this.setgotOneEquipmentFromShop(true);
+                        break;
+                    }
+
+                    if (gameMode != GAME_MODE.BERSERKER && characterGold >= itemPrice) {
+                        this.addUnequippedSword();
+                        this.character.setGold(characterGold - itemPrice);
+                        break;
+                    }   
+                }
+
+                // case1) get a health potion
+                if (chosenItem instanceof HealthPotion) {
+                    itemPrice = ((HealthPotion) chosenItem).getPrice();
+                    if (gameMode == GAME_MODE.SURVIVAL && !gotOnePotionFromShop 
+                        && characterGold >= itemPrice) {
+                        this.addUnequippedSword();
+                        // if the game mode is survival, the equipment is twice as expensive
+                        this.character.setGold(characterGold - 2*itemPrice);
+                        this.setgotOnePotionFromShop(true);
+                        break;
+                    } 
+                    if (gameMode != GAME_MODE.SURVIVAL &&  characterGold >= itemPrice) {
+                        this.addUnequippedSword();
+                        this.character.setGold(characterGold - itemPrice);
+                        break;
+                    }   
+            }
+        }
+        
+        }
     }
 }

@@ -22,13 +22,8 @@ public class Staff extends AttackEquipment {
      */
     public Staff(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x,y);
+        this.setPrice(price);
         this.setDamage(damage);
         this.setAttackRange(attackRange);
-        /* if (gameMode = berserker) {
-            this.setPrice(price*1.5);
-        } else {
-            this.setPrice(price);
-        }
-        */
     }    
 }
