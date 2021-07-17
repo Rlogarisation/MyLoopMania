@@ -328,8 +328,24 @@ public class BuildingTest {
     }
 
     @Test
+    //Testing if Pos is null in VampireCastle
+    //spawnVampire field will set true and no vampire has been spawned
+    //There is a seperate test for getSpecificSpawnPosition + isEnemyOnPath
     public void VampireCastleTest_NullPosition(){
-
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(4, 5));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newVampireCastle = new VampireCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        lmw.addBuildingToBuildingList(newVampireCastle);
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        assertEquals(0, lmw.getEnemyList().size());
+        ((VampireCastle)newVampireCastle).setSpawnVampire(true);
+        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertTrue(((VampireCastle)newVampireCastle).getSpawnVampire());
+        assertEquals(0, lmw.getEnemyList().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
     }
 
     @Test
