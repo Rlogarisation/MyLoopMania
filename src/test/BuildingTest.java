@@ -269,7 +269,66 @@ public class BuildingTest {
     }
 
     @Test
-    public void VampireCastleTest(){
+    //For the first 4 updates and buildingInteractions, no vampires are spawned
+    //On the fifth one, vampire will be spawned
+    public void VampireCastleTest_ValidSpawnVampire(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(4, 3));
+        orderedPath.add(new Pair<>(4, 5));
+        orderedPath.add(new Pair<>(5, 4));
+        orderedPath.add(new Pair<>(3, 4));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newVampireCastle = new VampireCastle(new SimpleIntegerProperty(4), new SimpleIntegerProperty(4));
+        lmw.addBuildingToBuildingList(newVampireCastle);
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        assertEquals(0, lmw.getEnemyList().size());
+
+        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        assertEquals(0, lmw.getEnemyList().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
+
+        ((VampireCastle)newVampireCastle).update();
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        newChanges = lmw.buildingInteractions();
+        assertEquals(0, lmw.getEnemyList().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
+
+        ((VampireCastle)newVampireCastle).update();
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        newChanges = lmw.buildingInteractions();
+        assertEquals(0, lmw.getEnemyList().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
+
+        ((VampireCastle)newVampireCastle).update();
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        newChanges = lmw.buildingInteractions();
+        assertEquals(0, lmw.getEnemyList().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
+
+        ((VampireCastle)newVampireCastle).update();
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        newChanges = lmw.buildingInteractions();
+        assertEquals(0, lmw.getEnemyList().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
+
+        //This will be the 5th time update is called -> spawnVampire = true
+        ((VampireCastle)newVampireCastle).update();
+        assertTrue(((VampireCastle)newVampireCastle).getSpawnVampire());
+        newChanges = lmw.buildingInteractions();
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        assertEquals(1, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        Enemy newVampire = lmw.getEnemyList().get(0);
+        assertEquals(4, newVampire.getX());
+        assertEquals(3, newVampire.getY());
+        assertEquals(newVampire, newChanges.getNewEmeies().get(0));
+    }
+
+    @Test
+    public void VampireCastleTest_NullPosition(){
 
     }
 
@@ -358,7 +417,8 @@ public class BuildingTest {
 
     @Test
     //Testing if Pos is null in ZombiePit
-    //Seperate test for getSpecificSpawnPosition
+    //spawnZombie field will be true and no zombie has been spawned
+    //There is a seperate test for getSpecificSpawnPosition + isEnemyOnPath
     public void ZombiePitTest_NullPosition(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(4, 5));
@@ -369,16 +429,16 @@ public class BuildingTest {
         lmw.addBuildingToBuildingList(newZombiePit);
         assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
         assertEquals(0, lmw.getEnemyList().size());
-
+        ((ZombiePit)newZombiePit).update();
         BuildingInfo newChanges = lmw.buildingInteractions();
-        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
         assertEquals(0, lmw.getEnemyList().size());
         assertEquals(0, newChanges.getNewEmeies().size());
     }
 
     @Test
     public void getSpecificSpawnPositionTest(){
-        
+
     }
 
     @Test
