@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-
+import java.util.Random;
 import org.javatuples.Pair;
 
 import unsw.loopmania.*;
@@ -43,7 +43,6 @@ public class EnemyTest {
         // Creating current coordinate for enemy.
         int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
-
         Enemy slugA = new Slug(position00);
         currentWorld.addEnemy(slugA);
         // Check position.
@@ -59,11 +58,13 @@ public class EnemyTest {
         assertEquals(0, slugA.getX());
         assertEquals(0, slugA.getY());
 
+        /**
+         * Need function to check random direction movement in Enemy.java
+         */
         // Check move function.
         slugA.move();
-        assertEquals(0, slugA.getX());
-        assertEquals(1, slugA.getY());
-
+        
+        
 
         // Check hp.
         assertEquals(initialHp, slugA.getHp());
