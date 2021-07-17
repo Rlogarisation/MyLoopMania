@@ -6,7 +6,6 @@ import java.util.Random;
 
 import org.javatuples.Pair;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Buildings.Building;
 import unsw.loopmania.cards.*;
