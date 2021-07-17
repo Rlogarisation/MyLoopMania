@@ -12,27 +12,42 @@ import unsw.loopmania.*;
 import unsw.loopmania.Character;
 
 public class EnemyTest {
-    final double initialHp = 5;
-    final double initialDamage = 2;
-    final double initialMovingSpeed = 1;
-    double intialBattleRadius = 1;
-    double initialSupportRadius = 1;
-
-
+    
     @Test
-    public void enemyCreationTest() {
-        // Creating current coordinate for enemy.
+    public void slugCreationTest() {
+
+        final double initialHp = 5;
+        final double initialDamage = 2;
+        final double initialMovingSpeed = 1;
+        double intialBattleRadius = 1;
+        double initialSupportRadius = 1;
+
+        
+        /**
+         * Creating current world.
+         * XXX
+         * X X
+         * XXX
+         */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));
         orderedPath.add(new Pair<Integer, Integer>(0, 1));
-        // Creating current world.
-        LoopManiaWorld currentWorld = new LoopManiaWorld(10, 10, orderedPath);
-        PathPosition slugAPosition = new PathPosition(0, orderedPath);
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
 
-        Enemy slugA = new Slug(slugAPosition);
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+        Enemy slugA = new Slug(position00);
         currentWorld.addEnemy(slugA);
         // Check position.
-        assertEquals(slugAPosition, slugA.getPathPosition());
+        assertEquals(position00, slugA.getPathPosition());
         assertEquals(0, slugA.getX());
         assertEquals(0, slugA.getY());
 
@@ -43,6 +58,12 @@ public class EnemyTest {
         slugA.moveUpPath();
         assertEquals(0, slugA.getX());
         assertEquals(0, slugA.getY());
+
+        // Check move function.
+        slugA.move();
+        assertEquals(0, slugA.getX());
+        assertEquals(1, slugA.getY());
+
 
         // Check hp.
         assertEquals(initialHp, slugA.getHp());
@@ -56,6 +77,12 @@ public class EnemyTest {
         slugA.setDamage(3);
         assertEquals(3, slugA.getDamage());
 
+        // Check moving speed.
+        assertEquals(initialMovingSpeed, slugA.getMovingSpeed());
+
+        slugA.setMovingSpeed(2);
+        assertEquals(2, slugA.getMovingSpeed());
+
         // Check support radius and battle radius.
         assertEquals(intialBattleRadius, slugA.getBattleRadius());
 
@@ -66,10 +93,11 @@ public class EnemyTest {
         slugA.setSupportRadius(2);
         assertEquals(2, slugA.getSupportRadius());
 
+
         // Check its ability of attack.
         // Slug hp = 2, damage = 3. 
         // character hp = 10, damage = 1.
-        Character character = new Character(slugAPosition);
+        Character character = new Character(position00);
         currentWorld.setCharacter(character);
         character.setDamage(1);
 
@@ -80,5 +108,7 @@ public class EnemyTest {
         assertEquals(slugA.getHp(), 0);
         
     }
+
+
     
 }

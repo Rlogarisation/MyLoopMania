@@ -57,7 +57,7 @@ public abstract class MovingEntity extends Entity {
         return y().get();
     }
 
-    // I used this. here, if not consist with format, plz change.
+    
     public void setHp(double hp) {
         this.hp = hp;
     }
