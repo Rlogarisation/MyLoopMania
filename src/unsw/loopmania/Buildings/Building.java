@@ -16,7 +16,7 @@ public abstract class Building extends StaticEntity {
         super(x, y);
     }
 
-    public abstract void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges);
+    public abstract BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges);
 
     /**
      * 

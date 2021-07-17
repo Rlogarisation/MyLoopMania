@@ -134,6 +134,18 @@ public class LoopManiaWorld {
     }
 
 
+    public List<Building> getBuildingList(){
+        return this.buildingList;
+    }
+
+    public void addBuildingToBuildingList(Building b){
+        this.buildingList.add(b);
+    }
+
+    public List<Ally> getAllyList(){
+        return this.allyList;
+    }
+
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
      * @param character the character
@@ -194,7 +206,6 @@ public class LoopManiaWorld {
      * @return list of the enemies to be displayed on screen
      */
     public List<Enemy> possiblySpawnEnemies(){
-        // TODO = expand this very basic version
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
         List<Enemy> spawningEnemies = new ArrayList<>();
         if (pos != null){
@@ -293,8 +304,14 @@ public class LoopManiaWorld {
         // Battle with character and enemy when all allies are dead.
         while (enemyIndex < enemiesJoiningBattle.size()) {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+            //add towerDamage to character's initial damage
+            int towerDamage = character.getTowerDamage();
+            character.attack(character.getDamage() + towerDamage, currentEnemy);
+            //if character is in range of campfire, deal double damage
+            if (character.getCampfireInRange()){
+                character.attack(character.getDamage(), currentEnemy);
+            }
 
-            character.attack(character.getDamage(), currentEnemy);
             currentEnemy.attack(currentEnemy.getDamage(), character);
 
             if (character.getHp() <= 0) {
@@ -386,10 +403,13 @@ public class LoopManiaWorld {
     public BuildingInfo buildingInteractions(){
 
         BuildingInfo newChanges = new BuildingInfo();
-        character.setTowerDamage(0);
+        List<Building> currBuildingList = new ArrayList<>();
+        
+        for (Building b : buildingList) currBuildingList.add(b);
 
-        for (Building b : buildingList){
-            b.buildingEffect(this, newChanges);
+        if (this.character == null) return newChanges;
+        for (Building b : currBuildingList){
+            newChanges = b.buildingEffect(this, newChanges);
         }
 
         return newChanges;
@@ -411,7 +431,7 @@ public class LoopManiaWorld {
     public Card loadCard(Card newCard){
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()){
-            // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+            // TODO = give some cash/experience/item rewards for the discarding of the oldest card - Sameer
             removeCard(0);
         }
         if(newCard instanceof VampireCastleCard){
@@ -452,6 +472,7 @@ public class LoopManiaWorld {
      * spawn a sword in the world and return the sword entity
      * @return a sword to be spawned in the controller as a JavaFX node
      */
+    //TODO add more equipment - Jayden
     public Sword addUnequippedSword(){
         // TODO = expand this - we would like to be able to add multiple types of items, apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -483,6 +504,8 @@ public class LoopManiaWorld {
      */
     public void runTickMoves(){
         character.moveDownPath();
+        character.setTowerDamage(0);
+        character.setCampfireInRange(false);
         moveAllEnemies();
     }
 
@@ -554,7 +577,7 @@ public class LoopManiaWorld {
      * move all enemies
      */
     private void moveAllEnemies() {
-        // TODO = expand to more types of enemy
+        // TODO = expand to more types of enemy - Roger
         for (Enemy e: enemyList){
             e.move();
             //Reset the campfireInRange for vampire
