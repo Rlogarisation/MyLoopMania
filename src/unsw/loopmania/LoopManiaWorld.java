@@ -145,6 +145,10 @@ public class LoopManiaWorld {
         return this.allyList;
     }
 
+    public HeroCastle getHeroCastle(){
+        return this.heroCastle;
+    }
+
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
      * @param character the character
