@@ -4,7 +4,8 @@ package unsw.loopmania;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
- * The moving entity abstract class by Zheng Luo (z5206267)
+ * The moving entity abstract class.
+ * @author Zheng Luo (z5206267)
  */
 public abstract class MovingEntity extends Entity {
 

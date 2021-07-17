@@ -10,6 +10,10 @@ import org.javatuples.Pair;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
 
+/**
+ * the test for character.
+ * @author Zheng Luo (z5206267)
+ */
 public class CharacterTest {
     
     @Test

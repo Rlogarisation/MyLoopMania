@@ -256,6 +256,7 @@ public class LoopManiaWorld {
      * a battle will commence when the Character moves within the battle radius of an enemy on the path.
      * Those enemies for which the Character is within their support radius will join the battle.
      * @return list of enemies which have been killed
+     * @author Zheng Luo (z5206267)
      */
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
@@ -323,6 +324,7 @@ public class LoopManiaWorld {
      * if so, search all enemy who is within the support radius of current enemy,
      * add all the enemies who will engaged into the battle into array. 
      * @return array of enemies who will battle within this fight.
+     * @author Zheng Luo (z5206267)
      */
     public List<Enemy> determineEnemyEngagement() {
         List<Enemy> enemyJoiningBattle = new ArrayList<Enemy>();
@@ -350,6 +352,7 @@ public class LoopManiaWorld {
      * e.g: there is 30% of selecting if you enter 0.3.
      * @param chance between 0 to 1 as percentage.
      * @return ture if seleted else return false as boolean.
+     * @author Zheng Luo (z5206267)
      */
     public boolean chanceGenerator(double chance) {
         double chanceOfCriticalBite = (new Random()).nextDouble();
@@ -367,7 +370,8 @@ public class LoopManiaWorld {
      * @param a First Entity.
      * @param b Second Entity.
      * @param distance The distance between these two entity.
-     * @return
+     * @return true or false within the range as boolean
+     * @author Zheng Luo (z5206267)
      */
     public boolean withinRange(Entity a, Entity b, double distance) {
         return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) <= Math.pow(distance, 2);
