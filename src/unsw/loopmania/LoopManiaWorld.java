@@ -109,7 +109,6 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingList = new ArrayList<>();
         this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        //heroCastle = null;
         gameMode = GAME_MODE.STANDARD;
     }
 
@@ -146,6 +145,10 @@ public class LoopManiaWorld {
         return this.allyList;
     }
 
+    public HeroCastle getHeroCastle(){
+        return this.heroCastle;
+    }
+
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
      * @param character the character
@@ -153,6 +156,10 @@ public class LoopManiaWorld {
     public void setCharacter(Character character) {
         this.character = character;
         characterIsAlive = true;
+    }
+
+    public boolean getCharacterIsAlive(){
+        return this.characterIsAlive;
     }
 
     /**
@@ -274,8 +281,7 @@ public class LoopManiaWorld {
         List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
         int allyIndex = 0;
         int enemyIndex = 0;
-
-
+        
         // Battle between ally and enemy.
         while (allyIndex < allyList.size()) {
             Ally currentAlly = allyList.get(allyIndex);
@@ -304,9 +310,11 @@ public class LoopManiaWorld {
         // Battle with character and enemy when all allies are dead.
         while (enemyIndex < enemiesJoiningBattle.size()) {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+
             //add towerDamage to character's initial damage
             int towerDamage = character.getTowerDamage();
             character.attack(character.getDamage() + towerDamage, currentEnemy);
+
             //if character is in range of campfire, deal double damage
             if (character.getCampfireInRange()){
                 character.attack(character.getDamage(), currentEnemy);
@@ -448,6 +456,9 @@ public class LoopManiaWorld {
         }
         if(newCard instanceof TrapCard){
             newCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
+        }
+        if(newCard instanceof VillageCard){
+            newCard = new VillageCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         }
         if(newCard instanceof ZombiePitCard){
             newCard = new ZombiePitCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));

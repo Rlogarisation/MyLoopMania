@@ -18,7 +18,7 @@ public class CharacterTest {
     
     @Test
     public void characterCreationTest() {
-        final double initialHp = 10;
+        final double initialHp = 100;
         final double initialDamage = 10;
         final double initialMovingSpeed = 2;
         final double initialXp = 0; 

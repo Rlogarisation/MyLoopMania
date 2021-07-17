@@ -22,7 +22,7 @@ public class BuildingTest {
     }
 
     @Test
-    public void BarracksTest_SamePositionAsChar(){
+    public void BarracksTest_SamePositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
         LoopManiaWorld lmw = newLmw(orderedPath);
@@ -42,7 +42,7 @@ public class BuildingTest {
     }
 
     @Test
-    public void BarracksTest_DifferentPositionAsChar(){
+    public void BarracksTest_DifferentPositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
         orderedPath.add(new Pair<>(0, 1));
@@ -125,12 +125,11 @@ public class BuildingTest {
     @Test
     public void CampfireTest_OneVampireInRangeOneNot(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-        orderedPath.add(new Pair<>(0, 0));
         orderedPath.add(new Pair<>(0, 1));
         orderedPath.add(new Pair<>(1, 2));
         LoopManiaWorld lmw = newLmw(orderedPath);
-        PathPosition vampPathPosA = new PathPosition(1, orderedPath);
-        PathPosition vampPathPosB = new PathPosition(2, orderedPath);
+        PathPosition vampPathPosA = new PathPosition(0, orderedPath);
+        PathPosition vampPathPosB = new PathPosition(1, orderedPath);
         Enemy vampA = new Vampire(vampPathPosA);
         Enemy vampB = new Vampire(vampPathPosB);
         lmw.addEnemy(vampA);
@@ -150,8 +149,99 @@ public class BuildingTest {
     }
 
     @Test
-    public void HeroCastleTest(){
+    //Client Requirements wants the hero to be able to access the shop only
+    //After 1 full cycle, 2 full cycles, 3 full cycles, 4 full cycles etc.
+    public void HeroCastleTest_CorrectShopCycles(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+        Boolean result;
+
+        //One full cycle
+        result = lmw.runHeroCastle();
+        assertTrue(result);
+
+        //Two full cycles
+        for (int i = 0; i < 1; i++){
+            result = lmw.runHeroCastle();
+            assertFalse(result);
+        }
+        result = lmw.runHeroCastle();
+        assertTrue(result);
+
+        //Three full cycles
+        for (int i = 0; i < 2; i++){
+            result = lmw.runHeroCastle();
+            assertFalse(result);
+        }
+        result = lmw.runHeroCastle();
+        assertTrue(result);
+
+        //Four full cycles
+        for (int i = 0; i < 3; i++){
+            result = lmw.runHeroCastle();
+            assertFalse(result);
+        }
+        result = lmw.runHeroCastle();
+        assertTrue(result);
+    }
+
+    @Test
+    //Update zombiePit to set spawnZombie to true when a cycle is complete
+    public void HeroCastleTest_ZombieSpawn(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+        Building newZombiePit = new ZombiePit(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        lmw.addBuildingToBuildingList(newZombiePit);
+        HeroCastle hc = lmw.getHeroCastle();
+        hc.attach(((ZombiePit)newZombiePit));
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
         
+        lmw.runHeroCastle();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+    }
+
+    @Test
+    //Update numCycles in vampire when a cycle is complete
+    //After doing this 5 times, the spawnVampire should be true
+    public void HeroCastleTest_VampireSpawn(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+        Building newVampireCastle = new VampireCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        lmw.addBuildingToBuildingList(newVampireCastle);
+        HeroCastle hc = lmw.getHeroCastle();
+        hc.attach(((VampireCastle)newVampireCastle));
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        
+        for (int i = 0; i < 4; i++){
+            lmw.runHeroCastle();
+            assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        }
+
+        lmw.runHeroCastle();
+        assertTrue(((VampireCastle)newVampireCastle).getSpawnVampire());
+    }
+
+    @Test
+    //Should return false if Hero's Castle has different position as character
+    public void HeroCastleTest_DifferentPositionAsCharacter(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        orderedPath.add(new Pair<>(1, 0));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(1, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+
+        Boolean result = lmw.runHeroCastle();
+        assertFalse(result);
     }
 
     @Test
