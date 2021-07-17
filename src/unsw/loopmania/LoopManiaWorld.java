@@ -514,6 +514,7 @@ public class LoopManiaWorld {
      * run moves which occur with every tick without needing to spawn anything immediately
      */
     public void runTickMoves(){
+        
         character.moveDownPath();
         character.setTowerDamage(0);
         character.setCampfireInRange(false);
@@ -588,7 +589,6 @@ public class LoopManiaWorld {
      * move all enemies
      */
     private void moveAllEnemies() {
-        // TODO = expand to more types of enemy - Roger
         for (Enemy e: enemyList){
             e.move();
             //Reset the campfireInRange for vampire
