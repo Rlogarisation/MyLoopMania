@@ -21,6 +21,8 @@ public class EnemyTest {
         final double initialMovingSpeed = 1;
         double intialBattleRadius = 1;
         double initialSupportRadius = 1;
+        double chanceOfEffect = 0.3;
+        boolean isTranced = false;
 
         
         /**
@@ -62,7 +64,7 @@ public class EnemyTest {
          * Need function to check random direction movement in Enemy.java
          */
         // Check move function.
-        slugA.move();
+        // slugA.move();
         
         
 
@@ -94,7 +96,19 @@ public class EnemyTest {
         slugA.setSupportRadius(2);
         assertEquals(2, slugA.getSupportRadius());
 
+        // Check chance of effect.
+        assertEquals(chanceOfEffect, slugA.getChanceOfEffect());
 
+        slugA.setChanceOfEffect(0.4);
+        assertEquals(0.4, slugA.getChanceOfEffect());
+
+        // Check set is tranced.
+        assertEquals(false, slugA.getTrancedStatus());
+        
+        slugA.setIsTranced(true);
+        assertEquals(true, slugA.getTrancedStatus());
+        slugA.setIsTranced(false);
+        
         // Check its ability of attack.
         // Slug hp = 2, damage = 3. 
         // character hp = 10, damage = 1.
