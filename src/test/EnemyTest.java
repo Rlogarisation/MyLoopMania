@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import java.util.Random;
 import org.javatuples.Pair;
 
 import unsw.loopmania.*;
@@ -44,7 +43,7 @@ public class EnemyTest {
         // Creating current coordinate for enemy.
         int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
-        Enemy slugA = new Slug(position00);
+        Slug slugA = new Slug(position00);
         currentWorld.addEnemy(slugA);
         // Check position.
         assertEquals(position00, slugA.getPathPosition());
@@ -159,7 +158,7 @@ public class EnemyTest {
         // Creating current coordinate for enemy.
         int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
-        Enemy myZombie = new Zombie(position00);
+        Zombie myZombie = new Zombie(position00);
         currentWorld.addEnemy(myZombie);
         // Check position.
         assertEquals(position00, myZombie.getPathPosition());
@@ -243,6 +242,116 @@ public class EnemyTest {
         
     }
 
+    @Test
+    public void vampireCreationTest() {
+
+        final double initialHp = 10;
+        final double initialDamage = 10;
+        final double initialMovingSpeed = 2;
+        double initialBattleRadius = 3;
+        double initialSupportRadius = 3;
+        double chanceOfEffect = 0.3;
+
+        
+        /**
+         * Creating current world.
+         * XXX
+         * X X
+         * XXX
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+        Vampire myVampire = new Vampire(position00);
+        currentWorld.addEnemy(myVampire);
+        // Check position.
+        assertEquals(position00, myVampire.getPathPosition());
+        assertEquals(0, myVampire.getX());
+        assertEquals(0, myVampire.getY());
+
+        myVampire.moveDownPath();
+        assertEquals(0, myVampire.getX());
+        assertEquals(1, myVampire.getY());
+
+        myVampire.moveUpPath();
+        assertEquals(0, myVampire.getX());
+        assertEquals(0, myVampire.getY());
+
+        /**
+         * Need function to check random direction movement in Enemy.java
+         */
+        // Check move function.
+        // myVampire.move();
+        
+        
+
+        // Check hp.
+        assertEquals(initialHp, myVampire.getHp());
+
+        myVampire.setHp(2);
+        assertEquals(2, myVampire.getHp());
+
+        // Check damage.
+        assertEquals(initialDamage, myVampire.getDamage());
+
+        myVampire.setDamage(3);
+        assertEquals(3, myVampire.getDamage());
+
+        // Check moving speed.
+        assertEquals(initialMovingSpeed, myVampire.getMovingSpeed());
+
+        myVampire.setMovingSpeed(2);
+        assertEquals(2, myVampire.getMovingSpeed());
+
+        // Check support radius and battle radius.
+        assertEquals(initialBattleRadius, myVampire.getBattleRadius());
+
+        myVampire.setBattleRadius(2);
+        assertEquals(2, myVampire.getBattleRadius());
+
+        assertEquals(initialSupportRadius, myVampire.getSupportRadius());
+        myVampire.setSupportRadius(2);
+        assertEquals(2, myVampire.getSupportRadius());
+
+        // Check chance of effect.
+        assertEquals(chanceOfEffect, myVampire.getChanceOfEffect());
+
+        myVampire.setChanceOfEffect(0.4);
+        assertEquals(0.4, myVampire.getChanceOfEffect());
+
+        // Check set is tranced.
+        assertEquals(false, myVampire.getTrancedStatus());
+        
+        myVampire.setIsTranced(true);
+        assertEquals(true, myVampire.getTrancedStatus());
+        myVampire.setIsTranced(false);
+
+        // Check campfire in range.
+        assertEquals(false, myVampire.getCampfireInRange());
+
+        myVampire.setCampfireInRange(true);
+        assertEquals(true, myVampire.getCampfireInRange());
+        myVampire.setCampfireInRange(false);
+
+        // Check fight strategy.
+        FightStrategy myVampireStrategy = new VampireStrategy();
+        myVampire.setFightStrategy(myVampireStrategy);
+        assertEquals(myVampireStrategy, myVampire.getFightStrategy());
+
+        // **********NEED TO USE RANDOM TO TEST ATTACK*********************
+        
+    }
 
     
 }
