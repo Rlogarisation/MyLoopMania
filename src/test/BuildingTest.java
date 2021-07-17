@@ -150,7 +150,8 @@ public class BuildingTest {
     }
 
     @Test
-    public void HeroCastleTest(){
+    //Client Requirements wants the shop to appear 
+    public void HeroCastleTest_CorrectShopCycles(){
         
     }
 

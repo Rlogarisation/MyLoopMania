@@ -109,7 +109,6 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingList = new ArrayList<>();
         this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        //heroCastle = null;
         gameMode = GAME_MODE.STANDARD;
     }
 
@@ -153,6 +152,10 @@ public class LoopManiaWorld {
     public void setCharacter(Character character) {
         this.character = character;
         characterIsAlive = true;
+    }
+
+    public boolean getCharacterIsAlive(){
+        return this.characterIsAlive;
     }
 
     /**
@@ -275,8 +278,7 @@ public class LoopManiaWorld {
         List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
         int allyIndex = 0;
         int enemyIndex = 0;
-
-
+        
         // Battle between ally and enemy.
         while (allyIndex < allyList.size()) {
             Ally currentAlly = allyList.get(allyIndex);
@@ -305,9 +307,11 @@ public class LoopManiaWorld {
         // Battle with character and enemy when all allies are dead.
         while (enemyIndex < enemiesJoiningBattle.size()) {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+
             //add towerDamage to character's initial damage
             int towerDamage = character.getTowerDamage();
             character.attack(character.getDamage() + towerDamage, currentEnemy);
+
             //if character is in range of campfire, deal double damage
             if (character.getCampfireInRange()){
                 character.attack(character.getDamage(), currentEnemy);
@@ -331,6 +335,7 @@ public class LoopManiaWorld {
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
+            System.out.println("Killed Enemy");
         }
         return defeatedEnemies;
     }
@@ -389,7 +394,7 @@ public class LoopManiaWorld {
      * @return
      */
     public boolean withinRange(Entity a, Entity b, double distance) {
-        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) < Math.pow(distance, 2);
+        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) <= Math.pow(distance, 2);
     }
 
     /**
@@ -446,6 +451,9 @@ public class LoopManiaWorld {
         }
         if(newCard instanceof TrapCard){
             newCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
+        }
+        if(newCard instanceof VillageCard){
+            newCard = new VillageCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         }
         if(newCard instanceof ZombiePitCard){
             newCard = new ZombiePitCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
