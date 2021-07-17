@@ -281,8 +281,52 @@ public class BuildingTest {
     }
 
     @Test
-    public void VillageTest(){
+    public void VillageTest_SamePositionAsCharacter(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newVillage = new Village(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newVillage);
+        lmw.getCharacter().setHp(50);
+        assertEquals(50, lmw.getCharacter().getHp());
 
+        lmw.buildingInteractions();
+        assertEquals(60, lmw.getCharacter().getHp());
+    }
+
+    @Test
+    public void VillageTest_HealCharacterPast100(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newVillage = new Village(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newVillage);
+        lmw.getCharacter().setHp(95);
+        assertEquals(95, lmw.getCharacter().getHp());
+
+        lmw.buildingInteractions();
+        assertEquals(100, lmw.getCharacter().getHp());
+    }
+
+    @Test
+    public void VillageTest_DifferentPositionAsCharacter(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(2, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newVillage = new Village(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newVillage);
+        lmw.getCharacter().setHp(50);
+        assertEquals(50, lmw.getCharacter().getHp());
+
+        lmw.buildingInteractions();
+        assertEquals(50, lmw.getCharacter().getHp());
     }
 
     @Test
