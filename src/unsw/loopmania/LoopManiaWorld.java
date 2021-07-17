@@ -103,6 +103,7 @@ public class LoopManiaWorld {
         nonSpecifiedEntities = new ArrayList<>();
         character = null;
         enemyList= new ArrayList<>();
+        allyList = new ArrayList<>();
         cardEntities = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
@@ -132,9 +133,6 @@ public class LoopManiaWorld {
         return this.orderedPath;
     }
 
-    public void addEnemyToEnemyList(Enemy e){
-        this.enemyList.add(e);
-    }
 
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
@@ -250,6 +248,7 @@ public class LoopManiaWorld {
     public void removeAlly(Ally selectedAlly) {
         allyList.remove(selectedAlly);
     }
+
 
 
     /**

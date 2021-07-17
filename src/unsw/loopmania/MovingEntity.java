@@ -94,6 +94,14 @@ public abstract class MovingEntity extends Entity {
     }
 
     /**
+     * Get fight strategy for current entity.
+     * @return fightStrategy as FightStrategy type.
+     */
+    public FightStrategy getFightStrategy() {
+        return this.fightStrategy;
+    }
+
+    /**
      * Will do basic damage to an movingEntity
      */    
     public void attack(double initialDamage, MovingEntity entity) {
