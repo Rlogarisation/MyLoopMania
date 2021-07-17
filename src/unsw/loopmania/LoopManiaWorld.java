@@ -338,7 +338,8 @@ public class LoopManiaWorld {
     public BuildingInfo buildingInteractions(){
 
         BuildingInfo newChanges = new BuildingInfo();
-        character.setTowerDamage(0);
+
+        if (this.character == null) return newChanges;
 
         for (Building b : buildingList){
             b.buildingEffect(this, newChanges);
@@ -435,6 +436,7 @@ public class LoopManiaWorld {
      */
     public void runTickMoves(){
         character.moveDownPath();
+        character.setTowerDamage(0);
         moveAllEnemies();
     }
 

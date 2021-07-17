@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -30,15 +31,13 @@ public class BuildingTest {
         Building newBarrack = new Barracks(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
         lmw.addBuildingToBuildingList(newBarrack);
         List<Ally> allyList = lmw.getAllyList();
-        System.out.println(allyList);
         assertEquals(0, allyList.size());
         lmw.buildingInteractions();
-        System.out.println(allyList);
         assertEquals(1, allyList.size());
-        for (Ally a : allyList){
-            assertEquals(1, a.getX());
-            assertEquals(1, a.getY());
-        }
+        Ally a = allyList.get(0);
+        assertEquals(1, a.getX());
+        assertEquals(1, a.getY());
+        
     }
 
     @Test
@@ -52,26 +51,125 @@ public class BuildingTest {
         Building newBarrack = new Barracks(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
         lmw.addBuildingToBuildingList(newBarrack);
         List<Ally> allyList = lmw.getAllyList();
-        System.out.println(allyList);
         assertEquals(0, allyList.size());
-        BuildingInfo newChanges = lmw.buildingInteractions();
-        System.out.println(allyList);
+        lmw.buildingInteractions();
         assertEquals(0, allyList.size());
         assertEquals(allyList, allyList);
+        List<Enemy> blank = new ArrayList<>();
+        assertEquals(blank, allyList);
     }
 
     @Test
-    public void CampfireTest(){
+    public void CampfireTest_ChracterInRange(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(0, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newCampfire = new Campfire(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newCampfire);
+        Character character = lmw.getCharacter();
+        assertFalse(character.getCampfireInRange());
+        lmw.buildingInteractions();
+        assertTrue(character.getCampfireInRange());
+    }
 
+    @Test
+    public void CampfireTest_CharacterNotInRange(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(2, 2));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newCampfire = new Campfire(new SimpleIntegerProperty(2), new SimpleIntegerProperty(2));
+        lmw.addBuildingToBuildingList(newCampfire);
+        Character character = lmw.getCharacter();
+        assertFalse(character.getCampfireInRange());
+        lmw.buildingInteractions();
+        assertFalse(character.getCampfireInRange());
+    }
+
+    @Test
+    public void CampfireTest_VampiresInRange(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(1, 2));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition vampPathPosA = new PathPosition(0, orderedPath);
+        PathPosition vampPathPosB = new PathPosition(1, orderedPath);
+        Enemy vampA = new Vampire(vampPathPosA);
+        Enemy vampB = new Vampire(vampPathPosB);
+        lmw.addEnemy(vampA);
+        lmw.addEnemy(vampB);
+        lmw.setCharacter(new Character(vampPathPosA));
+        Building newCampfire = new Campfire(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newCampfire);
+        List<Enemy> enemyList = lmw.getEnemyList();
+        assertEquals(2, lmw.getEnemyList().size());
+        assertFalse(((Vampire)(enemyList.get(0))).getCampfireInRange());
+        assertFalse(((Vampire)(enemyList.get(1))).getCampfireInRange());
+        lmw.buildingInteractions();
+        assertTrue(((Vampire)(enemyList.get(0))).getCampfireInRange());
+        assertTrue(((Vampire)(enemyList.get(1))).getCampfireInRange());
+
+    }
+
+    @Test
+    public void CampfireTest_OneVampireInRangeOneNot(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        orderedPath.add(new Pair<>(0, 1));
+        orderedPath.add(new Pair<>(1, 2));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition vampPathPosA = new PathPosition(1, orderedPath);
+        PathPosition vampPathPosB = new PathPosition(2, orderedPath);
+        Enemy vampA = new Vampire(vampPathPosA);
+        Enemy vampB = new Vampire(vampPathPosB);
+        lmw.addEnemy(vampA);
+        lmw.addEnemy(vampB);
+        lmw.setCharacter(new Character(vampPathPosA));
+        Building newCampfire = new Campfire(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        lmw.addBuildingToBuildingList(newCampfire);
+        List<Enemy> enemyList = lmw.getEnemyList();
+        assertEquals(2, lmw.getEnemyList().size());
+        assertFalse(((Vampire)(enemyList.get(0))).getCampfireInRange());
+        assertFalse(((Vampire)(enemyList.get(1))).getCampfireInRange());
+        lmw.buildingInteractions();
+        //VampireA should be in range of campfire, vampireB should not
+        assertTrue(((Vampire)(enemyList.get(0))).getCampfireInRange());
+        assertFalse(((Vampire)(enemyList.get(1))).getCampfireInRange());
     }
 
     @Test
     public void HeroCastleTest(){
+        
+    }
+
+    @Test
+    public void TowerTest_CharacterInRange(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(3, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newTower = new Tower(new SimpleIntegerProperty(3), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newTower);
+        Character character = lmw.getCharacter();
+        assertEquals(0, character.getTowerDamage());
+        lmw.buildingInteractions();
+        assertEquals(((Tower)newTower).getDamage(), character.getTowerDamage());
+    }
+
+    @Test
+    public void TowerTest_CharacterNotInRange(){
 
     }
 
     @Test
-    public void TowerTest(){
+    public void TowerTest_TwoTowersCharacterInRangeOneNotInRange(){
 
     }
 
@@ -93,5 +191,17 @@ public class BuildingTest {
     @Test
     public void ZombiePitTest(){
 
+    }
+
+    @Test
+    public void BuildingInteractions_InvalidCharacter(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1)); 
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        Building newTower = new Tower(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newTower);
+        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertEquals(0, newChanges.getEnemiesKilledByTrap().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
     }
 }

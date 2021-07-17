@@ -21,7 +21,7 @@ public class Campfire extends Building{
         //Checking if character is in range
         Character character = lmw.getCharacter();
 
-        if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) < this.battleRadius){
+        if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) <= Math.pow(this.battleRadius, 2)){
             character.setCampfireInRange(true);
         }
         
@@ -30,7 +30,7 @@ public class Campfire extends Building{
 
         for (Enemy e : enemyList){
             if (e instanceof Vampire){
-                if(Math.pow((e.getX()-this.getX()), 2) +  Math.pow((e.getY()-this.getY()), 2) < this.battleRadius){
+                if(Math.pow((e.getX()-this.getX()), 2) +  Math.pow((e.getY()-this.getY()), 2) <= Math.pow(this.battleRadius, 2)){
                     ((Vampire)e).setCampfireInRange(true);
                 }
             }

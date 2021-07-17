@@ -24,7 +24,7 @@ public class Tower extends Building{
     public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         Character character = lmw.getCharacter();
 
-        if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) < this.getBattleRadius()){
+        if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) <= Math.pow(this.getBattleRadius(), 2)){
             character.setTowerDamage(character.getTowerDamage() + this.getDamage());
         }
     }
