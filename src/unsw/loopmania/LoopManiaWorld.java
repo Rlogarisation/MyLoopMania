@@ -206,7 +206,6 @@ public class LoopManiaWorld {
      * @return list of the enemies to be displayed on screen
      */
     public List<Enemy> possiblySpawnEnemies(){
-        // TODO = expand this very basic version
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
         List<Enemy> spawningEnemies = new ArrayList<>();
         if (pos != null){
@@ -429,7 +428,7 @@ public class LoopManiaWorld {
     public Card loadCard(Card newCard){
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()){
-            // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+            // TODO = give some cash/experience/item rewards for the discarding of the oldest card - Sameer
             removeCard(0);
         }
         if(newCard instanceof VampireCastleCard){
@@ -470,6 +469,7 @@ public class LoopManiaWorld {
      * spawn a sword in the world and return the sword entity
      * @return a sword to be spawned in the controller as a JavaFX node
      */
+    //TODO add more equipment - Jayden
     public Sword addUnequippedSword(){
         // TODO = expand this - we would like to be able to add multiple types of items, apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -574,7 +574,7 @@ public class LoopManiaWorld {
      * move all enemies
      */
     private void moveAllEnemies() {
-        // TODO = expand to more types of enemy
+        // TODO = expand to more types of enemy - Roger
         for (Enemy e: enemyList){
             e.move();
             //Reset the campfireInRange for vampire
