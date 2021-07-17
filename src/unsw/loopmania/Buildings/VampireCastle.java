@@ -21,6 +21,7 @@ public class VampireCastle extends Building{
         return this.spawnVampire;
     }
 
+    //Helper method for ease in testing to bypass the 5 complete cycles
     public void setSpawnVampire(boolean yesNo){
         this.spawnVampire = yesNo;
     }
