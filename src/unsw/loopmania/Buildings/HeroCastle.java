@@ -53,10 +53,10 @@ public class HeroCastle extends StaticEntity{
             notifyAllObservers();
             if (this.numCyclesComplete == this.numCyclesGoal){
                 this.numCyclesComplete = 0;
-                this.numCyclesGoal = this.numCyclesGoal++;
+                this.numCyclesGoal = this.numCyclesGoal + 1;
                 return true;
             }
-            this.numCyclesComplete = this.numCyclesComplete++;
+            this.numCyclesComplete = this.numCyclesComplete + 1;
         }
 
         return false;
