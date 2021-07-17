@@ -60,7 +60,7 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     * Damage : 3
 
     3.3. Campfire
-    * Range: 2
+    * Range: 1
 
     3.4. Tower
     * Damge: 5
