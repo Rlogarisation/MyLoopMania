@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Trap extends Building{
     //To be decided
-    private int damage = 15;
+    private int damage = 5;
 
     public Trap (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Zheng Luo (z5206267)
  */
 public class Character extends MovingEntity {
-    final double initialHp = 10;
+    final double initialHp = 100;
     final double initialDamage = 10;
     final double initialMovingSpeed = 2;
     final double initialXp = 0; 

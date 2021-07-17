@@ -239,7 +239,12 @@ public class LoopManiaWorldController {
             for (Enemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
             }
-            world.runTickMoves();
+            if (world.getCharacterIsAlive()){
+                world.runTickMoves();
+                printThreadingNotes("HANDLED TIMER");
+            } else{
+                printThreadingNotes("Character is Dead");
+            }
             List<Enemy> newEnemies = world.possiblySpawnEnemies();
             for (Enemy newEnemy: newEnemies){
                 onLoad(newEnemy);
@@ -255,7 +260,6 @@ public class LoopManiaWorldController {
             if (openShop){
                 //Openshop
             }
-            printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
