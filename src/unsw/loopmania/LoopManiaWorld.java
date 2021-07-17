@@ -134,6 +134,18 @@ public class LoopManiaWorld {
     }
 
 
+    public List<Building> getBuildingList(){
+        return this.buildingList;
+    }
+
+    public void addBuildingToBuildingList(Building b){
+        this.buildingList.add(b);
+    }
+
+    public List<Ally> getAllyList(){
+        return this.allyList;
+    }
+
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
      * @param character the character
@@ -293,8 +305,14 @@ public class LoopManiaWorld {
         // Battle with character and enemy when all allies are dead.
         while (enemyIndex < enemiesJoiningBattle.size()) {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+            //add towerDamage to character's initial damage
+            int towerDamage = character.getTowerDamage();
+            character.attack(character.getDamage() + towerDamage, currentEnemy);
+            //if character is in range of campfire, deal double damage
+            if (character.getCampfireInRange()){
+                character.attack(character.getDamage(), currentEnemy);
+            }
 
-            character.attack(character.getDamage(), currentEnemy);
             currentEnemy.attack(currentEnemy.getDamage(), character);
 
             if (character.getHp() <= 0) {
@@ -383,10 +401,13 @@ public class LoopManiaWorld {
     public BuildingInfo buildingInteractions(){
 
         BuildingInfo newChanges = new BuildingInfo();
-        character.setTowerDamage(0);
+        List<Building> currBuildingList = new ArrayList<>();
+        
+        for (Building b : buildingList) currBuildingList.add(b);
 
-        for (Building b : buildingList){
-            b.buildingEffect(this, newChanges);
+        if (this.character == null) return newChanges;
+        for (Building b : currBuildingList){
+            newChanges = b.buildingEffect(this, newChanges);
         }
 
         return newChanges;
@@ -480,6 +501,8 @@ public class LoopManiaWorld {
      */
     public void runTickMoves(){
         character.moveDownPath();
+        character.setTowerDamage(0);
+        character.setCampfireInRange(false);
         moveAllEnemies();
     }
 

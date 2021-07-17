@@ -19,12 +19,11 @@ public class Trap extends Building{
         return this.damage;
     }
 
-    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+    public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         List<Enemy> enemies = lmw.getEnemyList();
-
         for (Enemy enemy : enemies){
             if (this.getX() == enemy.getX() && this.getY() == enemy.getY()){
-                enemy.setDamage(enemy.getDamage() + this.getDamage());
+                enemy.setHp(enemy.getHp() - this.getDamage());
                 if (enemy.getHp() <= 0){
                     lmw.killEnemy(enemy);
                     newChanges.addEnemyKilled(enemy);
@@ -33,5 +32,6 @@ public class Trap extends Building{
                 break;
             }
         }
+        return newChanges;
     }
 }

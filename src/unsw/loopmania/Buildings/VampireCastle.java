@@ -21,12 +21,13 @@ public class VampireCastle extends Building{
         return this.spawnVampire;
     }
 
+    //Helper method for ease in testing to bypass the 5 complete cycles
     public void setSpawnVampire(boolean yesNo){
         this.spawnVampire = yesNo;
     }
 
     public void update(){
-        this.numCycles = this.numCycles++;
+        this.numCycles = this.numCycles + 1;
         if (this.numCycles == 5){
             this.spawnVampire = true;
             this.numCycles = 0;
@@ -35,7 +36,7 @@ public class VampireCastle extends Building{
         }
     }
 
-    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+    public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         List<Pair<Integer, Integer>> orderedPath = lmw.getOrderedPath();
         if (this.spawnVampire){
             Pair<Integer, Integer> pos = this.getSpecificSpawnPosition(this, orderedPath, lmw.getEnemyList());
@@ -48,5 +49,7 @@ public class VampireCastle extends Building{
                 this.spawnVampire = false;
             }
         }
+
+        return newChanges;
     }
 }
