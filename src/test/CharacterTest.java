@@ -23,9 +23,6 @@ public class CharacterTest {
 
         /**
          * Creating current world.
-         * XXX
-         * X X
-         * XXX
          */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));

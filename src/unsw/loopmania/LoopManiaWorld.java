@@ -233,12 +233,11 @@ public class LoopManiaWorld {
     }
 
     /**
-     * Add ally into ally list 
-     * @param position where it has been spawn.
+     * add ally into allylist
+     * @param selectedAlly the ally which will be added into ally list.
      */
-    public void addAlly(PathPosition position) {
-        Ally newAlly = new Ally(position);
-        allyList.add(newAlly);
+    public void addAlly(Ally selectedAlly) {
+        allyList.add(selectedAlly);
     }
 
     /**
@@ -371,7 +370,7 @@ public class LoopManiaWorld {
      * @return
      */
     public boolean withinRange(Entity a, Entity b, double distance) {
-        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) < Math.pow(distance, 2);
+        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) <= Math.pow(distance, 2);
     }
 
     /**
