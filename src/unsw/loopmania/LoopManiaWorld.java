@@ -437,6 +437,7 @@ public class LoopManiaWorld {
     public void runTickMoves(){
         character.moveDownPath();
         character.setTowerDamage(0);
+        character.setCampfireInRange(false);
         moveAllEnemies();
     }
 

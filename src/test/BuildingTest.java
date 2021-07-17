@@ -73,6 +73,9 @@ public class BuildingTest {
         assertFalse(character.getCampfireInRange());
         lmw.buildingInteractions();
         assertTrue(character.getCampfireInRange());
+        //check that when the player moves, the campfireInRange is reset to false
+        lmw.runTickMoves();
+        assertFalse(character.getCampfireInRange());
     }
 
     @Test
@@ -160,17 +163,48 @@ public class BuildingTest {
         Character character = lmw.getCharacter();
         assertEquals(0, character.getTowerDamage());
         lmw.buildingInteractions();
-        assertEquals(((Tower)newTower).getDamage(), character.getTowerDamage());
+        assertEquals(5, character.getTowerDamage());
     }
 
     @Test
     public void TowerTest_CharacterNotInRange(){
-
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(4, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newTower = new Tower(new SimpleIntegerProperty(4), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newTower);
+        Character character = lmw.getCharacter();
+        assertEquals(0, character.getTowerDamage());
+        lmw.buildingInteractions();
+        assertEquals(0, character.getTowerDamage());
     }
 
     @Test
     public void TowerTest_TwoTowersCharacterInRangeOneNotInRange(){
-
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(0, 1));
+        orderedPath.add(new Pair<>(3, 1));
+        orderedPath.add(new Pair<>(4, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newTowerA = new Tower(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
+        Building newTowerB = new Tower(new SimpleIntegerProperty(3), new SimpleIntegerProperty(1));
+        Building newTowerC = new Tower(new SimpleIntegerProperty(4), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newTowerA);
+        lmw.addBuildingToBuildingList(newTowerB);
+        lmw.addBuildingToBuildingList(newTowerC);
+        Character character = lmw.getCharacter();
+        assertEquals(0, character.getTowerDamage());
+        lmw.buildingInteractions();
+        assertEquals(10, character.getTowerDamage());
+        //check that when the player moves, the towerDamage is reset
+        lmw.runTickMoves();
+        assertEquals(0, character.getTowerDamage());
     }
 
     @Test
