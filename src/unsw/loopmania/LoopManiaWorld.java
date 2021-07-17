@@ -109,7 +109,7 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingList = new ArrayList<>();
         this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        heroCastle = null;
+        //heroCastle = null;
         gameMode = GAME_MODE.STANDARD;
     }
 
@@ -605,13 +605,17 @@ public class LoopManiaWorld {
                 card = c;
             }
         }
-
+        //Check if no building in same location
+        for(Building b: buildingList){
+            if(b.getX() == buildingNodeX && b.getY() == buildingNodeY){
+                return null;
+            }
+        }
         //check if card can be placed into newLocation
         Pair<Integer, Integer> newLocation = new Pair<>(buildingNodeX, buildingNodeY);
-        if(card.validDrop(orderedPath, newLocation) == false){
-            System.out.println("invalid drop");
+        if(card==null || card.validDrop(orderedPath, newLocation) == false){
+            System.out.println(card + " invalid drop");
             return null;
-
         }
 
         // now spawn building
