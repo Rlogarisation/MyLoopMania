@@ -235,14 +235,25 @@ public class LoopManiaWorldController {
         isPaused = false;
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
-            world.runTickMoves();
             List<Enemy> defeatedEnemies = world.runBattles();
             for (Enemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
             }
+            world.runTickMoves();
             List<Enemy> newEnemies = world.possiblySpawnEnemies();
             for (Enemy newEnemy: newEnemies){
                 onLoad(newEnemy);
+            }
+            BuildingInfo newChanges = world.buildingInteractions();
+            for (Enemy newEnemy: newChanges.getNewEmeies()){
+                onLoad(newEnemy);
+            }
+            for (Enemy defeatedEnemy: newChanges.getEnemiesKilledByTrap()){
+                reactToEnemyDefeat(defeatedEnemy);
+            }
+            boolean openShop = world.runHeroCastle();
+            if (openShop){
+                //Openshop
             }
             printThreadingNotes("HANDLED TIMER");
         }));
@@ -360,6 +371,10 @@ public class LoopManiaWorldController {
             Image trapCardImage = new Image((new File("src/images/trap_card.png")).toURI().toString());
             view = new ImageView(trapCardImage);
         }
+        if(card instanceof VillageCard){
+            Image villageCardImage = new Image((new File("src/images/village_card.png")).toURI().toString());
+            view = new ImageView(villageCardImage);
+        }
         if(card instanceof ZombiePitCard){
             Image zombiePitCard = new Image((new File("src/images/zombie_pit.png")).toURI().toString());
             view = new ImageView(zombiePitCard);
@@ -420,6 +435,10 @@ public class LoopManiaWorldController {
         if(building instanceof Trap){
             Image trapImage = new Image((new File("src/images/trap.png")).toURI().toString());
             view = new ImageView(trapImage);
+        }
+        if(building instanceof Village){
+            Image villageImage = new Image((new File("src/images/village.png")).toURI().toString());
+            view = new ImageView(villageImage);
         }
         if(building instanceof ZombiePit){
             Image zombiePit = new Image((new File("src/images/zombie_pit.png")).toURI().toString());

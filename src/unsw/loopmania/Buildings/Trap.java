@@ -3,7 +3,6 @@ package unsw.loopmania.Buildings;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
 import unsw.loopmania.Enemy;
-import org.javatuples.Pair;
 
 import java.util.List;
 
@@ -14,13 +13,11 @@ public class Trap extends Building{
 
     public Trap (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
-        super.setType("Trap");
     }
 
     public int getDamage(){
         return this.damage;
     }
-
 
     public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         List<Enemy> enemies = lmw.getEnemyList();
@@ -31,10 +28,8 @@ public class Trap extends Building{
                 if (enemy.getHp() <= 0){
                     lmw.killEnemy(enemy);
                     newChanges.addEnemyKilled(enemy);
-                    //Figure out how to implement killed enemy with LoopManiaWorldController
                 }
-                newChanges.addTrapDestroyed(this);
-                //implement removeBuilding(Building b);
+                lmw.removeBuilding(this);
                 break;
             }
         }

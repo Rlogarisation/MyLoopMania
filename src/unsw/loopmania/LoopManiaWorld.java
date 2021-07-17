@@ -1,13 +1,13 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.Buildings.Barracks;
 import unsw.loopmania.Buildings.Building;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
@@ -40,7 +40,7 @@ public class LoopManiaWorld {
     private List<Entity> nonSpecifiedEntities;
 
     private Character character;
-
+    private boolean characterIsAlive;
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
     // TODO = expand the range of enemies
@@ -55,7 +55,6 @@ public class LoopManiaWorld {
     private List<Entity> equippedInventoryItems;
 
     // TODO = expand the range of buildings
-    private List<VampireCastleBuilding> buildingEntities;
     private List<Building> buildingList;
     private HeroCastle heroCastle;
 
@@ -63,6 +62,33 @@ public class LoopManiaWorld {
      * list of x,y coordinate pairs in the order by which moving entities traverse them
      */
     private List<Pair<Integer, Integer>> orderedPath;
+
+    // variables related to game mode 
+
+    /**
+     * checker for game mode
+     */
+    private GAME_MODE gameMode;
+
+    /**
+     * three different game modes 
+     * 
+     */
+    public enum GAME_MODE{
+        STANDARD,
+        SURVIVAL,
+        BERSERKER
+    }
+
+    /** 
+     * checker for survival game mode
+     */
+    private Boolean gotOnePotionFromShop;
+
+    /** 
+     * checker for berserker game mode
+     */
+    private Boolean gotOneEquipmentFromShop;
 
     /**
      * create the world (constructor)
@@ -77,10 +103,14 @@ public class LoopManiaWorld {
         nonSpecifiedEntities = new ArrayList<>();
         character = null;
         enemyList= new ArrayList<>();
+        allyList = new ArrayList<>();
         cardEntities = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
-        buildingEntities = new ArrayList<>();
+        buildingList = new ArrayList<>();
+        this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        heroCastle = null;
+        gameMode = GAME_MODE.STANDARD;
     }
 
     public int getWidth() {
@@ -103,9 +133,6 @@ public class LoopManiaWorld {
         return this.orderedPath;
     }
 
-    public void addEnemyToEnemyList(Enemy e){
-        this.enemyList.add(e);
-    }
 
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
@@ -113,7 +140,44 @@ public class LoopManiaWorld {
      */
     public void setCharacter(Character character) {
         this.character = character;
+        characterIsAlive = true;
     }
+
+    /**
+     * set the hero castle. This is necessary because it is loaded as a special entity out of the file
+     * @param heroCastle
+     */
+    public void setHeroCastle(HeroCastle heroCastle) {
+        this.heroCastle = heroCastle;
+    }
+
+    /**
+     * set the gamemode. This is necessary because it is loaded as a special condition out of the file
+     * @param entity
+     */
+    public void setGameMode(GAME_MODE gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    /**
+     * set the checker which checks if the character 
+     * already got one health potion this time in survival mode. 
+     * @param gotOnePotionFromShop
+     */
+    public void setgotOnePotionFromShop(Boolean gotOnePotionFromShop) {
+        this.gotOnePotionFromShop = gotOnePotionFromShop;
+    }
+
+    /**
+     * set the checker which checks if the character 
+     * already got one equipment this time in berserker mode. 
+     * @param gotOneEquipmentFromShop
+
+     */
+    public void setgotOneEquipmentFromShop(Boolean gotOneEquipmentFromShop) {
+        this.gotOneEquipmentFromShop = gotOneEquipmentFromShop;
+    }
+
 
     /**
      * add a generic entity (without it's own dedicated method for adding to the world)
@@ -152,6 +216,15 @@ public class LoopManiaWorld {
     }
 
     /**
+     * remove a building
+     * @param building building to be removed
+     */
+    public void removeBuilding(Building building){
+        building.destroy();
+        buildingList.remove(building);
+    }
+
+    /**
      * The function addEnemy is used for adding transformed enemy by zombie's effect
      * @param enemy the enemy will be added to the enemyList.
      */
@@ -163,10 +236,10 @@ public class LoopManiaWorld {
      * Add ally into ally list 
      * @param position where it has been spawn.
      */
-    // public void addAlly(PathPosition position) {
-    //     Ally newAlly = new Ally(position);
-    //     allyList.add(newAlly);
-    // }
+    public void addAlly(PathPosition position) {
+        Ally newAlly = new Ally(position);
+        allyList.add(newAlly);
+    }
 
     /**
      * Remove an ally from the ally list.
@@ -175,6 +248,7 @@ public class LoopManiaWorld {
     public void removeAlly(Ally selectedAlly) {
         allyList.remove(selectedAlly);
     }
+
 
 
     /**
@@ -187,33 +261,53 @@ public class LoopManiaWorld {
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
         List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
-        int i = 0;
-        while (i != enemiesJoiningBattle.size()) {
-            Enemy e = enemiesJoiningBattle.get(i);
-            // Attack ally first, eventually character if all allies are dead.
-            if (!allyList.isEmpty()) {
-                Ally selectedAlly = allyList.get(0);
-                // Enemy wins the battle
-                if (e.attack(selectedAlly)) {
-                    removeAlly(selectedAlly);
-                }
-                else {
-                    // next enemy fight.
-                    i++;
-                    defeatedEnemies.add(e);
-                }
+        int allyIndex = 0;
+        int enemyIndex = 0;
 
-            } else {
-                e.attack(character);
+
+        // Battle between ally and enemy.
+        while (allyIndex < allyList.size()) {
+            Ally currentAlly = allyList.get(allyIndex);
+            Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+
+            currentAlly.attack(currentAlly.getDamage(), currentEnemy);
+            currentEnemy.attack(currentEnemy.getDamage(), currentAlly);
+            // Transform the currentAlly into another Zombie.
+            if (currentEnemy instanceof Zombie && chanceGenerator(0.3)) {
+                removeAlly(currentAlly);
+                currentAlly.setHp(0);
+                Zombie newZombie = new Zombie(currentAlly.getPathPosition());
+                enemiesJoiningBattle.add(newZombie);
+                enemyList.add(newZombie);
+            }
+
+            if (currentAlly.getHp() <= 0) {
+                allyIndex++;
+            }
+            if (currentEnemy.getHp() <= 0) {
+                enemyIndex++;
+                defeatedEnemies.add(currentEnemy);
             }
         }
-            
-        
 
-        // WHAT SHOULD WE DO IF CHARACTER DEAD?
-        // END THE GAME?
+        // Battle with character and enemy when all allies are dead.
+        while (enemyIndex < enemiesJoiningBattle.size()) {
+            Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
 
-        
+            character.attack(character.getDamage(), currentEnemy);
+            currentEnemy.attack(currentEnemy.getDamage(), character);
+
+            if (character.getHp() <= 0) {
+                characterIsAlive = false;
+                break;
+            }
+            if (currentEnemy.getHp() <= 0) {
+                enemyIndex++;
+                defeatedEnemies.add(currentEnemy);
+            }
+
+        }
+
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
@@ -252,6 +346,24 @@ public class LoopManiaWorld {
     }
 
     /**
+     * The chance generator function takes in a value between 0 to 1.0 as double,
+     * which is the chance of selecting, 
+     * e.g: there is 30% of selecting if you enter 0.3.
+     * @param chance between 0 to 1 as percentage.
+     * @return ture if seleted else return false as boolean.
+     */
+    public boolean chanceGenerator(double chance) {
+        double chanceOfCriticalBite = (new Random()).nextDouble();
+        if (chanceOfCriticalBite <= chance) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    /**
      * Function to determine the whether a and b are within distance.
      * @param a First Entity.
      * @param b Second Entity.
@@ -271,14 +383,22 @@ public class LoopManiaWorld {
     public BuildingInfo buildingInteractions(){
 
         BuildingInfo newChanges = new BuildingInfo();
+        character.setTowerDamage(0);
 
         for (Building b : buildingList){
             b.buildingEffect(this, newChanges);
         }
 
-        heroCastle.buildingEffect(this);
-
         return newChanges;
+    }
+
+    /**
+     * Run the building effect of Hero's Castle
+     * It will notify zombiePit and vampireCastle to update numCycle
+     * @return true if shop should be opened, false otherwise
+     */
+    public boolean runHeroCastle(){
+        return heroCastle.buildingEffect(this);
     }
 
     /**
@@ -434,6 +554,10 @@ public class LoopManiaWorld {
         // TODO = expand to more types of enemy
         for (Enemy e: enemyList){
             e.move();
+            //Reset the campfireInRange for vampire
+            if (e instanceof Vampire){
+                ((Vampire)e).setCampfireInRange(false);
+            }
         }
     }
 
@@ -493,7 +617,15 @@ public class LoopManiaWorld {
         // now spawn building
         Building newBuilding = card.toBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingList.add(newBuilding);
-        System.out.println(buildingEntities);
+        System.out.println(buildingList);
+
+        //attach zombiePit and vampireCastle as observers to Hero's Castle
+        if (newBuilding instanceof VampireCastle){
+            this.heroCastle.attach((VampireCastle)newBuilding);
+        }
+        else if (newBuilding instanceof ZombiePit){
+            this.heroCastle.attach((ZombiePit)newBuilding);
+        }
 
         // destroy the card
         card.destroy();
@@ -501,5 +633,110 @@ public class LoopManiaWorld {
         shiftCardsDownFromXCoordinate(cardNodeX);
 
         return newBuilding;
+    }
+
+    /**
+     * it sells one item from unequipped inventory items 
+     * and the character receives gold as a reward.
+     * @param itemNodeX indicates the x-coordinate of the chosen item
+     * @param itemNodeY indicates the y-coordinate of the chosen item
+     */
+    public void sellOneItemBycoordinates(int itemNodeX, int itemNodeY) {
+        Entity chosenItem = null;
+        int itemPrice = 0;
+        for (Entity item: unequippedInventoryItems) {
+            if (itemNodeX == item.getX() && itemNodeY == item.getY()) {
+                chosenItem = item;
+                if (chosenItem instanceof Equipment) {
+                    itemPrice = ((Equipment) item).getPrice();
+                    break;
+                }
+                if (chosenItem instanceof HealthPotion) {
+                    itemPrice = ((HealthPotion) item).getPrice();
+                    break;
+                }    
+                if (chosenItem instanceof RareItem) {
+                    itemPrice = ((RareItem) item).getPrice();
+                    break;
+                }
+            }
+        }
+        if (chosenItem != null) {
+            chosenItem.destroy();
+            removeUnequippedInventoryItem(chosenItem);
+            this.character.addGold((double) (itemPrice / 2));
+        }    
+        
+    }
+
+    /**
+     * character buys one item from the shop in hero castle 
+     * and the character pay gold as a currency for the item.
+     * @param itemNodeX indicates the x-coordinate of the chosen item in the shop
+     * @param itemNodeY indicates the y-coordinate of the chosen item in the shop
+     */
+    public void buyOneItemBycoordinates(int itemNodeX, int itemNodeY) {
+        
+        HashMap<String,StaticEntity> itemShop = this.heroCastle.getShopItems();
+        StaticEntity chosenItem = null;
+        Double characterGold = this.character.getGold();
+        int itemPrice = 0;
+        
+        
+        for (StaticEntity item : itemShop.values()) {
+            if (itemNodeX == item.getX() && itemNodeY == item.getY()) {
+                chosenItem = item;
+                
+                // if the game mode is berserker, set the equipement checker
+                // which checks if the character already got one equipment on this turn 
+                if (gameMode == GAME_MODE.BERSERKER && this.gotOneEquipmentFromShop == null) {
+                    this.setgotOneEquipmentFromShop(false);
+                }
+
+                // if the game mode is berserker, set the potion checker
+                // which checks if the character already got one potion on this turn
+                if (gameMode == GAME_MODE.SURVIVAL && this.gotOnePotionFromShop == null) {
+                    this.setgotOnePotionFromShop(false);
+                }
+
+                // case1) get an equipment
+                if (chosenItem instanceof Equipment) {
+                    itemPrice = ((Equipment) chosenItem).getPrice();
+                    if (gameMode == GAME_MODE.BERSERKER && !gotOneEquipmentFromShop 
+                        && characterGold >= itemPrice) {
+                        this.addUnequippedSword();
+                        // if the game mode is berserker, the equipment price is 50% more expensive
+                        this.character.setGold(characterGold - (1.5)*itemPrice);
+                        this.setgotOneEquipmentFromShop(true);
+                        break;
+                    }
+
+                    if (gameMode != GAME_MODE.BERSERKER && characterGold >= itemPrice) {
+                        this.addUnequippedSword();
+                        this.character.setGold(characterGold - itemPrice);
+                        break;
+                    }   
+                }
+
+                // case1) get a health potion
+                if (chosenItem instanceof HealthPotion) {
+                    itemPrice = ((HealthPotion) chosenItem).getPrice();
+                    if (gameMode == GAME_MODE.SURVIVAL && !gotOnePotionFromShop 
+                        && characterGold >= itemPrice) {
+                        this.addUnequippedSword();
+                        // if the game mode is survival, the equipment is twice as expensive
+                        this.character.setGold(characterGold - 2*itemPrice);
+                        this.setgotOnePotionFromShop(true);
+                        break;
+                    } 
+                    if (gameMode != GAME_MODE.SURVIVAL &&  characterGold >= itemPrice) {
+                        this.addUnequippedSword();
+                        this.character.setGold(characterGold - itemPrice);
+                        break;
+                    }   
+            }
+        }
+        
+        }
     }
 }

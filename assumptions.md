@@ -57,11 +57,15 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     * We assume that when the character passes through a village, it regains health by 20.
 
     3.2. Trap
-    * Damage : 3
+    * Damage : TBD
+    * Only deals damage to one enemy.
 
     3.3. Campfire
-    * Damage : 1 to Slugs
-    * Damage : 5 to Zombies and Vampires
+    * Range: 1
+
+    3.4. Tower
+    * Damge: TBD
+    * Range: 3
 
 4. Basic Items
     

@@ -11,7 +11,7 @@ public abstract class Enemy extends MovingEntity{
      * There is 30% chance of triggering a critical bite.
      */
     double chanceOfEffect = 0.3;
-    private boolean isTranced;
+    private boolean isTranced = false;
     public Enemy(PathPosition position) {
         super(position);
     }
@@ -53,8 +53,20 @@ public abstract class Enemy extends MovingEntity{
         return this.chanceOfEffect;
     }
 
+    /**
+     * Set the tranced status of current enemy.
+     * @param isEnemyTranced trance status as boolean.
+     */
     public void setIsTranced(boolean isEnemyTranced) {
-        isTranced = isEnemyTranced;
+        this.isTranced = isEnemyTranced;
+    }
+
+    /**
+     * Get the tranced status for current enemy.
+     * @return tranced status as boolean.
+     */
+    public boolean getTrancedStatus() {
+        return this.isTranced;
     }
 
     /**
@@ -85,54 +97,5 @@ public abstract class Enemy extends MovingEntity{
      */
     public abstract double getSupportRadius();
 
-    /**
-     * Apply the special effect to input character,
-     * and change its properties based on the effect.
-     * @param character
-     */
-    public abstract void applyEffect(MovingEntity character);
-
-    /**
-     * The chance generator function takes in a value between 0 to 1.0 as double,
-     * which is the chance of selecting, 
-     * e.g: there is 30% of selecting if you enter 0.3.
-     * @param chance between 0 to 1 as percentage.
-     * @return ture if seleted else return false as boolean.
-     */
-    public boolean chanceGenerator(double chance) {
-        double chanceOfCriticalBite = (new Random()).nextDouble();
-        if (chanceOfCriticalBite <= chance) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-
-    /**
-     * Enemy will attack the input character or ally until either is dead.
-     * @param character who is fighting with current enemy.
-     * @return boolean if true then enemy attack success and win, false then current enemy dead.
-     */
-    public boolean attack(MovingEntity character) {
-        while (character.getHp() > 0 && this.getHp() > 0) {
-            if (chanceGenerator(chanceOfEffect)) {
-                this.applyEffect(character);
-            }
-            
-            this.setHp(this.getHp() - character.getDamage());
-            // How should I apply armour in here?
-            character.setHp(character.getHp() - this.getDamage());
-        }
-
-        if (this.getHp() <= 0) {
-            return false;
-        }
-        else {
-            return true;
-        }
-
-    }
     
 }

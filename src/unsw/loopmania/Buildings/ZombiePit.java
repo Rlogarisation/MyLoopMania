@@ -13,7 +13,6 @@ public class ZombiePit extends Building{
 
     public ZombiePit (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
-        super.setType("ZombiePit");
         this.spawnZombie = false;
     }
 
@@ -37,7 +36,7 @@ public class ZombiePit extends Building{
             if (pos != null){
                 int indexInPath = orderedPath.indexOf(pos);
                 newZombie = new Zombie(new PathPosition(indexInPath, orderedPath));
-                lmw.addEnemyToEnemyList(newZombie);
+                lmw.addEnemy(newZombie);
                 newChanges.addNewEnemy(newZombie);
                 this.spawnZombie = false;
             }

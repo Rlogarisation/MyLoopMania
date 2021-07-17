@@ -1,6 +1,6 @@
 package unsw.loopmania;
 
-import java.util.Random;
+
 
 /**
  * Public class for enemy type Vampire, Written by Zheng Luo.
@@ -11,7 +11,7 @@ public class Vampire extends Enemy {
     final double initialMovingSpeed = 2;
     double battleRadius = 3;
     double supportRadius = 3;
-    double CritDamageMulti = 5;
+    private boolean campfireInRange;
 
 
     public Vampire(PathPosition position) {
@@ -23,6 +23,8 @@ public class Vampire extends Enemy {
         this.setMovingSpeed(initialMovingSpeed);
         this.setBattleRadius(battleRadius);
         this.setSupportRadius(supportRadius);
+        this.setFightStrategy(new VampireStrategy());
+        this.campfireInRange = false;
     }
 
     public void setBattleRadius(double battleRadius) {
@@ -42,21 +44,19 @@ public class Vampire extends Enemy {
     }
 
     /**
-     *  A critical bite (which has a random chance of occurring) 
-     *  from a vampire causes random additional damage 
-     *  with every vampire attack, 
-     *  for a random number of vampire attacks
-     * 
-     *  In vampire case, only vampire's damage increased
-     *  no effect to the character at the moment.
+     * Get a true or false if campfire is in range
+     * @return boolean campfireInRange
      */
-    public void applyEffect(MovingEntity character) {
-        // Random next double will generate a number between 0 to 1 as double,
-        // and times with a multiplier, which can be changed at anytime.
-        double addtionalDamage = (new Random()).nextDouble() * CritDamageMulti;
-        double totalDamage = this.getDamage() + addtionalDamage;
-        this.setDamage(totalDamage);
+    public boolean getCampfireInRange(){
+        return this.campfireInRange;
+    }
 
+    /**
+     * Set a true or false if campfire is in range
+     * @param yesNo new result for campfireInRange
+     */
+    public void setCampfireInRange(boolean yesNo){
+        this.campfireInRange = yesNo;
     }
 
     
