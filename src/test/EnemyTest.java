@@ -108,7 +108,12 @@ public class EnemyTest {
         slugA.setIsTranced(true);
         assertEquals(true, slugA.getTrancedStatus());
         slugA.setIsTranced(false);
-        
+
+        // Check fight strategy.
+        FightStrategy normalStrategy = new BasicFightStrategy();
+        slugA.setFightStrategy(normalStrategy);
+        assertEquals(normalStrategy, slugA.getFightStrategy());
+
         // Check its ability of attack.
         // Slug hp = 2, damage = 3. 
         // character hp = 10, damage = 1.

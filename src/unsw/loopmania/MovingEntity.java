@@ -57,7 +57,7 @@ public abstract class MovingEntity extends Entity {
         return y().get();
     }
 
-    
+    // I used this. here, if not consist with format, plz change.
     public void setHp(double hp) {
         this.hp = hp;
     }
@@ -91,6 +91,14 @@ public abstract class MovingEntity extends Entity {
      */    
     public void setFightStrategy(FightStrategy fStrategy){
         this.fightStrategy = fStrategy;
+    }
+
+    /**
+     * Get fight strategy for current entity.
+     * @return fightStrategy as FightStrategy type.
+     */
+    public FightStrategy getFightStrategy() {
+        return this.fightStrategy;
     }
 
     /**
