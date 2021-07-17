@@ -53,8 +53,20 @@ public abstract class Enemy extends MovingEntity{
         return this.chanceOfEffect;
     }
 
+    /**
+     * Set the tranced status of current enemy.
+     * @param isEnemyTranced trance status as boolean.
+     */
     public void setIsTranced(boolean isEnemyTranced) {
         this.isTranced = isEnemyTranced;
+    }
+
+    /**
+     * Get the tranced status for current enemy.
+     * @return tranced status as boolean.
+     */
+    public boolean getTrancedStatus() {
+        return this.isTranced;
     }
 
     /**

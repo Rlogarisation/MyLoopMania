@@ -21,13 +21,6 @@ public class Helmet extends DefenseEquipment {
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x,y);
         this.setDefense(defense);
-        /* if (gameMode = berserker) {
-            this.setPrice(price*1.5);
-        } else {
-            this.setPrice(price);
-        }
-        */
-        
     }    
    
 }
