@@ -16,6 +16,10 @@ import unsw.loopmania.Character;
 import unsw.loopmania.Buildings.HeroCastle;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
 
+/**
+ * this test file tests shop basic functions(buy and sell)
+ * @author Kihwan Baek
+ */
 public class ShopTest {
     
     /**
