@@ -31,11 +31,14 @@ public class BuildingTest {
         lmw.addBuildingToBuildingList(newBarrack);
         List<Ally> allyList = lmw.getAllyList();
         System.out.println(allyList);
-        assert(allyList.size() == 0);
-        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertEquals(0, allyList.size());
+        lmw.buildingInteractions();
         System.out.println(allyList);
-        assert(allyList.size() == 1);
-        
+        assertEquals(1, allyList.size());
+        for (Ally a : allyList){
+            assertEquals(1, a.getX());
+            assertEquals(1, a.getY());
+        }
     }
 
     @Test
@@ -50,10 +53,10 @@ public class BuildingTest {
         lmw.addBuildingToBuildingList(newBarrack);
         List<Ally> allyList = lmw.getAllyList();
         System.out.println(allyList);
-        assert(allyList.size() == 0);
+        assertEquals(0, allyList.size());
         BuildingInfo newChanges = lmw.buildingInteractions();
         System.out.println(allyList);
-        assert(allyList.size() == 0);
+        assertEquals(0, allyList.size());
         assertEquals(allyList, allyList);
     }
 
