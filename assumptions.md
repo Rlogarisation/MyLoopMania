@@ -60,8 +60,11 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     * Damage : 3
 
     3.3. Campfire
-    * Damage : 1 to Slugs
-    * Damage : 5 to Zombies and Vampires
+    * Range: 2
+
+    3.4. Tower
+    * Damge: 5
+    * Range: 3
 
 4. Basic Items
     
