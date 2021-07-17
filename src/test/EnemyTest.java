@@ -10,6 +10,10 @@ import org.javatuples.Pair;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
 
+/**
+ * Tests for enemy.
+ * @author Zheng Luo (z5206267)
+ */
 public class EnemyTest {
     
     @Test
@@ -25,9 +29,6 @@ public class EnemyTest {
         
         /**
          * Creating current world.
-         * XXX
-         * X X
-         * XXX
          */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));
@@ -140,9 +141,6 @@ public class EnemyTest {
         
         /**
          * Creating current world.
-         * XXX
-         * X X
-         * XXX
          */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));
@@ -255,9 +253,6 @@ public class EnemyTest {
         
         /**
          * Creating current world.
-         * XXX
-         * X X
-         * XXX
          */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));

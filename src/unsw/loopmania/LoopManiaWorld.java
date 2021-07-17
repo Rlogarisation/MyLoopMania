@@ -209,7 +209,6 @@ public class LoopManiaWorld {
      * @return list of the enemies to be displayed on screen
      */
     public List<Enemy> possiblySpawnEnemies(){
-        // TODO = expand this very basic version
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
         List<Enemy> spawningEnemies = new ArrayList<>();
         if (pos != null){
@@ -248,12 +247,11 @@ public class LoopManiaWorld {
     }
 
     /**
-     * Add ally into ally list 
-     * @param position where it has been spawn.
+     * add ally into allylist
+     * @param selectedAlly the ally which will be added into ally list.
      */
-    public void addAlly(PathPosition position) {
-        Ally newAlly = new Ally(position);
-        allyList.add(newAlly);
+    public void addAlly(Ally selectedAlly) {
+        allyList.add(selectedAlly);
     }
 
     /**
@@ -272,6 +270,7 @@ public class LoopManiaWorld {
      * a battle will commence when the Character moves within the battle radius of an enemy on the path.
      * Those enemies for which the Character is within their support radius will join the battle.
      * @return list of enemies which have been killed
+     * @author Zheng Luo (z5206267)
      */
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
@@ -347,6 +346,7 @@ public class LoopManiaWorld {
      * if so, search all enemy who is within the support radius of current enemy,
      * add all the enemies who will engaged into the battle into array. 
      * @return array of enemies who will battle within this fight.
+     * @author Zheng Luo (z5206267)
      */
     public List<Enemy> determineEnemyEngagement() {
         List<Enemy> enemyJoiningBattle = new ArrayList<Enemy>();
@@ -374,6 +374,7 @@ public class LoopManiaWorld {
      * e.g: there is 30% of selecting if you enter 0.3.
      * @param chance between 0 to 1 as percentage.
      * @return ture if seleted else return false as boolean.
+     * @author Zheng Luo (z5206267)
      */
     public boolean chanceGenerator(double chance) {
         double chanceOfCriticalBite = (new Random()).nextDouble();
@@ -391,7 +392,8 @@ public class LoopManiaWorld {
      * @param a First Entity.
      * @param b Second Entity.
      * @param distance The distance between these two entity.
-     * @return
+     * @return true or false within the range as boolean
+     * @author Zheng Luo (z5206267)
      */
     public boolean withinRange(Entity a, Entity b, double distance) {
         return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) <= Math.pow(distance, 2);
@@ -434,7 +436,7 @@ public class LoopManiaWorld {
     public Card loadCard(Card newCard){
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()){
-            // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+            // TODO = give some cash/experience/item rewards for the discarding of the oldest card - Sameer
             removeCard(0);
         }
         if(newCard instanceof VampireCastleCard){
@@ -478,6 +480,7 @@ public class LoopManiaWorld {
      * spawn a sword in the world and return the sword entity
      * @return a sword to be spawned in the controller as a JavaFX node
      */
+    //TODO add more equipment - Jayden
     public Sword addUnequippedSword(){
         // TODO = expand this - we would like to be able to add multiple types of items, apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -582,7 +585,7 @@ public class LoopManiaWorld {
      * move all enemies
      */
     private void moveAllEnemies() {
-        // TODO = expand to more types of enemy
+        // TODO = expand to more types of enemy - Roger
         for (Enemy e: enemyList){
             e.move();
             //Reset the campfireInRange for vampire
