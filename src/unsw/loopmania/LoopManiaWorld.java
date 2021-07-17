@@ -81,6 +81,7 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingList = new ArrayList<>();
         this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        this.characterIsAlive = true;
     }
 
     public int getWidth() {
@@ -229,8 +230,14 @@ public class LoopManiaWorld {
         // Battle with character and enemy when all allies are dead.
         while (enemyIndex < enemiesJoiningBattle.size()) {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+            //add towerDamage to character's initial damage
+            int towerDamage = character.getTowerDamage();
+            character.attack(character.getDamage() + towerDamage, currentEnemy);
+            //if character is in range of campfire, deal double damage
+            if (character.getCampfireInRange()){
+                character.attack(character.getDamage(), currentEnemy);
+            }
 
-            character.attack(character.getDamage(), currentEnemy);
             currentEnemy.attack(currentEnemy.getDamage(), character);
 
             if (character.getHp() <= 0) {
