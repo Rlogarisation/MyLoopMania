@@ -338,7 +338,6 @@ public class LoopManiaWorld {
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
-            System.out.println("Killed Enemy");
         }
         return defeatedEnemies;
     }
