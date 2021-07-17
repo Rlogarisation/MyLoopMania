@@ -133,7 +133,6 @@ public class LoopManiaWorld {
         return this.orderedPath;
     }
 
-<<<<<<< Updated upstream
 
     public List<Building> getBuildingList(){
         return this.buildingList;
@@ -147,8 +146,6 @@ public class LoopManiaWorld {
         return this.allyList;
     }
 
-=======
->>>>>>> Stashed changes
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
      * @param character the character
@@ -247,11 +244,12 @@ public class LoopManiaWorld {
     }
 
     /**
-     * add ally into allylist
-     * @param selectedAlly the ally which will be added into ally list.
+     * Add ally into ally list 
+     * @param position where it has been spawn.
      */
-    public void addAlly(Ally selectedAlly) {
-        allyList.add(selectedAlly);
+    public void addAlly(PathPosition position) {
+        Ally newAlly = new Ally(position);
+        allyList.add(newAlly);
     }
 
     /**
@@ -270,7 +268,6 @@ public class LoopManiaWorld {
      * a battle will commence when the Character moves within the battle radius of an enemy on the path.
      * Those enemies for which the Character is within their support radius will join the battle.
      * @return list of enemies which have been killed
-     * @author Zheng Luo (z5206267)
      */
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
@@ -344,7 +341,6 @@ public class LoopManiaWorld {
      * if so, search all enemy who is within the support radius of current enemy,
      * add all the enemies who will engaged into the battle into array. 
      * @return array of enemies who will battle within this fight.
-     * @author Zheng Luo (z5206267)
      */
     public List<Enemy> determineEnemyEngagement() {
         List<Enemy> enemyJoiningBattle = new ArrayList<Enemy>();
@@ -372,7 +368,6 @@ public class LoopManiaWorld {
      * e.g: there is 30% of selecting if you enter 0.3.
      * @param chance between 0 to 1 as percentage.
      * @return ture if seleted else return false as boolean.
-     * @author Zheng Luo (z5206267)
      */
     public boolean chanceGenerator(double chance) {
         double chanceOfCriticalBite = (new Random()).nextDouble();
@@ -390,11 +385,10 @@ public class LoopManiaWorld {
      * @param a First Entity.
      * @param b Second Entity.
      * @param distance The distance between these two entity.
-     * @return true or false within the range as boolean
-     * @author Zheng Luo (z5206267)
+     * @return
      */
     public boolean withinRange(Entity a, Entity b, double distance) {
-        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) <= Math.pow(distance, 2);
+        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) < Math.pow(distance, 2);
     }
 
     /**
@@ -477,11 +471,11 @@ public class LoopManiaWorld {
      */
     //TODO add more equipment - Jayden
     public Sword addUnequippedSword(){
-        // TODO = expand this - we would like to be able to add multiple types of items, apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
-            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest sword
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
@@ -499,9 +493,10 @@ public class LoopManiaWorld {
     public Staff addUnequippedStaff(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
-            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest sword
             removeItemByPositionInUnequippedInventoryItems(0);
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
         
@@ -517,9 +512,11 @@ public class LoopManiaWorld {
      */
     public Stake addUnequippedStake(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        System.out.println(firstAvailableSlot);
         if (firstAvailableSlot == null){
-            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest sword
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
@@ -537,8 +534,9 @@ public class LoopManiaWorld {
     public Armour addUnequippedArmour(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
-            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest sword
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
@@ -556,8 +554,9 @@ public class LoopManiaWorld {
     public Shield addUnequippedShield(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
-            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest sword
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
@@ -575,8 +574,9 @@ public class LoopManiaWorld {
     public Helmet addUnequippedHelmet(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
-            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest sword
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
@@ -594,8 +594,9 @@ public class LoopManiaWorld {
     public HealthPotion addUnequippedHealthPotion(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
-            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest sword
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
@@ -604,6 +605,60 @@ public class LoopManiaWorld {
         HealthPotion healthPotion = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
         unequippedInventoryItems.add(healthPotion);
         return healthPotion;
+    }
+
+    /**
+     * spawn a health potion in the world and return health potion entity
+     * @return a health potion to be spawned in the controller as a JavaFX node
+     */
+    public TheOneRing addUnequippedTheOneRing(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        
+        // now we insert the new health potion, as we know we have at least made a slot available...
+        TheOneRing theOneRing = new TheOneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(theOneRing);
+        return theOneRing;
+    }
+
+    public void refillCharacterHealth() {
+        for (Entity item : unequippedInventoryItems) {
+            if (item instanceof HealthPotion) {
+                item.destroy();
+                removeUnequippedInventoryItem(item);
+                
+                Double characterHp = this.character.getHp();
+                if (characterHp >= 70) {
+                    this.character.setHp(100);
+                } else {
+                    this.character.setHp(characterHp+30);
+                }
+                break;
+            }
+
+        }    
+    }
+
+    /**
+     * Revive character when it is dead
+     * @pre this.character.getHp() == 0
+     * @post this.character.getHp() == 100
+     */
+    public void reviveCharacter() {
+        for (Entity item : unequippedInventoryItems) {
+            if (item instanceof TheOneRing) {
+                this.character.setHp(100);
+                item.destroy();
+                removeUnequippedInventoryItem(item);
+                break;
+            }
+        }        
     }
 
     /**
@@ -851,7 +906,24 @@ public class LoopManiaWorld {
                     itemPrice = ((Equipment) chosenItem).getPrice();
                     if (gameMode == GAME_MODE.BERSERKER && !gotOneEquipmentFromShop 
                         && characterGold >= itemPrice) {
-                        this.addUnequippedSword();
+                        if (chosenItem instanceof Sword) {
+                            this.addUnequippedSword();
+                        }
+                        if (chosenItem instanceof Staff) {
+                            this.addUnequippedStaff();
+                        }
+                        if (chosenItem instanceof Stake) {
+                            this.addUnequippedStake();
+                        }
+                        if (chosenItem instanceof Armour) {
+                            this.addUnequippedArmour();
+                        }
+                        if (chosenItem instanceof Shield) {
+                            this.addUnequippedShield();
+                        }
+                        if (chosenItem instanceof Helmet) {
+                            this.addUnequippedHelmet();
+                        }
                         // if the game mode is berserker, the equipment price is 50% more expensive
                         this.character.setGold(characterGold - (1.5)*itemPrice);
                         this.setgotOneEquipmentFromShop(true);
@@ -859,7 +931,24 @@ public class LoopManiaWorld {
                     }
 
                     if (gameMode != GAME_MODE.BERSERKER && characterGold >= itemPrice) {
-                        this.addUnequippedSword();
+                        if (chosenItem instanceof Sword) {
+                            this.addUnequippedSword();
+                        }
+                        if (chosenItem instanceof Staff) {
+                            this.addUnequippedStaff();
+                        }
+                        if (chosenItem instanceof Stake) {
+                            this.addUnequippedStake();
+                        }
+                        if (chosenItem instanceof Armour) {
+                            this.addUnequippedArmour();
+                        }
+                        if (chosenItem instanceof Shield) {
+                            this.addUnequippedShield();
+                        }
+                        if (chosenItem instanceof Helmet) {
+                            this.addUnequippedHelmet();
+                        }
                         this.character.setGold(characterGold - itemPrice);
                         break;
                     }   
@@ -870,14 +959,14 @@ public class LoopManiaWorld {
                     itemPrice = ((HealthPotion) chosenItem).getPrice();
                     if (gameMode == GAME_MODE.SURVIVAL && !gotOnePotionFromShop 
                         && characterGold >= itemPrice) {
-                        this.addUnequippedSword();
+                        this.addUnequippedHealthPotion();
                         // if the game mode is survival, the equipment is twice as expensive
                         this.character.setGold(characterGold - 2*itemPrice);
                         this.setgotOnePotionFromShop(true);
                         break;
                     } 
                     if (gameMode != GAME_MODE.SURVIVAL &&  characterGold >= itemPrice) {
-                        this.addUnequippedSword();
+                        this.addUnequippedHealthPotion();
                         this.character.setGold(characterGold - itemPrice);
                         break;
                     }   
