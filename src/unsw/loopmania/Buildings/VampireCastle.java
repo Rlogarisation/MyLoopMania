@@ -43,7 +43,7 @@ public class VampireCastle extends Building{
             if (pos != null){
                 int indexInPath = orderedPath.indexOf(pos);
                 newVampire = new Vampire(new PathPosition(indexInPath, orderedPath));
-                lmw.addEnemyToEnemyList(newVampire);
+                lmw.addEnemy(newVampire);
                 newChanges.addNewEnemy(newVampire);
                 this.spawnVampire = false;
             }
