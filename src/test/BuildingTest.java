@@ -32,6 +32,7 @@ public class BuildingTest {
         lmw.addBuildingToBuildingList(newBarrack);
         List<Ally> allyList = lmw.getAllyList();
         assertEquals(0, allyList.size());
+        
         lmw.buildingInteractions();
         assertEquals(1, allyList.size());
         Ally a = allyList.get(0);
@@ -52,6 +53,7 @@ public class BuildingTest {
         lmw.addBuildingToBuildingList(newBarrack);
         List<Ally> allyList = lmw.getAllyList();
         assertEquals(0, allyList.size());
+        
         lmw.buildingInteractions();
         assertEquals(0, allyList.size());
         assertEquals(allyList, allyList);
@@ -71,6 +73,7 @@ public class BuildingTest {
         lmw.addBuildingToBuildingList(newCampfire);
         Character character = lmw.getCharacter();
         assertFalse(character.getCampfireInRange());
+        
         lmw.buildingInteractions();
         assertTrue(character.getCampfireInRange());
         //check that when the player moves, the campfireInRange is reset to false
@@ -90,6 +93,7 @@ public class BuildingTest {
         lmw.addBuildingToBuildingList(newCampfire);
         Character character = lmw.getCharacter();
         assertFalse(character.getCampfireInRange());
+        
         lmw.buildingInteractions();
         assertFalse(character.getCampfireInRange());
     }
@@ -113,6 +117,7 @@ public class BuildingTest {
         assertEquals(2, lmw.getEnemyList().size());
         assertFalse(((Vampire)(enemyList.get(0))).getCampfireInRange());
         assertFalse(((Vampire)(enemyList.get(1))).getCampfireInRange());
+        
         lmw.buildingInteractions();
         assertTrue(((Vampire)(enemyList.get(0))).getCampfireInRange());
         assertTrue(((Vampire)(enemyList.get(1))).getCampfireInRange());
@@ -139,6 +144,7 @@ public class BuildingTest {
         assertEquals(2, lmw.getEnemyList().size());
         assertFalse(((Vampire)(enemyList.get(0))).getCampfireInRange());
         assertFalse(((Vampire)(enemyList.get(1))).getCampfireInRange());
+        
         lmw.buildingInteractions();
         //VampireA should be in range of campfire, vampireB should not
         assertTrue(((Vampire)(enemyList.get(0))).getCampfireInRange());
@@ -154,22 +160,6 @@ public class BuildingTest {
     public void TowerTest_CharacterInRange(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
-        orderedPath.add(new Pair<>(3, 1));
-        LoopManiaWorld lmw = newLmw(orderedPath);
-        PathPosition charPathPos = new PathPosition(0, orderedPath);
-        lmw.setCharacter(new Character(charPathPos));
-        Building newTower = new Tower(new SimpleIntegerProperty(3), new SimpleIntegerProperty(1));
-        lmw.addBuildingToBuildingList(newTower);
-        Character character = lmw.getCharacter();
-        assertEquals(0, character.getTowerDamage());
-        lmw.buildingInteractions();
-        assertEquals(5, character.getTowerDamage());
-    }
-
-    @Test
-    public void TowerTest_CharacterNotInRange(){
-        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-        orderedPath.add(new Pair<>(1, 1));
         orderedPath.add(new Pair<>(4, 1));
         LoopManiaWorld lmw = newLmw(orderedPath);
         PathPosition charPathPos = new PathPosition(0, orderedPath);
@@ -178,6 +168,24 @@ public class BuildingTest {
         lmw.addBuildingToBuildingList(newTower);
         Character character = lmw.getCharacter();
         assertEquals(0, character.getTowerDamage());
+        
+        lmw.buildingInteractions();
+        assertEquals(5, character.getTowerDamage());
+    }
+
+    @Test
+    public void TowerTest_CharacterNotInRange(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(5, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newTower = new Tower(new SimpleIntegerProperty(5), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newTower);
+        Character character = lmw.getCharacter();
+        assertEquals(0, character.getTowerDamage());
+        
         lmw.buildingInteractions();
         assertEquals(0, character.getTowerDamage());
     }
@@ -188,18 +196,19 @@ public class BuildingTest {
         orderedPath.add(new Pair<>(1, 1));
         orderedPath.add(new Pair<>(0, 1));
         orderedPath.add(new Pair<>(3, 1));
-        orderedPath.add(new Pair<>(4, 1));
+        orderedPath.add(new Pair<>(5, 1));
         LoopManiaWorld lmw = newLmw(orderedPath);
         PathPosition charPathPos = new PathPosition(0, orderedPath);
         lmw.setCharacter(new Character(charPathPos));
         Building newTowerA = new Tower(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
         Building newTowerB = new Tower(new SimpleIntegerProperty(3), new SimpleIntegerProperty(1));
-        Building newTowerC = new Tower(new SimpleIntegerProperty(4), new SimpleIntegerProperty(1));
+        Building newTowerC = new Tower(new SimpleIntegerProperty(5), new SimpleIntegerProperty(1));
         lmw.addBuildingToBuildingList(newTowerA);
         lmw.addBuildingToBuildingList(newTowerB);
         lmw.addBuildingToBuildingList(newTowerC);
         Character character = lmw.getCharacter();
         assertEquals(0, character.getTowerDamage());
+        
         lmw.buildingInteractions();
         assertEquals(10, character.getTowerDamage());
         //check that when the player moves, the towerDamage is reset
@@ -208,8 +217,62 @@ public class BuildingTest {
     }
 
     @Test
-    public void TrapTest(){
+    public void TrapTest_AttackEnemyNoKill(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition vampPathPos = new PathPosition(0, orderedPath);
+        Enemy vamp = new Vampire(vampPathPos);
+        lmw.addEnemy(vamp);
+        lmw.setCharacter(new Character(vampPathPos));
+        Building newTrap = new Trap(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newTrap);
+        assertEquals(1, lmw.getBuildingList().size());
+        
+        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertEquals(0, lmw.getBuildingList().size());
+        assertEquals(0, newChanges.getEnemiesKilledByTrap().size());
+    }
 
+    @Test
+    public void TrapTest_AttackEnemyAndKill(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition slugPathPos = new PathPosition(0, orderedPath);
+        Enemy slug = new Slug(slugPathPos);
+        lmw.addEnemy(slug);
+        assertEquals(1, lmw.getEnemyList().size());
+        lmw.setCharacter(new Character(slugPathPos));
+        Building newTrap = new Trap(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newTrap);
+        assertEquals(1, lmw.getBuildingList().size());
+        
+        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertEquals(0, lmw.getBuildingList().size());
+        assertEquals(1, newChanges.getEnemiesKilledByTrap().size());
+        assertEquals(0, lmw.getEnemyList().size());
+    }
+
+    @Test
+    public void TrapTest_EnemyNotInRange(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(1, 1));
+        orderedPath.add(new Pair<>(2, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition slugPathPos = new PathPosition(0, orderedPath);
+        Enemy slug = new Slug(slugPathPos);
+        lmw.addEnemy(slug);
+        assertEquals(1, lmw.getEnemyList().size());
+        lmw.setCharacter(new Character(slugPathPos));
+        Building newTrap = new Trap(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newTrap);
+        assertEquals(1, lmw.getBuildingList().size());
+        
+        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertEquals(1, lmw.getBuildingList().size());
+        assertEquals(0, newChanges.getEnemiesKilledByTrap().size());
+        assertEquals(1, lmw.getEnemyList().size());
     }
 
     @Test

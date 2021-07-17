@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.javatuples.Pair;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Buildings.Building;
 import unsw.loopmania.cards.*;
@@ -338,11 +339,13 @@ public class LoopManiaWorld {
     public BuildingInfo buildingInteractions(){
 
         BuildingInfo newChanges = new BuildingInfo();
+        List<Building> currBuildingList = new ArrayList<>();
+        
+        for (Building b : buildingList) currBuildingList.add(b);
 
         if (this.character == null) return newChanges;
-
-        for (Building b : buildingList){
-            b.buildingEffect(this, newChanges);
+        for (Building b : currBuildingList){
+            newChanges = b.buildingEffect(this, newChanges);
         }
 
         return newChanges;

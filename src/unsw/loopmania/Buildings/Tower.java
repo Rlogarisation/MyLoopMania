@@ -7,7 +7,7 @@ import unsw.loopmania.Character;
 public class Tower extends Building{
     //To be decided
     private int battleRadius = 3;
-    private int damage = 5;
+    private int damage = 7;
 
     public Tower (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
@@ -21,12 +21,14 @@ public class Tower extends Building{
         return this.damage;
     }
 
-    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+    public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         Character character = lmw.getCharacter();
 
-        if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) < Math.pow(this.getBattleRadius(), 2)){
+        if(Math.pow((character.getX()-this.getX()), 2) +  Math.pow((character.getY()-this.getY()), 2) <= Math.pow(this.getBattleRadius(), 2)){
             character.setTowerDamage(character.getTowerDamage() + this.getDamage());
         }
+
+        return newChanges;
     }
 
 }

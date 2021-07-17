@@ -11,13 +11,15 @@ public class Barracks extends Building{
         super(x, y);
     }
 
-    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+    public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
 
         Character character = lmw.getCharacter();
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
             lmw.addAlly(character.getPathPosition());
         }
+
+        return newChanges;
     }
 
 }

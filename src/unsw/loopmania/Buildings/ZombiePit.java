@@ -28,7 +28,7 @@ public class ZombiePit extends Building{
         this.spawnZombie = yesNo;
     }
 
-    public void buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
+    public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         List<Pair<Integer, Integer>> orderedPath = lmw.getOrderedPath();
         if (this.spawnZombie){
             Pair<Integer, Integer> pos = this.getSpecificSpawnPosition(this, orderedPath, lmw.getEnemyList());
@@ -41,6 +41,8 @@ public class ZombiePit extends Building{
                 this.spawnZombie = false;
             }
         }
+
+        return newChanges;
     }
 
 }
