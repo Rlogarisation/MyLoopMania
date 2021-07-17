@@ -19,10 +19,9 @@ public class EnemyTest {
         final double initialHp = 5;
         final double initialDamage = 2;
         final double initialMovingSpeed = 1;
-        double intialBattleRadius = 1;
+        double initialBattleRadius = 1;
         double initialSupportRadius = 1;
         double chanceOfEffect = 0.3;
-        boolean isTranced = false;
 
         
         /**
@@ -87,7 +86,7 @@ public class EnemyTest {
         assertEquals(2, slugA.getMovingSpeed());
 
         // Check support radius and battle radius.
-        assertEquals(intialBattleRadius, slugA.getBattleRadius());
+        assertEquals(initialBattleRadius, slugA.getBattleRadius());
 
         slugA.setBattleRadius(2);
         assertEquals(2, slugA.getBattleRadius());
@@ -124,8 +123,123 @@ public class EnemyTest {
         // At the end of fight, character win with hp = 4.
         currentWorld.runBattles();
 
-        assertEquals(character.getHp(), 4);
-        assertEquals(slugA.getHp(), 0);
+        assertEquals(4, character.getHp());
+        assertEquals(0, slugA.getHp());
+        
+    }
+
+    @Test
+    public void zombieCreationTest() {
+
+        final double initialHp = 5;
+        final double initialDamage = 5;
+        final double initialMovingSpeed = 1;
+        double initialBattleRadius = 1;
+        double initialSupportRadius = 1;
+        double chanceOfEffect = 0.3;
+
+        
+        /**
+         * Creating current world.
+         * XXX
+         * X X
+         * XXX
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+        Enemy myZombie = new Zombie(position00);
+        currentWorld.addEnemy(myZombie);
+        // Check position.
+        assertEquals(position00, myZombie.getPathPosition());
+        assertEquals(0, myZombie.getX());
+        assertEquals(0, myZombie.getY());
+
+        myZombie.moveDownPath();
+        assertEquals(0, myZombie.getX());
+        assertEquals(1, myZombie.getY());
+
+        myZombie.moveUpPath();
+        assertEquals(0, myZombie.getX());
+        assertEquals(0, myZombie.getY());
+
+        /**
+         * Need function to check random direction movement in Enemy.java
+         */
+        // Check move function.
+        // myZombie.move();
+        
+        
+
+        // Check hp.
+        assertEquals(initialHp, myZombie.getHp());
+
+        myZombie.setHp(2);
+        assertEquals(2, myZombie.getHp());
+
+        // Check damage.
+        assertEquals(initialDamage, myZombie.getDamage());
+
+        myZombie.setDamage(3);
+        assertEquals(3, myZombie.getDamage());
+
+        // Check moving speed.
+        assertEquals(initialMovingSpeed, myZombie.getMovingSpeed());
+
+        myZombie.setMovingSpeed(2);
+        assertEquals(2, myZombie.getMovingSpeed());
+
+        // Check support radius and battle radius.
+        assertEquals(initialBattleRadius, myZombie.getBattleRadius());
+
+        myZombie.setBattleRadius(2);
+        assertEquals(2, myZombie.getBattleRadius());
+
+        assertEquals(initialSupportRadius, myZombie.getSupportRadius());
+        myZombie.setSupportRadius(2);
+        assertEquals(2, myZombie.getSupportRadius());
+
+        // Check chance of effect.
+        assertEquals(chanceOfEffect, myZombie.getChanceOfEffect());
+
+        myZombie.setChanceOfEffect(0.4);
+        assertEquals(0.4, myZombie.getChanceOfEffect());
+
+        // Check set is tranced.
+        assertEquals(false, myZombie.getTrancedStatus());
+        
+        myZombie.setIsTranced(true);
+        assertEquals(true, myZombie.getTrancedStatus());
+        myZombie.setIsTranced(false);
+
+        // Check fight strategy.
+        FightStrategy normalStrategy = new BasicFightStrategy();
+        myZombie.setFightStrategy(normalStrategy);
+        assertEquals(normalStrategy, myZombie.getFightStrategy());
+
+        // Check its ability of attack.
+        // Zombie hp = 2, damage = 3. 
+        // character hp = 10, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+
+        // At the end of fight, character win with hp = 7.
+        currentWorld.runBattles();
+
+        assertEquals(7, character.getHp());
+
+        assertEquals(-8, myZombie.getHp());
         
     }
 
