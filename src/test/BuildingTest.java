@@ -543,8 +543,77 @@ public class BuildingTest {
     }
 
     @Test
+    //Test this by trying to spawn 5 zombies
     public void getSpecificSpawnPositionTest(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(4, 3));
+        orderedPath.add(new Pair<>(4, 5));
+        orderedPath.add(new Pair<>(3, 4));
+        orderedPath.add(new Pair<>(5, 4));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newZombiePit = new ZombiePit(new SimpleIntegerProperty(4), new SimpleIntegerProperty(4));
+        lmw.addBuildingToBuildingList(newZombiePit);
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(0, lmw.getEnemyList().size());
+        
+        //Spawning First Zombie
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(1, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        Enemy newZombie = lmw.getEnemyList().get(0);
+        assertEquals(4, newZombie.getX());
+        assertEquals(3, newZombie.getY());
+        assertEquals(newZombie, newChanges.getNewEmeies().get(0));
 
+        //Spawning Second Zombie
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        newChanges = lmw.buildingInteractions();
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(2, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        newZombie = lmw.getEnemyList().get(1);
+        assertEquals(4, newZombie.getX());
+        assertEquals(5, newZombie.getY());
+        assertEquals(newZombie, newChanges.getNewEmeies().get(0));
+
+        //Spawning Third Zombie
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        newChanges = lmw.buildingInteractions();
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(3, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        newZombie = lmw.getEnemyList().get(2);
+        assertEquals(3, newZombie.getX());
+        assertEquals(4, newZombie.getY());
+        assertEquals(newZombie, newChanges.getNewEmeies().get(0));
+
+        //Spawning Fourth Zombie
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        newChanges = lmw.buildingInteractions();
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(4, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        newZombie = lmw.getEnemyList().get(3);
+        assertEquals(5, newZombie.getX());
+        assertEquals(4, newZombie.getY());
+        assertEquals(newZombie, newChanges.getNewEmeies().get(0));
+
+        ///Try to spawn Fifth Zombie - will not work due to no valid path
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        newChanges = lmw.buildingInteractions();
+        //spawnZombie should remain true because zombie has not been spawned
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(4, lmw.getEnemyList().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
     }
 
     @Test
