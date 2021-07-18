@@ -119,6 +119,8 @@ public class LoopManiaWorldController {
 
     private Image vampireCastleCardImage;
     private Image basicEnemyImage;
+    private Image vampireEnemyImage;
+    private Image zombieEnemyImage;
     private Image swordImage;
     private Image basicBuildingImage;
 
@@ -169,6 +171,8 @@ public class LoopManiaWorldController {
         entityImages = new ArrayList<>(initialEntities);
         vampireCastleCardImage = new Image((new File("src/images/vampire_castle_card.png")).toURI().toString());
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
+        vampireEnemyImage = new Image((new File("src/images/vampire.png")).toURI().toString());
+        zombieEnemyImage = new Image((new File("src/images/zombie.png")).toURI().toString());
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
         currentlyDraggedImage = null;
@@ -319,6 +323,11 @@ public class LoopManiaWorldController {
         Card card = world.loadCard(new TrapCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)));
         onLoad(card);
     }
+    private void loadVillageCard() {
+        // TODO = load more types of card
+        Card card = world.loadCard(new VillageCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)));
+        onLoad(card);
+    }
     private void loadZombiePitCard() {
         // TODO = load more types of card
         Card card = world.loadCard(new ZombiePitCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)));
@@ -346,6 +355,11 @@ public class LoopManiaWorldController {
         loadSword();
         loadVampireCastleCard();
         loadCampFireCard();
+        loadTrapCard();
+        loadZombiePitCard();
+        loadTowerCard();
+        loadVillageCard();
+        loadBarracksCard();
     }
 
     /**
@@ -411,6 +425,11 @@ public class LoopManiaWorldController {
      */
     private void onLoad(Enemy enemy) {
         ImageView view = new ImageView(basicEnemyImage);
+        if (enemy instanceof Vampire){
+            view = new ImageView(vampireEnemyImage);
+        } else if (enemy instanceof Zombie){
+            view = new ImageView(zombieEnemyImage);
+        }
         addEntity(enemy, view);
         squares.getChildren().add(view);
     }
