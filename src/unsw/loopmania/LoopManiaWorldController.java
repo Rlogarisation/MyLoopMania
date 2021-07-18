@@ -355,12 +355,12 @@ public class LoopManiaWorldController {
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
         loadSword();
         loadVampireCastleCard();
-        //loadCampFireCard();
+        loadCampFireCard();
         loadTrapCard();
         loadZombiePitCard();
-        //loadTowerCard();
+        loadTowerCard();
         loadVillageCard();
-        //loadBarracksCard();
+        loadBarracksCard();
     }
 
     /**
