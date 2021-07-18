@@ -15,7 +15,7 @@ public class TheOneRing extends RareItem {
      * @param x,y is the location of the one ring.
      * @param price is the price of the one ring.
      */
-    public TheOneRing(SimpleIntegerProperty x, SimpleIntegerProperty y, int price) {
+    public TheOneRing(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x,y);
         this.setPrice(price);
     }    
