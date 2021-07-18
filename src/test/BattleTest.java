@@ -652,13 +652,38 @@ public class BattleTest {
         assertTrue(!currentWorld.getCharacterIsAlive());
     }
 
+    @Test
+    /**
+     * Test the function of chanceGenerator.
+     */
+    public void chanceGeneratorTest() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
 
-    
-
-    
-
+        boolean hasTrue = false;
+        boolean hasFalse = false;
 
 
-
-
+        for (int i = 0; i < 10; i++) {
+            if (currentWorld.chanceGenerator(0.3)) {
+                hasTrue = true;
+            }
+            else {
+                hasFalse = true;
+            }
+        }
+        assertTrue(hasTrue && hasFalse);
+        
+    }
 }
