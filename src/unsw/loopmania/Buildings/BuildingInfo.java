@@ -22,10 +22,18 @@ public class BuildingInfo {
         return this.enemiesKilled;
     }
 
+    /**
+     * Adding new enemy to the list of newEnemies created
+     * @param e to be added to newEnemies list
+     */
     public void addNewEnemy(Enemy e){
         newEnemies.add(e);
     }
 
+    /**
+     * Adding killed enemy to the list of enemiesKilled
+     * @param e to be added to enemiesKilled list
+     */
     public void addEnemyKilled(Enemy e){
         enemiesKilled.add(e);
     }

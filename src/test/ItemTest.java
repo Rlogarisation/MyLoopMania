@@ -100,17 +100,18 @@ public class ItemTest {
 
         int x = 0;
         SimpleIntegerProperty y = new SimpleIntegerProperty(0);
+        d.addUnequippedSword();
         d.equipOneItem(new Sword(new SimpleIntegerProperty(x), y));
 
         Entity item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
         Boolean itemClassSame = (item instanceof Sword);
         assertTrue(itemClassSame);
         
+        d.addUnequippedStaff();
         d.equipOneItem(new Staff(new SimpleIntegerProperty(x+1), y));
 
         item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
-        itemClassSame = (item == null);
-        assertTrue(itemClassSame);
+        assertEquals(null, item);
 
         item = d.getEquippedInventoryItemEntityByCoordinates(1,0);
         itemClassSame = (item instanceof Staff);
@@ -127,48 +128,52 @@ public class ItemTest {
         LoopManiaWorld d = new LoopManiaWorld(1, 1, new ArrayList<>());
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<Pair<Integer,Integer>>();
         orderedPath.add(new Pair<Integer,Integer>(0,0));
-        Character c = new Character(new PathPosition(0,orderedPath));
-        d.setCharacter(c);
+        d.setCharacter(new Character(new PathPosition(0,orderedPath)));
+        Character c = d.getCharacter();
 
         int x = 0;
         SimpleIntegerProperty y = new SimpleIntegerProperty(0);
+        d.addUnequippedArmour();
         d.equipOneItem(new Armour(new SimpleIntegerProperty(x), y));
-
+    
         Entity item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
         Boolean itemClassSame = (item instanceof Armour);
         assertTrue(itemClassSame);
         assertTrue(c.getHasArmour());
 
+        d.addUnequippedArmour();
         d.equipOneItem(new Armour(new SimpleIntegerProperty(x+1), y));
 
-        item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
-        itemClassSame = (item == null);
-        assertTrue(itemClassSame);
+        item = d.getEquippedInventoryItemEntityByCoordinates(1,0);
+        assertEquals(null, item);
 
-        d.equipOneItem(new Shield(new SimpleIntegerProperty(x), y));
+        d.addUnequippedShield();
+        d.equipOneItem(new Shield(new SimpleIntegerProperty(x+1), y));
         
-        item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
+        item = d.getEquippedInventoryItemEntityByCoordinates(1,0);
         itemClassSame = (item instanceof Shield);
         assertTrue(itemClassSame);
         assertTrue(c.getHasShield());
 
+        d.addUnequippedShield();
         d.equipOneItem(new Shield(new SimpleIntegerProperty(x+2), y));
         
-        item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
-        itemClassSame = (item == null);
-        assertTrue(itemClassSame);
+        item = d.getEquippedInventoryItemEntityByCoordinates(2,0);
+        assertEquals(null, item);
         
-        d.equipOneItem(new Helmet(new SimpleIntegerProperty(x+3), y));
+        d.addUnequippedHelmet();
+        d.equipOneItem(new Helmet(new SimpleIntegerProperty(x+2), y));
 
-        item = d.getEquippedInventoryItemEntityByCoordinates(3,0);
+        item = d.getEquippedInventoryItemEntityByCoordinates(2,0);
         itemClassSame = (item instanceof Helmet);
         assertTrue(itemClassSame);
         assertTrue(c.getHasHelmet());
 
-        d.equipOneItem(new Helmet(new SimpleIntegerProperty(x+2), y));
+        d.addUnequippedShield();
+        d.equipOneItem(new Helmet(new SimpleIntegerProperty(x+3), y));
         
         item = d.getEquippedInventoryItemEntityByCoordinates(3,0);
-        itemClassSame = (item == null);
+        assertEquals(null, item);
         assertTrue(itemClassSame);
 
     }

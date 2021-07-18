@@ -5,13 +5,19 @@ import unsw.loopmania.*;
 import unsw.loopmania.Character;
 
 public class Village extends Building{
-    //needs to be decided
+
     private int health = 10;
 
     public Village (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
     }
 
+    /**
+     * Check if character has the same position
+     * If true, increase the character's health by 10
+     * If the new health is over 100, cap it at 100
+     * Otherwise set the character's health as the new health
+     */
     public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         Character character = lmw.getCharacter();
 

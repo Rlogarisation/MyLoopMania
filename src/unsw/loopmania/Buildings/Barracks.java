@@ -11,6 +11,11 @@ public class Barracks extends Building{
         super(x, y);
     }
 
+    /**
+     * Checking if character has the same position as Barracks
+     * If true, create an Ally with the same postion as character
+     * Return newChanges - nothing changed
+     */
     public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
 
         Character character = lmw.getCharacter();
