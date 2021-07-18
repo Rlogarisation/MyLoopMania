@@ -475,11 +475,14 @@ public class BuildingTest {
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
         orderedPath.add(new Pair<>(2, 1));
+        orderedPath.add(new Pair<>(1, 2));
         LoopManiaWorld lmw = newLmw(orderedPath);
         PathPosition charPathPos = new PathPosition(0, orderedPath);
         lmw.setCharacter(new Character(charPathPos));
-        Building newVillage = new Village(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
-        lmw.addBuildingToBuildingList(newVillage);
+        Building newVillageA = new Village(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
+        Building newVillageB = new Village(new SimpleIntegerProperty(1), new SimpleIntegerProperty(2));
+        lmw.addBuildingToBuildingList(newVillageA);
+        lmw.addBuildingToBuildingList(newVillageB);
         lmw.getCharacter().setHp(50);
         assertEquals(50, lmw.getCharacter().getHp());
 
