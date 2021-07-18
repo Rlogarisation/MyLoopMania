@@ -12,6 +12,7 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
+import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.Character;
 import unsw.loopmania.Buildings.HeroCastle;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
@@ -172,12 +173,21 @@ public class ShopTest {
         d.addUnequippedSword();
         d.addUnequippedStake();
         
-        
         d.sellOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),200);
         
         d.sellOneItemBycoordinates(1,0);
         assertEquals(c.getGold(),450);
+    
+        d.addUnequippedHealthPotion();
+        d.addUnequippedTheOneRing();
+
+        d.sellOneItemBycoordinates(0,0);
+        assertEquals(c.getGold(),550);
+
+        d.sellOneItemBycoordinates(1,0);
+        assertEquals(c.getGold(),1300);
+
     }
 
     /**
