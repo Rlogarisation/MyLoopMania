@@ -104,6 +104,10 @@ public class Character extends MovingEntity {
         return this.armour;
     }
 
+    /**
+     * Get a hashmap of character stats
+     * @return hashmaps of character stats
+     */
     public Map<String, Double> getCharacterStats(){
         Map<String, Double> charStats = new HashMap<>();
         charStats.put("Gold", gold);
@@ -144,6 +148,10 @@ public class Character extends MovingEntity {
         this.campfireInRange = yesNo;
     }
 
+    /**
+     * Check if character has achieved goals depending on chosen assumptions
+     * @return has achieved goal or not
+     */
     public boolean hasAchievedGoal(){
         if(xp >= 10000){
             if(cycleCount >= 80 || gold >= 10000){
