@@ -8,14 +8,20 @@ import java.util.List;
 
 
 public class Campfire extends Building{
-    //needs to be decided
+
     private int battleRadius = 1;
 
     public Campfire (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
     }
 
-    //decide to do range check for character here or in run battles
+    /**
+     * Check if the character is in range
+     * If true, set the character's campfireInRange as true
+     * Check if there are any vampires in range
+     * If ture, set the vampire's campfireInRange as true
+     * Return newChanges - nothing changed
+     */
     public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         
         //Checking if character is in range

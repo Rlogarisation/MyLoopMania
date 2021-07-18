@@ -26,6 +26,11 @@ public class VampireCastle extends Building{
         this.spawnVampire = yesNo;
     }
 
+    /**
+     * When update is called from Hero's Castle, the VampireCastle will 
+     * increment the numCycles
+     * If the numCycles is equal to 5, the spawnVampire is set as true
+     */
     public void update(){
         this.numCycles = this.numCycles + 1;
         if (this.numCycles == 5){
@@ -36,6 +41,15 @@ public class VampireCastle extends Building{
         }
     }
 
+    /**
+     * Check if spawnVampire is true
+     * If true, get a valid spawnPosition
+     * If there is a valid spawnPosition, create a new vampire
+     * Add the vampire to the enemyList and the newEnemies list in newChanges (for frontend)
+     * Set the spawnVampire as false
+     * SpawnVampire will remain true until a vampire can be spawned on a valid pathPosition
+     * Return newChanges - Could include the new vampire in the newEnemies list
+     */
     public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         List<Pair<Integer, Integer>> orderedPath = lmw.getOrderedPath();
         if (this.spawnVampire){

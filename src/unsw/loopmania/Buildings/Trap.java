@@ -19,6 +19,14 @@ public class Trap extends Building{
         return this.damage;
     }
 
+    /**
+     * Checking if there are enemies that have the same positon
+     * Deal damage to that enemy
+     * Check if the enemy's Hp is <= to 0 to apply the killEnemy method
+     * Add the killedEnemy to the enemiesKilled list in newChanges for the frontend
+     * If the trap deals damage, it has to be removed using the removeBuilding method
+     * Return newChanges - Could contain the new enemy killed and the destroyed trap
+     */
     public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         List<Enemy> enemies = lmw.getEnemyList();
         for (Enemy enemy : enemies){

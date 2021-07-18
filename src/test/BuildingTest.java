@@ -22,6 +22,8 @@ public class BuildingTest {
     }
 
     @Test
+    //Barracks has the same position as the character
+    //New ally created with same position as character
     public void BarracksTest_SamePositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -42,6 +44,8 @@ public class BuildingTest {
     }
 
     @Test
+    //Barracks has a different position than the character
+    //No ally should be created
     public void BarracksTest_DifferentPositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -65,6 +69,9 @@ public class BuildingTest {
     }
 
     @Test
+    //The character is within the campfire range
+    //The character's campfireInRange should be true
+    //Once the character moves, campfireInRange should be false
     public void CampfireTest_ChracterInRange(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -84,6 +91,8 @@ public class BuildingTest {
     }
 
     @Test
+    //Character is not in range of campfire
+    //The character's campfireInRange should be false
     public void CampfireTest_CharacterNotInRange(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -102,6 +111,8 @@ public class BuildingTest {
     }
 
     @Test
+    //There are two vampires that are in range of the campfire
+    //Both vampires' campfireInRange should be true
     public void CampfireTest_VampiresInRange(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 0));
@@ -128,6 +139,8 @@ public class BuildingTest {
     }
 
     @Test
+    //VampireA is in range and vampireB is not in range of campfire
+    //VampireA's campfireInRange should be true and vampireB's is false
     public void CampfireTest_OneVampireInRangeOneNot(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(0, 1));
@@ -148,7 +161,6 @@ public class BuildingTest {
         assertFalse(((Vampire)(enemyList.get(1))).getCampfireInRange());
         
         lmw.buildingInteractions();
-        //VampireA should be in range of campfire, vampireB should not
         assertTrue(((Vampire)(enemyList.get(0))).getCampfireInRange());
         assertFalse(((Vampire)(enemyList.get(1))).getCampfireInRange());
     }
@@ -156,6 +168,7 @@ public class BuildingTest {
     @Test
     //Client Requirements wants the hero to be able to access the shop only
     //After 1 full cycle, 2 full cycles, 3 full cycles, 4 full cycles etc.
+    //Will only return true for those conditions, false for the rest
     public void HeroCastleTest_CorrectShopCycles(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(0, 0));
@@ -236,7 +249,8 @@ public class BuildingTest {
     }
 
     @Test
-    //Should return false if Hero's Castle has different position as character
+    //Hero's Castle will have a different position than the character
+    //Opening the shop for the first full cycle should be false
     public void HeroCastleTest_DifferentPositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(0, 0));
@@ -257,6 +271,8 @@ public class BuildingTest {
     }
 
     @Test
+    //Character is in range of the tower
+    //The character's towerDamge should increase from 0 to 5
     public void TowerTest_CharacterInRange(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -273,6 +289,8 @@ public class BuildingTest {
     }
 
     @Test
+    //Character is not in range of the tower
+    //The character's towerDamage should remain at 0
     public void TowerTest_CharacterNotInRange(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -289,6 +307,8 @@ public class BuildingTest {
     }
 
     @Test
+    //There are two towers that have the character in range and one doesn't
+    //The character's towerDamage should increase from 0 to 10
     public void TowerTest_TwoTowersCharacterInRangeOneNotInRange(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -312,6 +332,11 @@ public class BuildingTest {
     }
 
     @Test
+    //Testing when a trap has the same position as an enemy, but doesn't kill them
+    //For a vampire, the trap doesn't deal enough damage to kill it
+    //Checking that the size of the enemyList remains the same
+    //The size of the buildingList should decrease from 1 to 0 - trap gets destroyed after use
+    //Check that the enemiesKilled list in the newChanges is 0
     public void TrapTest_AttackEnemyNoKill(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -330,6 +355,10 @@ public class BuildingTest {
     }
 
     @Test
+    //The trap has the same position as a slug
+    //The trap should kill and slug and get destroyed
+    //Check that the buildingList and enemyList size decreases from 1 to 0
+    //Check that the enemiesKilled list in newChange is 1
     public void TrapTest_AttackEnemyAndKill(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -350,6 +379,9 @@ public class BuildingTest {
     }
 
     @Test
+    //Two slugs that are not in range of the trap
+    //The enemyList remains at 2 and the buildingList remains at 1
+    //The enemiesKilled list in newChanges should be 0
     public void TrapTest_EnemyNotInRange(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -455,6 +487,8 @@ public class BuildingTest {
     }
 
     @Test
+    //Character has the same position as the village
+    //The village will increase the character's health by 10
     public void VillageTest_SamePositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -471,6 +505,10 @@ public class BuildingTest {
     }
 
     @Test
+    //Character has the same postion as the village
+    //The village will increase the character's health
+    //The character's health caps at 100
+    //Therefore, the character's health should increase from 95 to 100, not 105
     public void VillageTest_HealCharacterPast100(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -487,6 +525,8 @@ public class BuildingTest {
     }
 
     @Test
+    //Character has a different position than the village
+    //The character's health should remain the same
     public void VillageTest_DifferentPositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
@@ -563,7 +603,10 @@ public class BuildingTest {
 
     @Test
     //Test this by trying to spawn 5 zombies
-    public void getSpecificSpawnPositionTest(){
+    //After 4 sucessful spawns on the top, bottom, left and right positions
+    //On the 5th attempt, isEnemyOnPath will return false - invalid position
+    //After 5 attempts to spawn a zombie, there should only be 4
+    public void getSpecificSpawnPositionAndIsEnemyOnPathTest(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(4, 3));
         orderedPath.add(new Pair<>(4, 5));
@@ -636,6 +679,9 @@ public class BuildingTest {
     }
 
     @Test
+    //Testing the BuildingInteractions method in LoopManiaWorld
+    //This method needs to give the buildingEffect methods pathPosition, enemyList and character
+    //If there is no character, nothing should happen - newChanges should have empty lists
     public void BuildingInteractions_InvalidCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1)); 

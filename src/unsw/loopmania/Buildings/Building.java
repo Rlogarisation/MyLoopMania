@@ -16,10 +16,16 @@ public abstract class Building extends StaticEntity {
         super(x, y);
     }
 
+    /**
+     * Get the LoopManiaWorld and newChanges
+     * @param lmw - Contains the pathPositions, enemyList and character information
+     * @param newChanges - Edit to include the newEnemies and enemiesKilled
+     * @return newChanges that will contain newEnemies and enemiesKilled for the frontend
+     */
     public abstract BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges);
 
     /**
-     * 
+     * Return a valid spawn position or null
      * @param building
      * @param orderedPath
      * @param enemyList
@@ -57,7 +63,7 @@ public abstract class Building extends StaticEntity {
     }
 
     /**
-     * 
+     * Check if there is an enemy that has the same path position
      * @param path
      * @param enemyList
      * @return true if there is an enemy on the same position

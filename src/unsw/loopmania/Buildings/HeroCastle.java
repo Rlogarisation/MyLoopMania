@@ -32,14 +32,26 @@ public class HeroCastle extends StaticEntity{
         return numCyclesGoal;
     }
 
+    /**
+     * Attach new VampireCastles to the observer list vampireCastles
+     * @param building is added to vampireCastles list
+     */
     public void attach(VampireCastle building){
         this.vampireCastles.add(building);
     }
 
+    /**
+     * Attach new ZombiePit to the observer list zombiePits
+     * @param building is added to zombiePits list
+     */
     public void attach(ZombiePit building){
         this.zombiePits.add(building);
     }
 
+    /**
+     * Notify the observers in the list vampireCastles and zombiePits
+     * Call the update method in them
+     */
     public void notifyAllObservers(){
         for (VampireCastle building : vampireCastles){
             building.update();
@@ -49,10 +61,17 @@ public class HeroCastle extends StaticEntity{
         }
     }
 
+    /**
+     * Apply the building effect of Hero's Castle
+     * If the character has the same position 
+     * -> Notify all the observer lists
+     * -> Check if it is the right cycle to open the shop
+     * @param lmw contains the character position
+     * @return true if the shop is to be opened
+     */
     public boolean buildingEffect(LoopManiaWorld lmw){
         Character character = lmw.getCharacter();
         
-
         if (this.getX() == character.getX() && this.getY() == character.getY()){
             character.setCycleCount(character.getCycleCount()+1);
             notifyAllObservers();

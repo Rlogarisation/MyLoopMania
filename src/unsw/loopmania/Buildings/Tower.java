@@ -21,6 +21,11 @@ public class Tower extends Building{
         return this.damage;
     }
 
+    /**
+     * Check if the character is in the range
+     * If true, add the tower damge to the character's towerDamage
+     * Return newChanges - nothing changed
+     */
     public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         Character character = lmw.getCharacter();
 

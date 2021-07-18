@@ -16,6 +16,10 @@ public class ZombiePit extends Building{
         this.spawnZombie = false;
     }
 
+    /**
+     * When update is called from Hero's Castle, the ZombiePit will 
+     * set the spawnZombie to be true
+     */
     public void update(){
         this.spawnZombie = true;
     }
@@ -24,6 +28,15 @@ public class ZombiePit extends Building{
         return this.spawnZombie;
     }
 
+    /**
+     * Check if spawnZombie is true
+     * If true, get a valid spawnPosition
+     * If there is a valid spawnPosition, create a new zombie
+     * Add the zombie to the enemyList and the newEnemies list in newChanges (for frontend)
+     * Set the spawnZombie as false
+     * SpawnZombie will remain true until a zombie can be spawned on a valid pathPosition
+     * Return newChanges - Could include the new zombie in the newEnemies list
+     */
     public BuildingInfo buildingEffect(LoopManiaWorld lmw, BuildingInfo newChanges){
         List<Pair<Integer, Integer>> orderedPath = lmw.getOrderedPath();
         if (this.spawnZombie){
