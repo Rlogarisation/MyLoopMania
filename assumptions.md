@@ -92,15 +92,17 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     4.2 Armours
         
     * We assume that the character can only put one piece of armour, shield, helmet on.
+    * We assume that if the character wears an armour and a helmet, 
+    then damage of the total percent of armour and helmet (20+50=70%) will be reduced.
 
     1) Armour
         * defense : 50%
         
     2) Shield
         
-        * We assume that when the character is equipped with a shield, only 80% of the current damage is taken.
-            (e.g) a slug attack the character wearing a armour
-                -> total damage = 1 * 0.5 * 0.8 = 0.4)
+        * We assume that when the character is equipped with a shield, only 80% of the total damage except shield effect is taken.
+            (e.g) a slug attacks the character wearing an armour, a shield and a helmet 
+                -> total damage = (1 * (1 - (0.5+0.2)) * 0.8 = 0.24)
         
         * We assume that staff has a 7% chance to inflict a ‘trance’ and the changed allied soldier lasts 25 seconds in the changed state.
         * Allied soldiers transformed from enemies have their initial health(full stamina).
@@ -109,7 +111,7 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     3) Helmet 
         * We assume that when the character is equipped with a helmet, the
         attack damage from the character and the damage from the enemy is
-        reduced by 30%.
+        reduced by 20%.
 
     4.3 Card
         

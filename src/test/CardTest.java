@@ -91,7 +91,7 @@ public class CardTest {
         for(int i=0; i<4; i++){
             orderedPath.add(new Pair<Integer,Integer>(1, i));
         }  
-        LoopManiaWorld d = new LoopManiaWorld(5, 0, orderedPath);   
+        LoopManiaWorld d = new LoopManiaWorld(8, 0, orderedPath);   
         int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(1, 1));
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
         Character myHero = new Character(position00);
@@ -124,6 +124,10 @@ public class CardTest {
         Building b8 = d.convertCardToBuildingByCoordinates(c7.getX(), c7.getY(), nonPathAdjacentTile.getValue0(), nonPathAdjacentTile.getValue1());
         assert(b8==null);
 
+        // ZombiePit spawns
+        Building zombiePit = d.convertCardToBuildingByCoordinates(c2.getX(), c2.getY(), 2, 1);
+        assert(zombiePit instanceof ZombiePit);
+
     }
 
 
@@ -139,13 +143,13 @@ public class CardTest {
         Character myHero = new Character(position00);
         d.setCharacter(myHero);
         Card c1 = d.loadCard(new VampireCastleCard(x, y));
-        Card c2 = d.loadCard(new ZombiePitCard(x,y));
-        Card c3 = d.loadCard(new TowerCard(x,y));
-        Card c4 = d.loadCard(new CampFireCard(x,y));
-        Card c5 = d.loadCard(new TrapCard(x,y));
+        d.loadCard(new ZombiePitCard(x,y));
+        d.loadCard(new TowerCard(x,y));
+        d.loadCard(new CampFireCard(x,y));
+        d.loadCard(new TrapCard(x,y));
         assert(d.getCardList().size() == 5);
         //Card loaded over limit
-        Card c6 = d.loadCard(new VillageCard(x,y));
+        d.loadCard(new VillageCard(x,y));
         //Assert c1 has been removed and size is still 5
         assert(!d.getCardList().contains(c1) && d.getCardList().size() == 5);
         //Check character recieved rewards

@@ -545,34 +545,54 @@ public class LoopManiaWorld {
      * equip an equipment for attack
      * @param attackEquipment is the attack equipment to be inserted in equippedInventory
      */
-    public void equipOneItem(AttackEquipment attackEquipment) {
+    public AttackEquipment equipOneItem(AttackEquipment attackEquipment) {
+        // check if the equipment is from unequipped inventory
+        
         for (Entity item : equippedInventoryItems) {
             if (item instanceof AttackEquipment) {
-                removeEquippedInventoryItem(item);
+                removeEquippedInventoryItem(item);                
                 break;
             }
-                
+        }
+        if (attackEquipment instanceof Sword) {
+            character.setFightStrategy(new SwordStrategy());
+        }
+        if (attackEquipment instanceof Staff) {
+            character.setFightStrategy(new StaffStrategy());
+        }
+        if (attackEquipment instanceof Stake) {
+            character.setFightStrategy(new StakeStrategy());
         }
         equippedInventoryItems.add(attackEquipment);
-        
+        return attackEquipment; 
+
     }
 
-    public void equipOneItem(DefenseEquipment defenseEquipment) {
+    /**
+     * equip an equipment for attack
+     * @param defenseEquipment is the attack equipment to be inserted in equippedInventory
+     */
+    public DefenseEquipment equipOneItem(DefenseEquipment defenseEquipment) {
+
         for (Entity item : equippedInventoryItems) {
             if (defenseEquipment instanceof Armour && item instanceof Armour) {
                 removeEquippedInventoryItem(item);
+                character.setHasArmour(true);
                 break;
             }
             if (defenseEquipment instanceof Shield && item instanceof Shield) {
                 removeEquippedInventoryItem(item);
+                character.setHasShield(true);
                 break;
             }
             if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
                 removeEquippedInventoryItem(item);
+                character.setHasHelmet(true);
                 break;
             }
         }
         equippedInventoryItems.add(defenseEquipment);        
+        return defenseEquipment;
     }
 
     /**
@@ -878,7 +898,7 @@ public class LoopManiaWorld {
     /**
      * move all enemies
      */
-    private void moveAllEnemies() {
+    public void moveAllEnemies() {
         for (Enemy e: enemyList){
             e.move();
             //Reset the campfireInRange for vampire
