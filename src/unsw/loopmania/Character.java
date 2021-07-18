@@ -1,7 +1,5 @@
 package unsw.loopmania;
 
-import java.util.ArrayList;
-
 /**
  * represents the main character in the backend of the game world
  * @author Zheng Luo (z5206267)
