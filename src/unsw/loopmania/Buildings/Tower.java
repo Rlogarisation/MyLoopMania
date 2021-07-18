@@ -7,7 +7,7 @@ import unsw.loopmania.Character;
 public class Tower extends Building{
     //To be decided
     private int battleRadius = 3;
-    private int damage = 7;
+    private int damage = 5;
 
     public Tower (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);

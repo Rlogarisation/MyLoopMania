@@ -22,7 +22,7 @@ public class BuildingTest {
     }
 
     @Test
-    public void BarracksTest_SamePositionAsChar(){
+    public void BarracksTest_SamePositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
         LoopManiaWorld lmw = newLmw(orderedPath);
@@ -42,15 +42,18 @@ public class BuildingTest {
     }
 
     @Test
-    public void BarracksTest_DifferentPositionAsChar(){
+    public void BarracksTest_DifferentPositionAsCharacter(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
         orderedPath.add(new Pair<>(0, 1));
+        orderedPath.add(new Pair<>(1, 0));
         LoopManiaWorld lmw = newLmw(orderedPath);
         PathPosition charPathPos = new PathPosition(0, orderedPath);
         lmw.setCharacter(new Character(charPathPos));
-        Building newBarrack = new Barracks(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
-        lmw.addBuildingToBuildingList(newBarrack);
+        Building newBarrackA = new Barracks(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newBarrackA);
+        Building newBarrackB = new Barracks(new SimpleIntegerProperty(1), new SimpleIntegerProperty(0));
+        lmw.addBuildingToBuildingList(newBarrackB);
         List<Ally> allyList = lmw.getAllyList();
         assertEquals(0, allyList.size());
         
@@ -87,8 +90,10 @@ public class BuildingTest {
         LoopManiaWorld lmw = newLmw(orderedPath);
         PathPosition charPathPos = new PathPosition(0, orderedPath);
         lmw.setCharacter(new Character(charPathPos));
-        Building newCampfire = new Campfire(new SimpleIntegerProperty(2), new SimpleIntegerProperty(2));
-        lmw.addBuildingToBuildingList(newCampfire);
+        Building newCampfireA = new Campfire(new SimpleIntegerProperty(2), new SimpleIntegerProperty(2));
+        Building newCampfireB = new Campfire(new SimpleIntegerProperty(1), new SimpleIntegerProperty(3));
+        lmw.addBuildingToBuildingList(newCampfireA);
+        lmw.addBuildingToBuildingList(newCampfireB);
         Character character = lmw.getCharacter();
         assertFalse(character.getCampfireInRange());
         
@@ -125,12 +130,11 @@ public class BuildingTest {
     @Test
     public void CampfireTest_OneVampireInRangeOneNot(){
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-        orderedPath.add(new Pair<>(0, 0));
         orderedPath.add(new Pair<>(0, 1));
         orderedPath.add(new Pair<>(1, 2));
         LoopManiaWorld lmw = newLmw(orderedPath);
-        PathPosition vampPathPosA = new PathPosition(1, orderedPath);
-        PathPosition vampPathPosB = new PathPosition(2, orderedPath);
+        PathPosition vampPathPosA = new PathPosition(0, orderedPath);
+        PathPosition vampPathPosB = new PathPosition(1, orderedPath);
         Enemy vampA = new Vampire(vampPathPosA);
         Enemy vampB = new Vampire(vampPathPosB);
         lmw.addEnemy(vampA);
@@ -150,8 +154,106 @@ public class BuildingTest {
     }
 
     @Test
-    public void HeroCastleTest(){
+    //Client Requirements wants the hero to be able to access the shop only
+    //After 1 full cycle, 2 full cycles, 3 full cycles, 4 full cycles etc.
+    public void HeroCastleTest_CorrectShopCycles(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+        Boolean result;
+
+        //One full cycle
+        result = lmw.runHeroCastle();
+        assertTrue(result);
+
+        //Two full cycles
+        for (int i = 0; i < 1; i++){
+            result = lmw.runHeroCastle();
+            assertFalse(result);
+        }
+        result = lmw.runHeroCastle();
+        assertTrue(result);
+
+        //Three full cycles
+        for (int i = 0; i < 2; i++){
+            result = lmw.runHeroCastle();
+            assertFalse(result);
+        }
+        result = lmw.runHeroCastle();
+        assertTrue(result);
+
+        //Four full cycles
+        for (int i = 0; i < 3; i++){
+            result = lmw.runHeroCastle();
+            assertFalse(result);
+        }
+        result = lmw.runHeroCastle();
+        assertTrue(result);
+    }
+
+    @Test
+    //Update zombiePit to set spawnZombie to true when a cycle is complete
+    public void HeroCastleTest_ZombieSpawn(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+        Building newZombiePit = new ZombiePit(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        lmw.addBuildingToBuildingList(newZombiePit);
+        HeroCastle hc = lmw.getHeroCastle();
+        hc.attach(((ZombiePit)newZombiePit));
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
         
+        lmw.runHeroCastle();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+    }
+
+    @Test
+    //Update numCycles in vampire when a cycle is complete
+    //After doing this 5 times, the spawnVampire should be true
+    public void HeroCastleTest_VampireSpawn(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+        Building newVampireCastle = new VampireCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        lmw.addBuildingToBuildingList(newVampireCastle);
+        HeroCastle hc = lmw.getHeroCastle();
+        hc.attach(((VampireCastle)newVampireCastle));
+        assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        
+        for (int i = 0; i < 4; i++){
+            lmw.runHeroCastle();
+            assertFalse(((VampireCastle)newVampireCastle).getSpawnVampire());
+        }
+
+        lmw.runHeroCastle();
+        assertTrue(((VampireCastle)newVampireCastle).getSpawnVampire());
+    }
+
+    @Test
+    //Should return false if Hero's Castle has different position as character
+    public void HeroCastleTest_DifferentPositionAsCharacter(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        orderedPath.add(new Pair<>(1, 0));
+        orderedPath.add(new Pair<>(0, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(1, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+
+        Boolean result = lmw.runHeroCastle();
+        assertFalse(result);
+
+        charPos = new PathPosition(2, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+
+        result = lmw.runHeroCastle();
+        assertFalse(result);
     }
 
     @Test
@@ -252,12 +354,16 @@ public class BuildingTest {
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
         orderedPath.add(new Pair<>(2, 1));
+        orderedPath.add(new Pair<>(2, 2));
         LoopManiaWorld lmw = newLmw(orderedPath);
-        PathPosition slugPathPos = new PathPosition(0, orderedPath);
-        Enemy slug = new Slug(slugPathPos);
-        lmw.addEnemy(slug);
-        assertEquals(1, lmw.getEnemyList().size());
-        lmw.setCharacter(new Character(slugPathPos));
+        PathPosition slugPathPosA = new PathPosition(0, orderedPath);
+        PathPosition slugPathPosB = new PathPosition(2, orderedPath);
+        Enemy slugA = new Slug(slugPathPosA);
+        Enemy slugB = new Slug(slugPathPosB);
+        lmw.addEnemy(slugA);
+        lmw.addEnemy(slugB);
+        assertEquals(2, lmw.getEnemyList().size());
+        lmw.setCharacter(new Character(slugPathPosA));
         Building newTrap = new Trap(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
         lmw.addBuildingToBuildingList(newTrap);
         assertEquals(1, lmw.getBuildingList().size());
@@ -265,7 +371,7 @@ public class BuildingTest {
         BuildingInfo newChanges = lmw.buildingInteractions();
         assertEquals(1, lmw.getBuildingList().size());
         assertEquals(0, newChanges.getEnemiesKilledByTrap().size());
-        assertEquals(1, lmw.getEnemyList().size());
+        assertEquals(2, lmw.getEnemyList().size());
     }
 
     @Test
@@ -385,11 +491,14 @@ public class BuildingTest {
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
         orderedPath.add(new Pair<>(2, 1));
+        orderedPath.add(new Pair<>(1, 2));
         LoopManiaWorld lmw = newLmw(orderedPath);
         PathPosition charPathPos = new PathPosition(0, orderedPath);
         lmw.setCharacter(new Character(charPathPos));
-        Building newVillage = new Village(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
-        lmw.addBuildingToBuildingList(newVillage);
+        Building newVillageA = new Village(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
+        Building newVillageB = new Village(new SimpleIntegerProperty(1), new SimpleIntegerProperty(2));
+        lmw.addBuildingToBuildingList(newVillageA);
+        lmw.addBuildingToBuildingList(newVillageB);
         lmw.getCharacter().setHp(50);
         assertEquals(50, lmw.getCharacter().getHp());
 
@@ -453,8 +562,77 @@ public class BuildingTest {
     }
 
     @Test
+    //Test this by trying to spawn 5 zombies
     public void getSpecificSpawnPositionTest(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(4, 3));
+        orderedPath.add(new Pair<>(4, 5));
+        orderedPath.add(new Pair<>(3, 4));
+        orderedPath.add(new Pair<>(5, 4));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPathPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPathPos));
+        Building newZombiePit = new ZombiePit(new SimpleIntegerProperty(4), new SimpleIntegerProperty(4));
+        lmw.addBuildingToBuildingList(newZombiePit);
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(0, lmw.getEnemyList().size());
+        
+        //Spawning First Zombie
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        BuildingInfo newChanges = lmw.buildingInteractions();
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(1, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        Enemy newZombie = lmw.getEnemyList().get(0);
+        assertEquals(4, newZombie.getX());
+        assertEquals(3, newZombie.getY());
+        assertEquals(newZombie, newChanges.getNewEmeies().get(0));
 
+        //Spawning Second Zombie
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        newChanges = lmw.buildingInteractions();
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(2, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        newZombie = lmw.getEnemyList().get(1);
+        assertEquals(4, newZombie.getX());
+        assertEquals(5, newZombie.getY());
+        assertEquals(newZombie, newChanges.getNewEmeies().get(0));
+
+        //Spawning Third Zombie
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        newChanges = lmw.buildingInteractions();
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(3, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        newZombie = lmw.getEnemyList().get(2);
+        assertEquals(3, newZombie.getX());
+        assertEquals(4, newZombie.getY());
+        assertEquals(newZombie, newChanges.getNewEmeies().get(0));
+
+        //Spawning Fourth Zombie
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        newChanges = lmw.buildingInteractions();
+        assertFalse(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(4, lmw.getEnemyList().size());
+        assertEquals(1, newChanges.getNewEmeies().size());
+        newZombie = lmw.getEnemyList().get(3);
+        assertEquals(5, newZombie.getX());
+        assertEquals(4, newZombie.getY());
+        assertEquals(newZombie, newChanges.getNewEmeies().get(0));
+
+        ///Try to spawn Fifth Zombie - will not work due to no valid path
+        ((ZombiePit)newZombiePit).update();
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        newChanges = lmw.buildingInteractions();
+        //spawnZombie should remain true because zombie has not been spawned
+        assertTrue(((ZombiePit)newZombiePit).getSpawnZombie());
+        assertEquals(4, lmw.getEnemyList().size());
+        assertEquals(0, newChanges.getNewEmeies().size());
     }
 
     @Test

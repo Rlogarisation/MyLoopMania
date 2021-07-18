@@ -69,9 +69,10 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
 
 4. Basic Items
     
-    * We assume that the character can only have up to 30 items.
+    * We assume that the character can only have up to 16 unequipped items.
     * We assume that the character has a 50% chance to get an item when it kills an enemy.
-    
+    * We assume that when we get a new item and the the unequipped item inventory is full, the character discard the oldest item and get 50 gold and 100 experience points.
+
     4.1 Weapons
     
     1) Sword

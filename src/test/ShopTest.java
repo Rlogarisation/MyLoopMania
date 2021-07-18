@@ -16,6 +16,10 @@ import unsw.loopmania.Character;
 import unsw.loopmania.Buildings.HeroCastle;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
 
+/**
+ * this test file tests shop basic functions(buy and sell)
+ * @author Kihwan Baek
+ */
 public class ShopTest {
     
     /**
@@ -52,18 +56,31 @@ public class ShopTest {
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<Pair<Integer,Integer>>();
         orderedPath.add(new Pair<Integer,Integer>(0,0));
         Character c = new Character(new PathPosition(0,orderedPath));
-        c.setGold(1000);
+        c.setGold(10000);
 
         d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
         d.setCharacter(c);
 
         d.buyOneItemBycoordinates(0,0);
-        assertEquals(c.getGold(),600);
+        assertEquals(c.getGold(),9600);
+
+        d.buyOneItemBycoordinates(0,1);
+        assertEquals(c.getGold(),9100);
+
+        d.buyOneItemBycoordinates(0,2);
+        assertEquals(c.getGold(),8600);
         
-        /*
         d.buyOneItemBycoordinates(0,3);
-        assertEquals(c.getGold(),300);
-        */
+        assertEquals(c.getGold(),8300);
+
+        d.buyOneItemBycoordinates(0,4);
+        assertEquals(c.getGold(),7800);
+
+        d.buyOneItemBycoordinates(0,5);
+        assertEquals(c.getGold(),7200);
+
+        d.buyOneItemBycoordinates(0,6);
+        assertEquals(c.getGold(),7000);
     }
 
     /**
@@ -84,10 +101,8 @@ public class ShopTest {
         d.buyOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),200);
 
-        /*
         d.buyOneItemBycoordinates(0,5);
-        assertEquals(c.getGold(),100);
-        */
+        assertEquals(c.getGold(),200);
     }
 
     /**
@@ -145,7 +160,7 @@ public class ShopTest {
      * and balance remaining after selling items is correct.
      */
     @Test
-    public void testSellSwords() {
+    public void testSellItems() {
         LoopManiaWorld d = new LoopManiaWorld(1, 1, new ArrayList<>());
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<Pair<Integer,Integer>>();
         orderedPath.add(new Pair<Integer,Integer>(0,0));
@@ -155,16 +170,14 @@ public class ShopTest {
         d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
         d.setCharacter(c);
         d.addUnequippedSword();
-        d.addUnequippedSword();
+        d.addUnequippedStake();
         
         
         d.sellOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),200);
         
-        /*
-        d.buyOneItemBycoordinates(0,1);
-        assertEquals(c.getGold(),400);
-        */
+        d.sellOneItemBycoordinates(1,0);
+        assertEquals(c.getGold(),450);
     }
 
     /**
@@ -185,7 +198,7 @@ public class ShopTest {
         d.sellOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),1000);
 
-        d.sellOneItemBycoordinates(0,1);
+        d.sellOneItemBycoordinates(1,0);
         assertEquals(c.getGold(),1000);
     }
 

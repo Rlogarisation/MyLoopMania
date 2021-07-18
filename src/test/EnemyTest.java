@@ -123,7 +123,7 @@ public class EnemyTest {
         // At the end of fight, character win with hp = 4.
         currentWorld.runBattles();
 
-        assertEquals(4, character.getHp());
+        assertEquals(94, character.getHp());
         assertEquals(0, slugA.getHp());
         
     }
@@ -234,7 +234,7 @@ public class EnemyTest {
         // At the end of fight, character win with hp = 7.
         currentWorld.runBattles();
 
-        assertEquals(7, character.getHp());
+        assertEquals(97, character.getHp());
 
         assertEquals(-8, myZombie.getHp());
         
