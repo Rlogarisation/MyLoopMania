@@ -1,5 +1,8 @@
 package unsw.loopmania;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * represents the main character in the backend of the game world
  * @author Zheng Luo (z5206267)
@@ -19,7 +22,7 @@ public class Character extends MovingEntity {
     private double xp, gold, armour;
     private int towerDamage;
     private boolean campfireInRange;
-
+    private int cycleCount;
 
     public Character(PathPosition position) {
         super(position);
@@ -86,7 +89,13 @@ public class Character extends MovingEntity {
         this.armour += armourIncrement;
     }
 
-
+    public void setCycleCount(int cycleCount){
+        this.cycleCount = cycleCount;
+    }
+    
+    public int getCycleCount(){
+        return cycleCount;
+    }
     /**
      * Get the total amount of armour for current character.
      * @return armour of current character.
@@ -95,7 +104,13 @@ public class Character extends MovingEntity {
         return this.armour;
     }
 
-
+    public Map<String, Double> getCharacterStats(){
+        Map<String, Double> charStats = new HashMap<>();
+        charStats.put("Gold", gold);
+        charStats.put("xp", xp);
+        charStats.put("cycles", (double)cycleCount);
+        return charStats;
+    }
 
     /**
      * Get the total damage from towers in range
@@ -127,6 +142,15 @@ public class Character extends MovingEntity {
      */
     public void setCampfireInRange(boolean yesNo){
         this.campfireInRange = yesNo;
+    }
+
+    public boolean hasAchievedGoal(){
+        if(xp >= 10000){
+            if(cycleCount >= 80 || gold >= 10000){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

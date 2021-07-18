@@ -400,7 +400,6 @@ public class LoopManiaWorld {
             // due to mutating list we're iterating over
             killEnemy(e);
         }
-        System.out.println("Defeated: "+ defeatedEnemies);
         return defeatedEnemies;
     }
 
