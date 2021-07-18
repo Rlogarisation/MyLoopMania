@@ -3,6 +3,7 @@ package test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
@@ -117,6 +118,45 @@ public class CharacterTest {
 
     }
 
+
+    @Test
+    /**
+     * Test for character stats function
+     */
+    public void characterStatsTest() {
+        final double initialHp = 100;
+        final double initialDamage = 10;
+        final double initialMovingSpeed = 2;
+        final double initialXp = 0; 
+        final double initialGold = 0; 
+        final double initialArmour = 0;
+
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+        Character myHero = new Character(position00);
+        currentWorld.setCharacter(myHero);
+
+        Map<String, Double> stats = myHero.getCharacterStats();
+        assertEquals(initialGold, stats.get("Gold"));
+        assertEquals(initialXp, stats.get("xp"));
+        assertEquals(null, stats.get("cycleCount"));
+
+    }
 
 
 }
