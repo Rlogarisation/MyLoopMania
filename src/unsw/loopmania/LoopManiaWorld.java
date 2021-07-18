@@ -21,6 +21,7 @@ import unsw.loopmania.Buildings.*;
 public class LoopManiaWorld {
     // TODO = add additional backend functionality
 
+    public static final int equippedInventoryLength = 4;
     public static final int unequippedInventoryWidth = 4;
     public static final int unequippedInventoryHeight = 4;
 
@@ -105,6 +106,7 @@ public class LoopManiaWorld {
         enemyList= new ArrayList<>();
         allyList = new ArrayList<>();
         cardEntities = new ArrayList<>();
+        equippedInventoryItems = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingList = new ArrayList<>();
@@ -544,6 +546,56 @@ public class LoopManiaWorld {
     }
 
     /**
+     * equip an equipment for attack
+     * @param attackEquipment is the attack equipment to be inserted in equippedInventory
+     */
+    public void equipOneItem(AttackEquipment attackEquipment) {
+        for (Entity item : equippedInventoryItems) {
+            if (item instanceof AttackEquipment) {
+                removeEquippedInventoryItem(item);
+                break;
+            }
+                
+        }
+        equippedInventoryItems.add(attackEquipment);
+        
+    }
+
+    public void equipOneItem(DefenseEquipment defenseEquipment) {
+        for (Entity item : equippedInventoryItems) {
+            if (defenseEquipment instanceof Armour && item instanceof Armour) {
+                removeEquippedInventoryItem(item);
+                break;
+            }
+            if (defenseEquipment instanceof Shield && item instanceof Shield) {
+                removeEquippedInventoryItem(item);
+                break;
+            }
+            if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
+                removeEquippedInventoryItem(item);
+                break;
+            }
+        }
+        equippedInventoryItems.add(defenseEquipment);        
+    }
+
+    /**
+     * return an equipped inventory item by x and y coordinates
+     * assumes that no 2 unequipped inventory items share x and y coordinates
+     * @param x x index from 0 to width-1
+     * @param y y index from 0 to height-1
+     * @return equipped inventory item at the input position
+     */
+    public Entity getEquippedInventoryItemEntityByCoordinates(int x, int y){
+        for (Entity e: equippedInventoryItems){
+            if ((e.getX() == x) && (e.getY() == y)){
+                return e;
+            }
+        }
+        return null;
+    }
+
+    /**
      * spawn a sword in the world and return the sword entity
      * @return a sword to be spawned in the controller as a JavaFX node
      */
@@ -755,6 +807,15 @@ public class LoopManiaWorld {
     }
 
     /**
+     * remove an item from the equipped inventory
+     * @param item item to be removed
+     */
+    private void removeEquippedInventoryItem(Entity item){
+        item.destroy();
+        equippedInventoryItems.remove(item);
+    }
+
+    /**
      * remove an item from the unequipped inventory
      * @param item item to be removed
      */
@@ -770,7 +831,7 @@ public class LoopManiaWorld {
      * @param y y index from 0 to height-1
      * @return unequipped inventory item at the input position
      */
-    private Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y){
+    public Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y){
         for (Entity e: unequippedInventoryItems){
             if ((e.getX() == x) && (e.getY() == y)){
                 return e;
