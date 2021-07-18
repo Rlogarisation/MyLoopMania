@@ -91,7 +91,7 @@ public class CardTest {
         for(int i=0; i<4; i++){
             orderedPath.add(new Pair<Integer,Integer>(1, i));
         }  
-        LoopManiaWorld d = new LoopManiaWorld(5, 0, orderedPath);   
+        LoopManiaWorld d = new LoopManiaWorld(8, 0, orderedPath);   
         int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(1, 1));
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
         Character myHero = new Character(position00);
@@ -123,6 +123,10 @@ public class CardTest {
         assert(b7==null);
         Building b8 = d.convertCardToBuildingByCoordinates(c7.getX(), c7.getY(), nonPathAdjacentTile.getValue0(), nonPathAdjacentTile.getValue1());
         assert(b8==null);
+
+        // ZombiePit spawns
+        Building zombiePit = d.convertCardToBuildingByCoordinates(c2.getX(), c2.getY(), 2, 1);
+        assert(zombiePit instanceof ZombiePit);
 
     }
 

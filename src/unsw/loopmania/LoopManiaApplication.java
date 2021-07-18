@@ -75,7 +75,7 @@ public class LoopManiaApplication extends Application {
         stage.sizeToScene();
         stage.show();
     }
-
+    
     public static void main(String[] args) {
         launch(args);
     }

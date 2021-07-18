@@ -103,4 +103,41 @@ public class AllyTest {
         assert(dead.contains(slugB) && dead.contains(SlugC) && dead.contains(SlugD));
     }
 
+    @Test
+    public void testToEnemy(){
+        //Setup for ally to exist
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+        Character myHero = new Character(position00);
+        currentWorld.setCharacter(myHero);
+        
+        //Create vampire and zombie enemies and make them tranced
+        Vampire VampireA = new Vampire(position00);
+        Zombie ZombieA = new Zombie(position00);
+        VampireA.setIsTranced(true);
+        ZombieA.setIsTranced(true);
+        //Create new allies and setEnemyState
+        Ally a1 = new Ally(position00);
+        Ally a2 = new Ally(position00);
+        a1.setEnemyState(VampireA);
+        a2.setEnemyState(ZombieA);
+        //Test toEnemy()
+        Enemy newVampire = a1.toEnemy();
+        Enemy newZombie = a2.toEnemy();
+        assert(newVampire instanceof Vampire);
+        assert(newVampire.getTrancedStatus() == false);
+        assert(newZombie instanceof Zombie);
+        assert(newZombie.getTrancedStatus() == false);
+    }
+
 }
