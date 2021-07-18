@@ -143,13 +143,13 @@ public class CardTest {
         Character myHero = new Character(position00);
         d.setCharacter(myHero);
         Card c1 = d.loadCard(new VampireCastleCard(x, y));
-        Card c2 = d.loadCard(new ZombiePitCard(x,y));
-        Card c3 = d.loadCard(new TowerCard(x,y));
-        Card c4 = d.loadCard(new CampFireCard(x,y));
-        Card c5 = d.loadCard(new TrapCard(x,y));
+        d.loadCard(new ZombiePitCard(x,y));
+        d.loadCard(new TowerCard(x,y));
+        d.loadCard(new CampFireCard(x,y));
+        d.loadCard(new TrapCard(x,y));
         assert(d.getCardList().size() == 5);
         //Card loaded over limit
-        Card c6 = d.loadCard(new VillageCard(x,y));
+        d.loadCard(new VillageCard(x,y));
         //Assert c1 has been removed and size is still 5
         assert(!d.getCardList().contains(c1) && d.getCardList().size() == 5);
         //Check character recieved rewards
