@@ -403,7 +403,7 @@ public class BattleTest {
         Character character = new Character(position00);
         currentWorld.setCharacter(character);
 
-        // zombie: hp = 5 and damage = 5, havee chance to tranform ally into zombie.
+        // zombie: hp = 5 and damage = 5, have chance to tranform ally into zombie.
         // It got transformed into tranced ally with hp = 20, damage = 5.
         Zombie zombie1 = new Zombie(position00);
         currentWorld.addEnemy(zombie1);
@@ -428,6 +428,63 @@ public class BattleTest {
         assertTrue(currentWorld.getAllyList().isEmpty());
         assertEquals(-5, slug1.getHp());
         assertEquals(80, character.getHp());
+        assertTrue(currentWorld.getCharacterIsAlive());
+    }
+
+    @Test
+    /**
+     * Test for the creation of tranced ally.
+     * Test for the situation of the whole battle finished within 2 attacks for tranced ally,
+     * and tranced ally will die as ally in the end of game.
+     */
+    public void trancedAllyDieTest() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+
+        // character: hp = 100, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+
+        // zombie: hp = 5 and damage = 5, have chance to tranform ally into zombie.
+        // It got transformed into tranced ally with hp = 20, damage = 5.
+        Zombie zombie1 = new Zombie(position00);
+        currentWorld.addEnemy(zombie1);
+        zombie1.setIsTranced(true);
+    
+        // slug: hp = 5 and damage = 5, radius = 1.
+        Slug slug1 = new Slug(position00);
+        currentWorld.addEnemy(slug1);
+        slug1.setHp(5);
+        slug1.setDamage(5);
+
+        // trancedAlly: hp = 15 (Die), slug hp = 0, character hp = 100.
+
+
+        List<Enemy> defeatedEnemy =  currentWorld.runBattles();
+
+
+        assertTrue(defeatedEnemy.contains(slug1));
+        assertTrue(defeatedEnemy.size() == 1);
+
+        assertTrue(currentWorld.getAllyList().isEmpty());
+        assertEquals(0, slug1.getHp());
+        assertEquals(100, character.getHp());
         assertTrue(currentWorld.getCharacterIsAlive());
     }
 
@@ -465,7 +522,7 @@ public class BattleTest {
         Character character = new Character(position00);
         currentWorld.setCharacter(character);
 
-        // zombie: hp = 5 and damage = 5, havee chance to tranform ally into zombie.
+        // zombie: hp = 5 and damage = 5, have chance to tranform ally into zombie.
         // It got transformed into tranced ally with hp = 20, damage = 5.
         Zombie zombie1 = new Zombie(position00);
         currentWorld.addEnemy(zombie1);
