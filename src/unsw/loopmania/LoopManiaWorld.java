@@ -890,7 +890,7 @@ public class LoopManiaWorld {
     /**
      * move all enemies
      */
-    private void moveAllEnemies() {
+    public void moveAllEnemies() {
         for (Enemy e: enemyList){
             e.move();
             //Reset the campfireInRange for vampire

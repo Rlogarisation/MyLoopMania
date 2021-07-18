@@ -35,7 +35,10 @@ public class Ally extends MovingEntity{
         this.EnemyState = EnemyState;
     }
 
-    //based on EnemyState turn ally into an enemy
+    /**
+     * Converts TrancedAlly to enemy based on its past state
+     * @return Enemy related to pastEnemyState
+     */
     public Enemy toEnemy(){
         this.setHp(0);
         Enemy newEnemy = null;
