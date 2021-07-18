@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -16,6 +17,105 @@ import unsw.loopmania.Character;
  * @author Zheng Luo (z5206267)
  */
 public class BattleTest {
+
+    @Test
+    /**
+     * Test the loopManiaWorld can be generated as expected.
+     */
+    public void worldCreationTest() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        assertEquals(3, currentWorld.getWidth());
+        assertEquals(3, currentWorld.getHeight());
+    }
+
+    @Test
+    /**
+     * Test the stability of the program if there is no enemy, but ally and character.
+     */
+    public void noEnemyTest() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+
+        // character: hp = 100, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+
+        // ally: hp = 20, damage = 5
+        Ally ally1 = new Ally(position00);
+        currentWorld.addAlly(ally1);
+
+
+        List<Enemy> defeatedEnemy =  currentWorld.runBattles();
+        assertTrue(currentWorld.getCharacterIsAlive());
+        assertTrue(character.getHp() > 0 && ally1.getHp() > 0);
+        assertTrue(defeatedEnemy.size() == 0);
+    }
+
+    @Test
+    /**
+     * Test the stability of the program if there is no enemy, no ally but character.
+     */
+    public void noEnemyorAllyTest() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+
+        // character: hp = 100, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+
+
+
+        List<Enemy> defeatedEnemy =  currentWorld.runBattles();
+
+        assertTrue(currentWorld.getCharacterIsAlive());
+        assertTrue(character.getHp() == 100);
+        assertTrue(defeatedEnemy.size() == 0);
+    }
     
     @Test
     /**
@@ -64,7 +164,8 @@ public class BattleTest {
         assertTrue(defeatedEnemy.contains(vampire1));
         assertTrue(defeatedEnemy.contains(zombie1));
 
-        assertTrue(character.getHp() >= 0);
+        assertTrue(character.getHp() > 0);
+        assertTrue(currentWorld.getCharacterIsAlive());
     }
 
 
@@ -117,7 +218,8 @@ public class BattleTest {
         assertTrue(defeatedEnemy.contains(vampire1));
 
         assertTrue(ally1.getHp() <= 0);
-        assertTrue(character.getHp() >= 0);
+        assertTrue(character.getHp() > 0);
+        assertTrue(currentWorld.getCharacterIsAlive());
     }
 
     @Test
@@ -165,7 +267,8 @@ public class BattleTest {
         assertTrue(defeatedEnemy.contains(slug1));
         assertTrue(defeatedEnemy.contains(vampire1));
 
-        assertTrue(character.getHp() >= 0);
+        assertTrue(character.getHp() > 0);
+        assertTrue(currentWorld.getCharacterIsAlive());
     }
 
     @Test
@@ -219,7 +322,8 @@ public class BattleTest {
         assertTrue(defeatedEnemy.contains(slug1));
         assertTrue(defeatedEnemy.contains(vampire1));
 
-        assertTrue(character.getHp() >= 0);
+        assertTrue(character.getHp() > 0);
+        assertTrue(currentWorld.getCharacterIsAlive());
     }
 
     @Test
@@ -265,85 +369,13 @@ public class BattleTest {
         // If there is 2 enemies died at the end, means ally has been transformed into zombie.
         assertTrue(defeatedEnemy.size() == 2);
 
-        assertTrue(character.getHp() >= 0);
-    }
-
-    @Test
-    /**
-     * Test the stability of the program if there is no enemy, but ally and character.
-     */
-    public void noEnemyTest() {
-        /**
-         * Creating current world.
-         */
-        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-        orderedPath.add(new Pair<Integer, Integer>(0, 0));
-        orderedPath.add(new Pair<Integer, Integer>(0, 1));
-        orderedPath.add(new Pair<Integer, Integer>(0, 2));
-        orderedPath.add(new Pair<Integer, Integer>(1, 2));
-        orderedPath.add(new Pair<Integer, Integer>(2, 2));
-        orderedPath.add(new Pair<Integer, Integer>(2, 1));
-        orderedPath.add(new Pair<Integer, Integer>(1, 0));
-        orderedPath.add(new Pair<Integer, Integer>(2, 0));
-        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
-
-        // Creating current coordinate for enemy.
-        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
-        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
-
-
-        // character: hp = 100, damage = 10.
-        Character character = new Character(position00);
-        currentWorld.setCharacter(character);
-
-        // ally: hp = 20, damage = 5
-        Ally ally1 = new Ally(position00);
-        currentWorld.addAlly(ally1);
-
-
-        List<Enemy> defeatedEnemy =  currentWorld.runBattles();
-
-        assertTrue(character.getHp() > 0 && ally1.getHp() > 0);
-        assertTrue(defeatedEnemy.size() == 0);
-    }
-
-    @Test
-    /**
-     * Test the stability of the program if there is no enemy, no ally but character.
-     */
-    public void noEnemyorAllyTest() {
-        /**
-         * Creating current world.
-         */
-        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-        orderedPath.add(new Pair<Integer, Integer>(0, 0));
-        orderedPath.add(new Pair<Integer, Integer>(0, 1));
-        orderedPath.add(new Pair<Integer, Integer>(0, 2));
-        orderedPath.add(new Pair<Integer, Integer>(1, 2));
-        orderedPath.add(new Pair<Integer, Integer>(2, 2));
-        orderedPath.add(new Pair<Integer, Integer>(2, 1));
-        orderedPath.add(new Pair<Integer, Integer>(1, 0));
-        orderedPath.add(new Pair<Integer, Integer>(2, 0));
-        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
-
-        // Creating current coordinate for enemy.
-        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
-        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
-
-
-        // character: hp = 100, damage = 10.
-        Character character = new Character(position00);
-        currentWorld.setCharacter(character);
-
-
-
-        List<Enemy> defeatedEnemy =  currentWorld.runBattles();
-
-        assertTrue(character.getHp() == 100);
-        assertTrue(defeatedEnemy.size() == 0);
+        assertTrue(character.getHp() > 0);
+        assertTrue(currentWorld.getCharacterIsAlive());
     }
 
     
+
+
 
 
 
