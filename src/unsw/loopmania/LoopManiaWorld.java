@@ -550,7 +550,8 @@ public class LoopManiaWorld {
         
         for (Entity item : unequippedInventoryItems) {
             if (item instanceof AttackEquipment) {
-                removeEquippedInventoryItem(item);                
+                removeEquippedInventoryItem(item); 
+                //find a way to replace equipped item back in unequipped               
                 break;
             }
         }
