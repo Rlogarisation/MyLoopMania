@@ -246,6 +246,11 @@ public class LoopManiaWorldController {
             }
             if (world.getCharacterIsAlive()){
                 world.runTickMoves();
+                System.out.println(world.getCharacter().getCharacterStats());
+                if(world.getCharacter().hasAchievedGoal()){
+                    System.out.println("CONGRATS!!!!!");
+                    pause();
+                }
                 printThreadingNotes("HANDLED TIMER");
             } else{
                 printThreadingNotes("Character is Dead");
