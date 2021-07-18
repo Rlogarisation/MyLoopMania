@@ -1,5 +1,5 @@
 package unsw.loopmania;
-import unsw.loopmania.Stake;
+
 public class StakeStrategy implements FightStrategy{
     private final int damage = 4;
     @Override
