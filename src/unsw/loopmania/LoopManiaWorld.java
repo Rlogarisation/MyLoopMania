@@ -267,11 +267,17 @@ public class LoopManiaWorld {
      * add ally into allylist
      * @param selectedAlly the ally which will be added into ally list.
      */
+    public void addAlly(Ally selectedAlly) {
+        allyList.add(selectedAlly);
+    }
+    
     public Ally addAlly(PathPosition position) {
         Ally newAlly = new Ally(position);
         allyList.add(newAlly);
         return newAlly;
     }
+
+
 
     /**
      * Add TrancedAlly into ally list and kill currentEnemy
@@ -307,7 +313,7 @@ public class LoopManiaWorld {
         int enemyIndex = 0;
         
         // Battle between ally and enemy.
-        while (allyIndex < allyList.size()) {
+        while (allyIndex < allyList.size() && !enemiesJoiningBattle.isEmpty()) {
             Ally currentAlly = allyList.get(allyIndex);
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
 
@@ -344,7 +350,7 @@ public class LoopManiaWorld {
         }
 
         // Battle with character and enemy when all allies are dead.
-        while (enemyIndex < enemiesJoiningBattle.size())  {
+        while (enemyIndex < enemiesJoiningBattle.size() && !enemiesJoiningBattle.isEmpty())  {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
 
             //add towerDamage to character's initial damage
