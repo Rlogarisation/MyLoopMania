@@ -11,7 +11,6 @@ public class Stake extends AttackEquipment {
 
     private final int price = 500;
     private final int damage = 4;
-    private final int attackRange = 1;
 
     /**
      * 5-args constructor 
@@ -24,6 +23,5 @@ public class Stake extends AttackEquipment {
         super(x,y);
         this.setPrice(price);
         this.setDamage(damage);
-        this.setAttackRange(attackRange);
     }    
 }
