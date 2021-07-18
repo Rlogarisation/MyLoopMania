@@ -725,10 +725,13 @@ public class BattleTest {
         currentWorld.addEnemy(slug4);
         Slug slug5 = new Slug(position22);
         currentWorld.addEnemy(slug5);
-        currentWorld.runTickMoves();
-        
-        for (Enemy e: currentWorld.getEnemyList()) {
-            assertTrue(2 != e.getX() || 2 != e.getY());
+
+        currentWorld.moveAllEnemies();
+        List<Enemy> enemyList = currentWorld.getEnemyList();
+        for (Enemy e: enemyList) {
+            assertTrue((e.getX() == 1 && e.getY() == 2) 
+            || (e.getX() == 2 &&  e.getY() == 1));
+            
         }
         
         
