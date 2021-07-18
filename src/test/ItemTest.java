@@ -137,6 +137,7 @@ public class ItemTest {
         Entity item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
         Boolean itemClassSame = (item instanceof Armour);
         assertTrue(itemClassSame);
+        assertTrue(c.getHasArmour());
 
         d.equipOneItem(new Armour(new SimpleIntegerProperty(x+1), y));
 
@@ -149,6 +150,7 @@ public class ItemTest {
         item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
         itemClassSame = (item instanceof Shield);
         assertTrue(itemClassSame);
+        assertTrue(c.getHasShield());
 
         d.equipOneItem(new Shield(new SimpleIntegerProperty(x+2), y));
         
@@ -161,12 +163,45 @@ public class ItemTest {
         item = d.getEquippedInventoryItemEntityByCoordinates(3,0);
         itemClassSame = (item instanceof Helmet);
         assertTrue(itemClassSame);
+        assertTrue(c.getHasHelmet());
 
         d.equipOneItem(new Helmet(new SimpleIntegerProperty(x+2), y));
         
         item = d.getEquippedInventoryItemEntityByCoordinates(3,0);
         itemClassSame = (item == null);
         assertTrue(itemClassSame);
+
+    }
+
+    /**
+     * This test checks if 'equipOneItem' function add proper strategy 
+     * to the character
+     */
+    @Test
+    public void testEquipItemStrategy() {
+        LoopManiaWorld d = new LoopManiaWorld(1, 1, new ArrayList<>());
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<Pair<Integer,Integer>>();
+        orderedPath.add(new Pair<Integer,Integer>(0,0));
+        Character c = new Character(new PathPosition(0,orderedPath));
+        d.setCharacter(c);
+
+        int x = 0;
+        SimpleIntegerProperty y = new SimpleIntegerProperty(0);
+        d.equipOneItem(new Sword(new SimpleIntegerProperty(x), y));
+
+        FightStrategy strategy = c.getFightStrategy();
+        System.out.println(strategy);
+        assertTrue(strategy instanceof SwordStrategy);
+
+        d.equipOneItem(new Staff(new SimpleIntegerProperty(x), y));
+
+        strategy = c.getFightStrategy();
+        assertTrue(strategy instanceof StaffStrategy);
+
+        d.equipOneItem(new Stake(new SimpleIntegerProperty(x), y));
+
+        strategy = c.getFightStrategy();
+        assertTrue(strategy instanceof StakeStrategy);
 
     }
 
