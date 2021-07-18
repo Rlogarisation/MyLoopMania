@@ -354,10 +354,10 @@ public class BuildingTest {
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<>(1, 1));
         orderedPath.add(new Pair<>(2, 1));
-        orderedPath.add(new Pair<>(1, 2));
+        orderedPath.add(new Pair<>(2, 2));
         LoopManiaWorld lmw = newLmw(orderedPath);
         PathPosition slugPathPosA = new PathPosition(0, orderedPath);
-        PathPosition slugPathPosB = new PathPosition(0, orderedPath);
+        PathPosition slugPathPosB = new PathPosition(2, orderedPath);
         Enemy slugA = new Slug(slugPathPosA);
         Enemy slugB = new Slug(slugPathPosB);
         lmw.addEnemy(slugA);
