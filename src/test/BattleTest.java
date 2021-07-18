@@ -543,8 +543,7 @@ public class BattleTest {
 
         List<Enemy> defeatedEnemy =  currentWorld.runBattles();
 
-
-        assertTrue(defeatedEnemy.contains(zombie1));
+        assertTrue(defeatedEnemy.size() == 2);
         assertTrue(defeatedEnemy.contains(slug1));
         assertTrue(defeatedEnemy.size() == 2);
         assertTrue(currentWorld.getAllyList().isEmpty());

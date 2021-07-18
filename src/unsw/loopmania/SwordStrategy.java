@@ -5,7 +5,8 @@ public class SwordStrategy implements FightStrategy{
     @Override
     public void attack(double initialDamage, MovingEntity entity) {
         double currentHp = entity.getHp();
-        double totalDamage = initialDamage + (damage * 2);
+        double totalDamage = initialDamage + damage;
+        System.out.println(totalDamage);
         entity.setHp(currentHp - totalDamage);
     }
     
