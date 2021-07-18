@@ -92,6 +92,10 @@ public class CardTest {
             orderedPath.add(new Pair<Integer,Integer>(1, i));
         }  
         LoopManiaWorld d = new LoopManiaWorld(5, 0, orderedPath);   
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(1, 1));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+        Character myHero = new Character(position00);
+        d.setCharacter(myHero);
         Building b1 = d.convertCardToBuildingByCoordinates(0, 0, nonPathAdjacentTile.getValue0(), nonPathAdjacentTile.getValue1());
         assert(b1==null);
         //Test buildings placed on same location
