@@ -12,7 +12,7 @@ import org.javatuples.Pair;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
-import unsw.loopmania.Buildings.Campfire;
+import unsw.loopmania.Buildings.*;
 
 /**
  * BattleTest for runBattle function in LoopManiaWorld.
@@ -577,12 +577,13 @@ public class BattleTest {
         int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
 
-        Campfire newCampfire = new Campfire(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-
         // character: hp = 100, damage = 10.
         Character character = new Character(position00);
         currentWorld.setCharacter(character);
 
+        Building newCampfire = new Campfire(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        currentWorld.addBuildingToBuildingList(newCampfire);
+        currentWorld.buildingInteractions();
     
         // slug: hp = 20 and damage = 2, radius = 1.
         Slug slug1 = new Slug(position00);
