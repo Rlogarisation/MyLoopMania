@@ -549,26 +549,38 @@ public class LoopManiaWorld {
         for (Entity item : equippedInventoryItems) {
             if (item instanceof AttackEquipment) {
                 removeEquippedInventoryItem(item);
+                if (item instanceof Sword) {
+                    character.setFightStrategy(new SwordStrategy());
+                }
+                if (item instanceof Staff) {
+                    character.setFightStrategy(new StaffStrategy());
+                }
+                if (item instanceof Stake) {
+                    character.setFightStrategy(new StakeStrategy());
+                }
                 break;
             }
-                
         }
         equippedInventoryItems.add(attackEquipment);
         
     }
 
     public void equipOneItem(DefenseEquipment defenseEquipment) {
+
         for (Entity item : equippedInventoryItems) {
             if (defenseEquipment instanceof Armour && item instanceof Armour) {
                 removeEquippedInventoryItem(item);
+                character.setHasArmour(true);
                 break;
             }
             if (defenseEquipment instanceof Shield && item instanceof Shield) {
                 removeEquippedInventoryItem(item);
+                character.setHasShield(true);
                 break;
             }
             if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
                 removeEquippedInventoryItem(item);
+                character.setHasHelmet(true);
                 break;
             }
         }
