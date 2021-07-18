@@ -545,6 +545,7 @@ public class BattleTest {
 
         assertTrue(defeatedEnemy.size() == 2);
         assertTrue(defeatedEnemy.contains(slug1));
+        assertTrue(defeatedEnemy.size() == 2);
         assertTrue(currentWorld.getAllyList().isEmpty());
         assertEquals(-5, zombie1.getHp());
         assertEquals(95, character.getHp());
@@ -687,4 +688,49 @@ public class BattleTest {
         
     }
 
+    @Test
+    /**
+     * Test the function to move all enemies.
+     */
+    public void moveAllEnemies() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index22InPath = orderedPath.indexOf(new Pair<Integer, Integer>(2, 2));
+        PathPosition position22 = new PathPosition(index22InPath, orderedPath);
+
+
+        Character character = new Character(position22);
+        currentWorld.setCharacter(character);
+        
+        Slug slug1 = new Slug(position22);
+        currentWorld.addEnemy(slug1);
+        Slug slug2 = new Slug(position22);
+        currentWorld.addEnemy(slug2);
+        Slug slug3 = new Slug(position22);
+        currentWorld.addEnemy(slug3);
+        Slug slug4 = new Slug(position22);
+        currentWorld.addEnemy(slug4);
+        Slug slug5 = new Slug(position22);
+        currentWorld.addEnemy(slug5);
+        currentWorld.runTickMoves();
+        
+        for (Enemy e: currentWorld.getEnemyList()) {
+            assertTrue(2 != e.getX() || 2 != e.getY());
+        }
+        
+        
+    }
 }
