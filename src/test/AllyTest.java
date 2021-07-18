@@ -61,9 +61,11 @@ public class AllyTest {
         currentWorld.removeAlly(ta1);
         //Assert TrancedAllyList is empty
         assertEquals(currentWorld.getTrancedAllyList().size(), 0);
+
+
     }
     @Test
-    public void testTrancedAllyBattle(){
+    public void testTrancedAlly(){
         //Setup for ally to exist
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));
@@ -79,6 +81,31 @@ public class AllyTest {
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
         Character myHero = new Character(position00);
         currentWorld.setCharacter(myHero);
+
+
+        Slug slugA = new Slug(position00);
+        Slug slugB = new Slug(position00);
+        Slug SlugC = new Slug(position00);
+        Slug SlugD = new Slug(position00);
+        currentWorld.addEnemy(slugA);
+        currentWorld.addEnemy(slugB);
+        currentWorld.addEnemy(SlugC);
+        currentWorld.addEnemy(SlugD);
+        //Turn slugA into tranced Ally
+        slugA.setIsTranced(true);
+        //Run battles
+        List<Enemy> dead = currentWorld.runBattles();
+        //Tranced List should be empty
+        assert(currentWorld.getTrancedAllyList().isEmpty());
+        //Enemy List should be empty
+        assert(currentWorld.getEnemyList().isEmpty());
+        //Defeated should have slug B,C,D. Slug A was tranced and died as ally
+        assert(dead.contains(slugB) && dead.contains(SlugC) && dead.contains(SlugD));
+        System.out.println(myHero.getHp());
+        //If not tranced, Character would be hit by 2 extra enemies and health would be 2
+        assert(myHero.getHp() == 6);
+
+        //Add zombie and vampires
 
     }
 

@@ -5,8 +5,8 @@ public class Ally extends MovingEntity{
      * Ally class baseHealth = 20 and baseAttack = 5
      */
 
-    final private double baseHealth = 20;
-    final private double baseAttack = 5;
+    final private double baseHealth = 5;
+    final private double baseAttack = 2.5;
     final private double initialMovingSpeed = 2;
     private int attackCounter = 0;
     private Enemy EnemyState = null;
@@ -45,6 +45,7 @@ public class Ally extends MovingEntity{
         if(EnemyState instanceof Slug){
             newEnemy =  new Slug(this.getPathPosition());
         }
+        newEnemy.setIsTranced(false);
         return newEnemy;
     }
 
