@@ -11,7 +11,10 @@
     * We assume that the character proceeds through the game in the order of do attack phase then building interactions.
     * After a turn of attacks, if enemies are defeated relevant items/cards will be dropped.
     * We assume that the character and allied soldiers can attack any enemies in the battle radius.
-    * Character will move 1 step clockwise around the path after all attacking enemies are defeated an all interactions with buildings are complete.
+    * Character will move 1 step clockwise around the path after all attacking enemies are defeated an all interactions with buildings are complete.  
+    #
+
+
 
 2. Enemies
     
@@ -46,9 +49,21 @@
     * We assume that when a character attacks a vampire with ‘stake’, the damage
 is doubled.
     * We assume that the probability of an occurrence of a critical bite is 5% and
-the damage of the bite is 10. And also, when a critical bite was occured by a vampire, the number of attacks is between 2 and 5.
+the damage of the bite is 10. And also, when a critical bite was occured by a vampire, the number of attacks is between 2 and 5.  
+#
 
-3. Buildings
+3. Ally
+    
+    * Base health = 20
+    * Base attack = 5
+    * Moving speed = 2;
+
+    * Assume Ally is a moving entity and follows the character in the world
+    * Tranced Ally last 3 attacks before returning back to enemy  
+    #
+
+
+4. Buildings
     * We assume that there can be only one building per tile.
     * All types of buildings can be built up to 10 each.
     * Assume that vampireCastle and Zombie Pit will only spawn an enemy in the positions that are adjacent to it and only if there is no enemy there.
@@ -65,31 +80,39 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
 
     3.4. Tower
     * Damge: TBD
-    * Range: 3
+    * Range: 3  
+    #
 
-4. Basic Items
+5. Basic Items
     
     * We assume that the character can only have up to 16 unequipped items.
     * We assume that the character has a 50% chance to get an item when it kills an enemy.
     * We assume that when we get a new item and the the unequipped item inventory is full, the character discard the oldest item and get 50 gold and 100 experience points.
 
-    4.1 Weapons
+    5.1 Weapons
     
+    * We assume that staff has a 7% chance to inflict a ‘trance’ and the changed allied soldier lasts 25 seconds in the changed state.
+    * Allied soldiers transformed from enemies have their initial health(full stamina).
+    * We assume that if the soldier has changed to enemy and returns to his original form(didn’t die from a battle), then it has the stamina which was the most recent stamina before shape change.
+
     1) Sword
         * damage : 6
         * attack range : 2
+        * price : standard: 400 gold / berserker: 600 gold
 
     2) Stake
         * damage : 4(8 against vamprie)
         * attack range : 1
+        * price : standard: 500 gold / berserker: 750 gold
         
     3) Staff
         * damage : 3
         * attack range : 2
         * trance : 7% probability
+        * price : standard: 500 gold / berserker: 750 gold
         * We assume that the character can only put one weapon on.
         
-    4.2 Armours
+    5.2 Armours
         
     * We assume that the character can only put one piece of armour, shield, helmet on.
     * We assume that if the character wears an armour and a helmet, 
@@ -97,62 +120,59 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
 
     1) Armour
         * defense : 50%
+        * price : standard: 300 gold / berserker: 450 gold
         
     2) Shield
-        
+        * price : standard: 500 gold / berserker: 750 gold
         * We assume that when the character is equipped with a shield, only 80% of the total damage except shield effect is taken.
             (e.g) a slug attacks the character wearing an armour, a shield and a helmet 
                 -> total damage = (1 * (1 - (0.5+0.2)) * 0.8 = 0.24)
         
-        * We assume that staff has a 7% chance to inflict a ‘trance’ and the changed allied soldier lasts 25 seconds in the changed state.
-        * Allied soldiers transformed from enemies have their initial health(full stamina).
-        * We assume that if the soldier has changed to enemy and returns to his original form(didn’t die from a battle), then it has the stamina which was the most recent stamina before shape change.
         
     3) Helmet 
+        * price : standard: 600 gold / berserker: 900 gold
         * We assume that when the character is equipped with a helmet, the
         attack damage from the character and the damage from the enemy is
         reduced by 20%.
+        
 
-    4.3 Card
+    5.3 Card
         
     * We assume that a character can have up to 10 cards and if it gets one extra
     card, a card is destroyed due to having too many cards.
     * We assume that when a card is destroyed, the character gets one out of 20gold, 1 health potion, 1equipment, 100XP with the same probability(25%)
     * Card drop probability = 50%
 
-    4.4 Health Potion
+    5.4 Health Potion
 
-    * We assume that a health potion restores the character’s HP by 30.
+    * We assume that a health potion restores the character’s HP by 30.  
+    #
 
-5. Rare Items
+6. Rare Items
     
     * We assume that ‘the one ring’ can be obtained from any enemy.
     * We assume that when ‘the one ring’ is used, the character respawns at the
     same position in which it is dead.
-    * We assume that the drop rate of ‘the one ring’ is 0.5%.
+    * We assume that the drop rate of ‘the one ring’ is 0.5%.  
+    #
 
-6. Behaviour/Features
-    * We assume that when the user presses ‘insert’ key, a health portion is used if it exists in the inventory.
+7. Behaviour/Features
+    * We assume that when the user presses ‘insert’ key, a health portion is used if it exists in the inventory.  
+    #
 
-7. Goals
+8. Goals
     * We assume that a goal can be achieved by the character for the world to be considered complete and there is the condition.
 
     * Condition for a goal
         -> Obtaining 100000 experience points and (completing 80 cycles or amassing
-        10000 gold)
+        10000 gold)  
+    #
 
-8. Other assumptions
+9. Other assumptions
 
     * We assume that the character has a 50% chance to get an item when it kills
     an enemy.
     * We assume that the character can sell the item for half the original price.
-    * We assume that when the character is in the castle, we can purchase items by double clicking.
+    * We assume that when the character is in the castle, we can purchase items by double clicking.  
+    #
 
-9. Ally
-    
-    * Base health = 20
-    * Base attack = 5
-    * Moving speed = 2;
-
-    * Assume Ally is a moving entity and follows the character in the world
-    * Tranced Ally last 3 attacks before returning back to enemy
