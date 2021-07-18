@@ -548,7 +548,7 @@ public class LoopManiaWorld {
     public AttackEquipment equipOneItem(AttackEquipment attackEquipment) {
         // check if the equipment is from unequipped inventory
         
-        for (Entity item : equippedInventoryItems) {
+        for (Entity item : unequippedInventoryItems) {
             if (item instanceof AttackEquipment) {
                 removeEquippedInventoryItem(item);                
                 break;
@@ -573,25 +573,26 @@ public class LoopManiaWorld {
      * @param defenseEquipment is the attack equipment to be inserted in equippedInventory
      */
     public DefenseEquipment equipOneItem(DefenseEquipment defenseEquipment) {
-
-        for (Entity item : equippedInventoryItems) {
-            if (defenseEquipment instanceof Armour && item instanceof Armour) {
-                removeEquippedInventoryItem(item);
+        for (Entity item : unequippedInventoryItems) {
+            if (defenseEquipment instanceof Armour && item instanceof Armour && !character.getHasArmour()) {
+                removeUnequippedInventoryItem(item);
                 character.setHasArmour(true);
+                equippedInventoryItems.add(defenseEquipment);  
                 break;
             }
-            if (defenseEquipment instanceof Shield && item instanceof Shield) {
-                removeEquippedInventoryItem(item);
+            if (defenseEquipment instanceof Shield && item instanceof Shield && !character.getHasShield()) {
+                removeUnequippedInventoryItem(item);
                 character.setHasShield(true);
+                equippedInventoryItems.add(defenseEquipment);  
                 break;
             }
-            if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
-                removeEquippedInventoryItem(item);
+            if (defenseEquipment instanceof Helmet && item instanceof Helmet && !character.getHasHelmet()) {
+                removeUnequippedInventoryItem(item);
                 character.setHasHelmet(true);
+                equippedInventoryItems.add(defenseEquipment);  
                 break;
             }
-        }
-        equippedInventoryItems.add(defenseEquipment);        
+        }      
         return defenseEquipment;
     }
 
