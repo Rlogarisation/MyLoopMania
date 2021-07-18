@@ -19,11 +19,4 @@ public class TheOneRing extends RareItem {
         super(x,y);
         this.setPrice(price);
     }    
-    
-    /*
-    // I'll move this function to Character
-    public void revival(Character character) {
-        character.setHp(100);
-    }
-    */
 }

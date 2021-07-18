@@ -1045,7 +1045,7 @@ public class LoopManiaWorld {
                     this.setgotOneEquipmentFromShop(false);
                 }
 
-                // if the game mode is berserker, set the potion checker
+                // if the game mode is survival, set the potion checker
                 // which checks if the character already got one potion on this turn
                 if (gameMode == GAME_MODE.SURVIVAL && this.gotOnePotionFromShop == null) {
                     this.setgotOnePotionFromShop(false);
