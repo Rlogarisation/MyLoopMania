@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,13 +60,9 @@ public class EnemyTest {
         assertEquals(0, slugA.getX());
         assertEquals(0, slugA.getY());
 
-        /**
-         * Need function to check random direction movement in Enemy.java
-         */
+        
         // Check move function.
-        // slugA.move();
-        
-        
+        slugA.move();
 
         // Check hp.
         assertEquals(initialHp, slugA.getHp());
@@ -171,13 +168,8 @@ public class EnemyTest {
         assertEquals(0, myZombie.getX());
         assertEquals(0, myZombie.getY());
 
-        /**
-         * Need function to check random direction movement in Enemy.java
-         */
         // Check move function.
-        // myZombie.move();
-        
-        
+        myZombie.move();
 
         // Check hp.
         assertEquals(initialHp, myZombie.getHp());
@@ -283,14 +275,9 @@ public class EnemyTest {
         assertEquals(0, myVampire.getX());
         assertEquals(0, myVampire.getY());
 
-        /**
-         * Need function to check random direction movement in Enemy.java
-         */
         // Check move function.
-        // myVampire.move();
+        myVampire.move();
         
-        
-
         // Check hp.
         assertEquals(initialHp, myVampire.getHp());
 
