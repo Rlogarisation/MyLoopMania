@@ -20,6 +20,7 @@ public class Helmet extends DefenseEquipment {
      */
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x,y);
+        this.setPrice(price);
         this.setDefense(defense);
     }    
    
