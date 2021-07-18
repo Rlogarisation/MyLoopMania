@@ -16,7 +16,8 @@ public class Barracks extends Building{
         Character character = lmw.getCharacter();
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
-            lmw.addAlly(character.getPathPosition());
+            Ally newAlly = new Ally(character.getPathPosition());
+            lmw.addAlly(newAlly);
         }
 
         return newChanges;

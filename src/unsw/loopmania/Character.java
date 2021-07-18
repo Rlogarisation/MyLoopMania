@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 /**
  * represents the main character in the backend of the game world
+ * @author Zheng Luo (z5206267)
  */
 public class Character extends MovingEntity {
-    final double initialHp = 10;
+    final double initialHp = 100;
     final double initialDamage = 10;
     final double initialMovingSpeed = 2;
     final double initialXp = 0; 

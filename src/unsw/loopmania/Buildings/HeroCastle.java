@@ -1,6 +1,5 @@
 package unsw.loopmania.Buildings;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
@@ -51,12 +50,12 @@ public class HeroCastle extends StaticEntity{
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
             notifyAllObservers();
+            this.numCyclesComplete = this.numCyclesComplete + 1;
             if (this.numCyclesComplete == this.numCyclesGoal){
                 this.numCyclesComplete = 0;
                 this.numCyclesGoal = this.numCyclesGoal + 1;
                 return true;
             }
-            this.numCyclesComplete = this.numCyclesComplete + 1;
         }
 
         return false;

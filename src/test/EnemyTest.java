@@ -10,6 +10,10 @@ import org.javatuples.Pair;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
 
+/**
+ * Tests for enemy.
+ * @author Zheng Luo (z5206267)
+ */
 public class EnemyTest {
     
     @Test
@@ -25,9 +29,6 @@ public class EnemyTest {
         
         /**
          * Creating current world.
-         * XXX
-         * X X
-         * XXX
          */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));
@@ -122,7 +123,7 @@ public class EnemyTest {
         // At the end of fight, character win with hp = 4.
         currentWorld.runBattles();
 
-        assertEquals(4, character.getHp());
+        assertEquals(94, character.getHp());
         assertEquals(0, slugA.getHp());
         
     }
@@ -140,9 +141,6 @@ public class EnemyTest {
         
         /**
          * Creating current world.
-         * XXX
-         * X X
-         * XXX
          */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));
@@ -236,7 +234,7 @@ public class EnemyTest {
         // At the end of fight, character win with hp = 7.
         currentWorld.runBattles();
 
-        assertEquals(7, character.getHp());
+        assertEquals(97, character.getHp());
 
         assertEquals(-8, myZombie.getHp());
         
@@ -255,9 +253,6 @@ public class EnemyTest {
         
         /**
          * Creating current world.
-         * XXX
-         * X X
-         * XXX
          */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));

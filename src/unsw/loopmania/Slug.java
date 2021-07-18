@@ -2,7 +2,8 @@ package unsw.loopmania;
 
 
 /**
- * Public class for enemy type Slug, Written by Zheng Luo.
+ * Public class for enemy type Slug
+ * @author Zheng Luo (z5206267)
  */
 public class Slug extends Enemy{
     final double initialHp = 5;

@@ -109,7 +109,6 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingList = new ArrayList<>();
         this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        //heroCastle = null;
         gameMode = GAME_MODE.STANDARD;
     }
 
@@ -159,6 +158,9 @@ public class LoopManiaWorld {
         }    
         return trancedAllies;
     }
+    public HeroCastle getHeroCastle(){
+        return this.heroCastle;
+    }
 
     /**
      * set the character. This is necessary because it is loaded as a special entity out of the file
@@ -167,6 +169,10 @@ public class LoopManiaWorld {
     public void setCharacter(Character character) {
         this.character = character;
         characterIsAlive = true;
+    }
+
+    public boolean getCharacterIsAlive(){
+        return this.characterIsAlive;
     }
 
     /**
@@ -258,8 +264,8 @@ public class LoopManiaWorld {
     }
 
     /**
-     * Add ally into ally list 
-     * @param position where it has been spawn.
+     * add ally into allylist
+     * @param selectedAlly the ally which will be added into ally list.
      */
     public Ally addAlly(PathPosition position) {
         Ally newAlly = new Ally(position);
@@ -286,22 +292,20 @@ public class LoopManiaWorld {
         allyList.remove(selectedAlly);
     }
 
-
-
     /**
      * Run the expected battles in the world, based on current world state.
      * runBattle function will end until either surrounding enemies all dead, or character is dead.
      * a battle will commence when the Character moves within the battle radius of an enemy on the path.
      * Those enemies for which the Character is within their support radius will join the battle.
      * @return list of enemies which have been killed
+     * @author Zheng Luo (z5206267)
      */
     public List<Enemy> runBattles() {
         List<Enemy> defeatedEnemies = new ArrayList<Enemy>();
         List<Enemy> enemiesJoiningBattle = determineEnemyEngagement();
         int allyIndex = 0;
         int enemyIndex = 0;
-
-        System.out.println(enemyList);
+        
         // Battle between ally and enemy.
         while (allyIndex < allyList.size()) {
             Ally currentAlly = allyList.get(allyIndex);
@@ -342,9 +346,11 @@ public class LoopManiaWorld {
         // Battle with character and enemy when all allies are dead.
         while (enemyIndex < enemiesJoiningBattle.size())  {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
+
             //add towerDamage to character's initial damage
             int towerDamage = character.getTowerDamage();
             character.attack(character.getDamage() + towerDamage, currentEnemy);
+
             //if character is in range of campfire, deal double damage
             if (character.getCampfireInRange()){
                 character.attack(character.getDamage(), currentEnemy);
@@ -394,6 +400,7 @@ public class LoopManiaWorld {
      * if so, search all enemy who is within the support radius of current enemy,
      * add all the enemies who will engaged into the battle into array. 
      * @return array of enemies who will battle within this fight.
+     * @author Zheng Luo (z5206267)
      */
     public List<Enemy> determineEnemyEngagement() {
         List<Enemy> enemyJoiningBattle = new ArrayList<Enemy>();
@@ -421,6 +428,7 @@ public class LoopManiaWorld {
      * e.g: there is 30% of selecting if you enter 0.3.
      * @param chance between 0 to 1 as percentage.
      * @return ture if seleted else return false as boolean.
+     * @author Zheng Luo (z5206267)
      */
     public boolean chanceGenerator(double chance) {
         double chanceOfCriticalBite = (new Random()).nextDouble();
@@ -438,10 +446,11 @@ public class LoopManiaWorld {
      * @param a First Entity.
      * @param b Second Entity.
      * @param distance The distance between these two entity.
-     * @return
+     * @return true or false within the range as boolean
+     * @author Zheng Luo (z5206267)
      */
     public boolean withinRange(Entity a, Entity b, double distance) {
-        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) < Math.pow(distance, 2);
+        return Math.pow((a.getX()-b.getX()), 2) +  Math.pow((a.getY()-b.getY()), 2) <= Math.pow(distance, 2);
     }
 
     /**
@@ -499,6 +508,9 @@ public class LoopManiaWorld {
         if(newCard instanceof TrapCard){
             newCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         }
+        if(newCard instanceof VillageCard){
+            newCard = new VillageCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
+        }
         if(newCard instanceof ZombiePitCard){
             newCard = new ZombiePitCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         }
@@ -522,21 +534,190 @@ public class LoopManiaWorld {
      * spawn a sword in the world and return the sword entity
      * @return a sword to be spawned in the controller as a JavaFX node
      */
-    //TODO add more equipment - Jayden
     public Sword addUnequippedSword(){
-        // TODO = expand this - we would like to be able to add multiple types of items, apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
-            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest sword
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
-        
         // now we insert the new sword, as we know we have at least made a slot available...
         Sword sword = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
         unequippedInventoryItems.add(sword);
         return sword;
+    }
+
+    /**
+     * spawn a staff in the world and return the staff entity
+     * @return a staff to be spawned in the controller as a JavaFX node
+     */
+    public Staff addUnequippedStaff(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            removeItemByPositionInUnequippedInventoryItems(0);
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        // now we insert the new staff, as we know we have at least made a slot available...
+        Staff staff = new Staff(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(staff);
+        return staff;
+    }
+
+    /**
+     * spawn a stake in the world and return the stake entity
+     * @return a stake to be spawned in the controller as a JavaFX node
+     */
+    public Stake addUnequippedStake(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        System.out.println(firstAvailableSlot);
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        // now we insert the new stake, as we know we have at least made a slot available...
+        Stake stake = new Stake(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(stake);
+        return stake;
+    }
+
+    /**
+     * spawn an armour in the world and return the armour entity
+     * @return an armour to be spawned in the controller as a JavaFX node
+     */
+    public Armour addUnequippedArmour(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        // now we insert the new an armour, as we know we have at least made a slot available...
+        Armour armour = new Armour(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(armour);
+        return armour;
+    }
+
+    /**
+     * spawn a shield in the world and return the shield entity
+     * @return a shield to be spawned in the controller as a JavaFX node
+     */
+    public Shield addUnequippedShield(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        // now we insert the new shield, as we know we have at least made a slot available...
+        Shield shield= new Shield(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(shield);
+        return shield;
+    }
+
+    /**
+     * spawn a helmet in the world and return the helmet entity
+     * @return a helmet to be spawned in the controller as a JavaFX node
+     */
+    public Helmet addUnequippedHelmet(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        // now we insert the new helmet, as we know we have at least made a slot available...
+        Helmet  helmet = new Helmet(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(helmet);
+        return helmet;
+    }
+
+    /**
+     * spawn a health potion in the world and return health potion entity
+     * @return a health potion to be spawned in the controller as a JavaFX node
+     */
+    public HealthPotion addUnequippedHealthPotion(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        // now we insert the new health potion, as we know we have at least made a slot available...
+        HealthPotion healthPotion = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(healthPotion);
+        return healthPotion;
+    }
+
+    /**
+     * spawn 'the one ring' in the world and return 'the one ring' entity
+     * @return 'the one ring' to be spawned in the controller as a JavaFX node
+     */
+    public TheOneRing addUnequippedTheOneRing(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        
+        // now we insert 'the one ring', as we know we have at least made a slot available...
+        TheOneRing theOneRing = new TheOneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(theOneRing);
+        return theOneRing;
+    }
+
+    /**
+     * Restores the character's health
+     * if the character has health potions
+     */
+    public void refillCharacterHealth() {
+        for (Entity item : unequippedInventoryItems) {
+            if (item instanceof HealthPotion) {
+                item.destroy();
+                removeUnequippedInventoryItem(item);
+                Double characterHp = this.character.getHp();
+                if (characterHp >= 70) {
+                    this.character.setHp(100);
+                } else {
+                    this.character.setHp(characterHp+30);
+                }
+                break;
+            }
+        }    
+    }
+
+    /**
+     * Revives character when it is dead
+     * @pre this.character.getHp() == 0
+     * @post this.character.getHp() == 100
+     */
+    public void reviveCharacter() {
+        for (Entity item : unequippedInventoryItems) {
+            if (item instanceof TheOneRing) {
+                this.character.setHp(100);
+                item.destroy();
+                removeUnequippedInventoryItem(item);
+                break;
+            }
+        }        
     }
 
     /**
@@ -553,6 +734,7 @@ public class LoopManiaWorld {
      * run moves which occur with every tick without needing to spawn anything immediately
      */
     public void runTickMoves(){
+        
         character.moveDownPath();
         character.setTowerDamage(0);
         character.setCampfireInRange(false);
@@ -627,7 +809,6 @@ public class LoopManiaWorld {
      * move all enemies
      */
     private void moveAllEnemies() {
-        // TODO = expand to more types of enemy - Roger
         for (Enemy e: enemyList){
             e.move();
             //Reset the campfireInRange for vampire
@@ -746,7 +927,6 @@ public class LoopManiaWorld {
             removeUnequippedInventoryItem(chosenItem);
             this.character.addGold((double) (itemPrice / 2));
         }    
-        
     }
 
     /**
@@ -761,7 +941,6 @@ public class LoopManiaWorld {
         StaticEntity chosenItem = null;
         Double characterGold = this.character.getGold();
         int itemPrice = 0;
-        
         
         for (StaticEntity item : itemShop.values()) {
             if (itemNodeX == item.getX() && itemNodeY == item.getY()) {
@@ -782,9 +961,16 @@ public class LoopManiaWorld {
                 // case1) get an equipment
                 if (chosenItem instanceof Equipment) {
                     itemPrice = ((Equipment) chosenItem).getPrice();
+                    
                     if (gameMode == GAME_MODE.BERSERKER && !gotOneEquipmentFromShop 
                         && characterGold >= itemPrice) {
-                        this.addUnequippedSword();
+                        if (chosenItem instanceof Sword) { this.addUnequippedSword(); }
+                        if (chosenItem instanceof Staff) { this.addUnequippedStaff(); }
+                        if (chosenItem instanceof Stake) { this.addUnequippedStake(); }
+                        if (chosenItem instanceof Armour) { this.addUnequippedArmour(); }
+                        if (chosenItem instanceof Shield) { this.addUnequippedShield(); }
+                        if (chosenItem instanceof Helmet) { this.addUnequippedHelmet(); }
+                        
                         // if the game mode is berserker, the equipment price is 50% more expensive
                         this.character.setGold(characterGold - (1.5)*itemPrice);
                         this.setgotOneEquipmentFromShop(true);
@@ -792,31 +978,34 @@ public class LoopManiaWorld {
                     }
 
                     if (gameMode != GAME_MODE.BERSERKER && characterGold >= itemPrice) {
-                        this.addUnequippedSword();
+                        if (chosenItem instanceof Sword) { this.addUnequippedSword(); }
+                        if (chosenItem instanceof Staff) { this.addUnequippedStaff(); }
+                        if (chosenItem instanceof Stake) { this.addUnequippedStake(); }
+                        if (chosenItem instanceof Armour) { this.addUnequippedArmour(); }
+                        if (chosenItem instanceof Shield) { this.addUnequippedShield(); }
+                        if (chosenItem instanceof Helmet) { this.addUnequippedHelmet(); }
                         this.character.setGold(characterGold - itemPrice);
                         break;
                     }   
                 }
-
                 // case1) get a health potion
                 if (chosenItem instanceof HealthPotion) {
                     itemPrice = ((HealthPotion) chosenItem).getPrice();
                     if (gameMode == GAME_MODE.SURVIVAL && !gotOnePotionFromShop 
                         && characterGold >= itemPrice) {
-                        this.addUnequippedSword();
+                        this.addUnequippedHealthPotion();
                         // if the game mode is survival, the equipment is twice as expensive
                         this.character.setGold(characterGold - 2*itemPrice);
                         this.setgotOnePotionFromShop(true);
                         break;
                     } 
                     if (gameMode != GAME_MODE.SURVIVAL &&  characterGold >= itemPrice) {
-                        this.addUnequippedSword();
+                        this.addUnequippedHealthPotion();
                         this.character.setGold(characterGold - itemPrice);
                         break;
                     }   
+                }
             }
-        }
-        
         }
     }
 }

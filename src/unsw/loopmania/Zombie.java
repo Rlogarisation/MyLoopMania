@@ -1,7 +1,8 @@
 package unsw.loopmania;
 
 /**
- * Public class for enemy type Zombie, Written by Zheng Luo.
+ * Public class for enemy type Zombie
+ * @author Zheng Luo (z5206267)
  */
 public class Zombie extends Enemy {
     final double initialHp = 5;

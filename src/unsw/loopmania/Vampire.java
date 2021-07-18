@@ -3,7 +3,8 @@ package unsw.loopmania;
 
 
 /**
- * Public class for enemy type Vampire, Written by Zheng Luo.
+ * Public class for enemy type Vampire
+ * @author Zheng Luo (z5206267)
  */
 public class Vampire extends Enemy {
     final double initialHp = 10;

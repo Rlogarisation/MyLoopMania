@@ -1,6 +1,10 @@
 package unsw.loopmania;
 import java.util.Random;
 
+/**
+ * Fighting strategy for vampire
+ * @author Zheng Luo (z5206267)
+ */
 public class VampireStrategy implements FightStrategy{
 
     double CritDamageMulti = 5;

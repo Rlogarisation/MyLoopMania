@@ -10,11 +10,15 @@ import org.javatuples.Pair;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
 
+/**
+ * the test for character.
+ * @author Zheng Luo (z5206267)
+ */
 public class CharacterTest {
     
     @Test
     public void characterCreationTest() {
-        final double initialHp = 10;
+        final double initialHp = 100;
         final double initialDamage = 10;
         final double initialMovingSpeed = 2;
         final double initialXp = 0; 
@@ -23,9 +27,6 @@ public class CharacterTest {
 
         /**
          * Creating current world.
-         * XXX
-         * X X
-         * XXX
          */
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
         orderedPath.add(new Pair<Integer, Integer>(0, 0));
