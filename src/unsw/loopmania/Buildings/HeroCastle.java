@@ -1,6 +1,5 @@
 package unsw.loopmania.Buildings;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.*;
 import unsw.loopmania.Character;

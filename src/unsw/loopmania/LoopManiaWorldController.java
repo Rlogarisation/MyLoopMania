@@ -244,6 +244,7 @@ public class LoopManiaWorldController {
                 printThreadingNotes("HANDLED TIMER");
             } else{
                 printThreadingNotes("Character is Dead");
+                pause();
             }
             List<Enemy> newEnemies = world.possiblySpawnEnemies();
             for (Enemy newEnemy: newEnemies){
