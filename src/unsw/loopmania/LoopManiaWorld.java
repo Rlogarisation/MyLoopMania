@@ -320,7 +320,7 @@ public class LoopManiaWorld {
         int enemyIndex = 0;
         
         // Battle between ally and enemy.
-        while (allyIndex < allyList.size() && !enemiesJoiningBattle.isEmpty()) {
+        while (allyIndex < allyList.size() && enemyIndex < enemiesJoiningBattle.size()) {
             Ally currentAlly = allyList.get(allyIndex);
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
 
