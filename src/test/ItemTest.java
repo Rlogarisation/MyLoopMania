@@ -100,17 +100,18 @@ public class ItemTest {
 
         int x = 0;
         SimpleIntegerProperty y = new SimpleIntegerProperty(0);
+        d.addUnequippedSword();
         d.equipOneItem(new Sword(new SimpleIntegerProperty(x), y));
 
         Entity item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
         Boolean itemClassSame = (item instanceof Sword);
         assertTrue(itemClassSame);
         
+        d.addUnequippedStaff();
         d.equipOneItem(new Staff(new SimpleIntegerProperty(x+1), y));
 
         item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
-        itemClassSame = (item == null);
-        assertTrue(itemClassSame);
+        assertEquals(null, item);
 
         item = d.getEquippedInventoryItemEntityByCoordinates(1,0);
         itemClassSame = (item instanceof Staff);

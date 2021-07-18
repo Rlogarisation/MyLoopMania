@@ -548,10 +548,11 @@ public class LoopManiaWorld {
     public AttackEquipment equipOneItem(AttackEquipment attackEquipment) {
         // check if the equipment is from unequipped inventory
         
-        for (Entity item : unequippedInventoryItems) {
+        for (Entity item : equippedInventoryItems) {
             if (item instanceof AttackEquipment) {
                 removeEquippedInventoryItem(item); 
-                //find a way to replace equipped item back in unequipped               
+                unequippedInventoryItems.add(item);  
+                removeUnequippedInventoryItem(attackEquipment);             
                 break;
             }
         }
