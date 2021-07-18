@@ -210,6 +210,12 @@ public class Character extends MovingEntity {
         this.hasHelmet = hasHelmet;
     }
 
+    /**
+     * check if the character wears any defense equipment
+     * and calculate the damage from an enemy based on the equipments 
+     * @param initialDamage
+     * @return totalDamage
+     */
     public double defenseApplication(double initialDamage) {
         double currentDamage = initialDamage;
         
