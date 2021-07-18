@@ -149,6 +149,19 @@ public class LoopManiaWorld {
         return this.allyList;
     }
 
+
+    /**
+     * @return list of trancedAlly in allyList
+     */
+    public List<Ally> getTrancedAllyList(){
+        List<Ally> trancedAllies = new ArrayList<Ally>();
+        for(Ally a: getAllyList()){
+            if(a instanceof TrancedAlly){
+                trancedAllies.add(a);
+            }
+        }    
+        return trancedAllies;
+    }
     public HeroCastle getHeroCastle(){
         return this.heroCastle;
     }
@@ -261,6 +274,25 @@ public class LoopManiaWorld {
     public void addAlly(Ally selectedAlly) {
         allyList.add(selectedAlly);
     }
+    
+    public Ally addAlly(PathPosition position) {
+        Ally newAlly = new Ally(position);
+        allyList.add(newAlly);
+        return newAlly;
+    }
+
+
+
+    /**
+     * Add TrancedAlly into ally list and kill currentEnemy
+     * @param position where it has been spawn.
+     */
+    public TrancedAlly addTrancedAlly(PathPosition position, Enemy currentEnemy) {
+        TrancedAlly newAlly = new TrancedAlly(position, currentEnemy);
+        killEnemy(currentEnemy);
+        allyList.add(newAlly);
+        return newAlly;
+    }
 
     /**
      * Remove an ally from the ally list.
@@ -285,12 +317,20 @@ public class LoopManiaWorld {
         int enemyIndex = 0;
         
         // Battle between ally and enemy.
-        while (allyIndex < allyList.size()) {
+        while (allyIndex < allyList.size() && !enemiesJoiningBattle.isEmpty()) {
             Ally currentAlly = allyList.get(allyIndex);
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
 
             currentAlly.attack(currentAlly.getDamage(), currentEnemy);
             currentEnemy.attack(currentEnemy.getDamage(), currentAlly);
+
+            //After 2 attacks, return back to enemy
+            if(currentAlly instanceof TrancedAlly && currentAlly.getAttackCount() >=2){
+                removeAlly(currentAlly);
+                Enemy newEnemy = currentAlly.toEnemy();
+                enemiesJoiningBattle.add(newEnemy);
+                enemyList.add(newEnemy);
+            }
             // Transform the currentAlly into another Zombie.
             if (currentEnemy instanceof Zombie && chanceGenerator(0.3)) {
                 removeAlly(currentAlly);
@@ -299,18 +339,22 @@ public class LoopManiaWorld {
                 enemiesJoiningBattle.add(newZombie);
                 enemyList.add(newZombie);
             }
-
             if (currentAlly.getHp() <= 0) {
+                removeAlly(currentAlly);
                 allyIndex++;
             }
             if (currentEnemy.getHp() <= 0) {
+                //If tranced enemy, it will die once winning a battle
+                if(currentAlly instanceof TrancedAlly){
+                    removeAlly(currentAlly);
+                }
                 enemyIndex++;
                 defeatedEnemies.add(currentEnemy);
             }
         }
 
         // Battle with character and enemy when all allies are dead.
-        while (enemyIndex < enemiesJoiningBattle.size()) {
+        while (enemyIndex < enemiesJoiningBattle.size() && !enemiesJoiningBattle.isEmpty())  {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
 
             //add towerDamage to character's initial damage
@@ -321,8 +365,21 @@ public class LoopManiaWorld {
             if (character.getCampfireInRange()){
                 character.attack(character.getDamage(), currentEnemy);
             }
+            if(currentEnemy.getTrancedStatus()){       
+                if(!determineEnemyEngagement().isEmpty()){
+                    //If possible enemies, add to allies list, and restart runBattles to fight enemies
+                    addTrancedAlly(character.getPathPosition(), currentEnemy);
+                    return runBattles();
+                }
+                //If no possible enemies to fight, the trancedEnemy will die    
+                defeatedEnemies.add(currentEnemy);
+                enemyIndex++;
+                //Enemy dies 
+                break;
+            }
 
             currentEnemy.attack(currentEnemy.getDamage(), character);
+            System.out.println(character.getHp());
 
             if (character.getHp() <= 0) {
                 characterIsAlive = false;
@@ -332,15 +389,17 @@ public class LoopManiaWorld {
                 enemyIndex++;
                 defeatedEnemies.add(currentEnemy);
             }
-
+            
         }
-
+        
+        
         for (Enemy e: defeatedEnemies){
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
         }
+        System.out.println("Defeated: "+ defeatedEnemies);
         return defeatedEnemies;
     }
 
