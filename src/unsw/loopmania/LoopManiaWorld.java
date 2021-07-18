@@ -128,6 +128,10 @@ public class LoopManiaWorld {
         return this.enemyList;
     }
 
+    public List<Card> getCardList(){
+        return this.cardEntities;
+    }
+
     public List<Pair<Integer, Integer>> getOrderedPath(){
         return this.orderedPath;
     }
@@ -496,7 +500,10 @@ public class LoopManiaWorld {
     public Card loadCard(Card newCard){
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()){
-            // TODO = give some cash/experience/item rewards for the discarding of the oldest card - Sameer
+            //if extra card character gets some xp,gold and a potion
+            character.addGold(5);
+            character.addXp(10);
+            this.addUnequippedHealthPotion();
             removeCard(0);
         }
         if(newCard instanceof VampireCastleCard){
