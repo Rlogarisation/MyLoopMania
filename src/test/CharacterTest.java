@@ -124,12 +124,8 @@ public class CharacterTest {
      * Test for character stats function
      */
     public void characterStatsTest() {
-        final double initialHp = 100;
-        final double initialDamage = 10;
-        final double initialMovingSpeed = 2;
         final double initialXp = 0; 
         final double initialGold = 0; 
-        final double initialArmour = 0;
 
         /**
          * Creating current world.
