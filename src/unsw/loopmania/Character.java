@@ -138,10 +138,10 @@ public class Character extends MovingEntity {
 
     /**
      * Set a true or false if campfire is in range
-     * @param yesNo new result for campfireInRange
+     * @param status new result for campfireInRange
      */
-    public void setCampfireInRange(boolean yesNo){
-        this.campfireInRange = yesNo;
+    public void setCampfireInRange(boolean status){
+        this.campfireInRange = status;
     }
 
     public boolean hasAchievedGoal(){
