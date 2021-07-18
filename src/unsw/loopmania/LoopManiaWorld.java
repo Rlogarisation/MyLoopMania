@@ -326,7 +326,6 @@ public class LoopManiaWorld {
 
             currentAlly.attack(currentAlly.getDamage(), currentEnemy);
             currentEnemy.attack(currentEnemy.getDamage(), currentAlly);
-
             //After 2 attacks, return back to enemy
             if(currentAlly instanceof TrancedAlly && currentAlly.getAttackCount() >=2){
                 removeAlly(currentAlly);
@@ -359,7 +358,6 @@ public class LoopManiaWorld {
         // Battle with character and enemy when all allies are dead.
         while (enemyIndex < enemiesJoiningBattle.size() && !enemiesJoiningBattle.isEmpty())  {
             Enemy currentEnemy = enemiesJoiningBattle.get(enemyIndex);
-
             //add towerDamage to character's initial damage
             int towerDamage = character.getTowerDamage();
             character.attack(character.getDamage() + towerDamage, currentEnemy);
@@ -382,8 +380,6 @@ public class LoopManiaWorld {
             }
 
             currentEnemy.attack(currentEnemy.getDamage(), character);
-            System.out.println(character.getHp());
-
             if (character.getHp() <= 0) {
                 characterIsAlive = false;
                 break;

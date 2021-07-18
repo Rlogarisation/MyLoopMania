@@ -101,12 +101,6 @@ public class AllyTest {
         assert(currentWorld.getEnemyList().isEmpty());
         //Defeated should have slug B,C,D. Slug A was tranced and died as ally
         assert(dead.contains(slugB) && dead.contains(SlugC) && dead.contains(SlugD));
-        System.out.println(myHero.getHp());
-        //If not tranced, Character would be hit by 2 extra enemies and health would be 2
-        assert(myHero.getHp() == 6);
-
-        //Add zombie and vampires
-
     }
 
 }

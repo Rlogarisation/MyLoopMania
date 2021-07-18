@@ -15,6 +15,7 @@ public class TrancedAlly extends Ally{
     @Override
     public void attack(double initialDamage, MovingEntity enemy){
         super.attack(initialDamage, enemy);
+        setAttackCount(getAttackCount()+1);
     }
 
     

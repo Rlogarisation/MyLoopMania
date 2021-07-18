@@ -27,6 +27,9 @@ public class Ally extends MovingEntity{
         return attackCounter;
     }
 
+    public void setAttackCount(int attackCount){
+        this.attackCounter++;
+    }
 
     public void setEnemyState(Enemy EnemyState) {
         this.EnemyState = EnemyState;
