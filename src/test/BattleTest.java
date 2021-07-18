@@ -686,4 +686,5 @@ public class BattleTest {
         assertTrue(hasTrue && hasFalse);
         
     }
+
 }
