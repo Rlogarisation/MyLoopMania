@@ -23,28 +23,4 @@ public class HealthPotion extends StaticEntity {
     public int setPrice(int price) {
         return this.price = price;
     }
-
-    /*
-    // I'll move this function to Character
-    public void refillHealth() {
-        // find a potion available from the unequippedInventory
-        Boolean isPotion = false;
-        for (Entity item:unequippedInventoryItems) {
-            if (item instanceof HealthPotion) {
-                unequippedInventoryItems.remove(item);
-                isPotion = true;
-            }
-        }
-    
-        if (isPotion) {
-            int currentHp = this.character.getHp();
-            if (currentHp >= 70) {
-                character.setHp(100);
-            } else {
-                character.setHp(currentHp+30);
-            }
-        }
-    }
-    */
-
 }

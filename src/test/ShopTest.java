@@ -62,24 +62,31 @@ public class ShopTest {
         d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
         d.setCharacter(c);
 
+        // get a sword from the shop
         d.buyOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),9600);
 
+        // get a stake from the shop
         d.buyOneItemBycoordinates(0,1);
         assertEquals(c.getGold(),9100);
 
+        // get a staff from the shop
         d.buyOneItemBycoordinates(0,2);
         assertEquals(c.getGold(),8600);
         
+        // get an armour from the shop
         d.buyOneItemBycoordinates(0,3);
         assertEquals(c.getGold(),8300);
 
+        // get a shield from the shop
         d.buyOneItemBycoordinates(0,4);
         assertEquals(c.getGold(),7800);
 
+        // get a helmet from the shop
         d.buyOneItemBycoordinates(0,5);
         assertEquals(c.getGold(),7200);
 
+        // get a health potion from the shop
         d.buyOneItemBycoordinates(0,6);
         assertEquals(c.getGold(),7000);
     }
@@ -99,9 +106,11 @@ public class ShopTest {
         d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
         d.setCharacter(c);
 
+        // get a sword from the shop
         d.buyOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),200);
 
+        // check if the character can get an shield (price:500)
         d.buyOneItemBycoordinates(0,5);
         assertEquals(c.getGold(),200);
     }
@@ -119,13 +128,17 @@ public class ShopTest {
         Character c = new Character(new PathPosition(0,orderedPath));
         c.setGold(1000);
 
+        // set survival mode for the game
         d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
         d.setGameMode(GAME_MODE.SURVIVAL);
         d.setCharacter(c);
 
+        // get a health potion from the shop
         d.buyOneItemBycoordinates(0,6);
         assertEquals(c.getGold(),600);
 
+        // get a health potion from the shop 
+        // -> it is failed because the game mode is 'survival'
         d.buyOneItemBycoordinates(0,6);
         assertEquals(c.getGold(),600);
 
@@ -144,13 +157,17 @@ public class ShopTest {
         Character c = new Character(new PathPosition(0,orderedPath));
         c.setGold(1000);
 
+        // set berserker mode for the game
         d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
         d.setGameMode(GAME_MODE.BERSERKER);
         d.setCharacter(c);
 
+        // get a sword from the shop 
         d.buyOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),400);
 
+        // get a stake from the shop
+        // -> it is failed because the game mode is 'berserker'
         d.buyOneItemBycoordinates(0,1);
         assertEquals(c.getGold(),400);
 
@@ -173,18 +190,23 @@ public class ShopTest {
         d.addUnequippedSword();
         d.addUnequippedStake();
         
+        // sell a sword at the shop -> price 400 / 2 = 200
         d.sellOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),200);
         
+        // sell a stake at the shop -> price 500 / 2 = 250
         d.sellOneItemBycoordinates(1,0);
         assertEquals(c.getGold(),450);
     
+        
         d.addUnequippedHealthPotion();
         d.addUnequippedTheOneRing();
 
+        // sell a health potion at the shop -> price 200 / 2 = 100
         d.sellOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),550);
 
+        // sell 'the one ring' at the shop -> price 1500 / 2 = 750
         d.sellOneItemBycoordinates(1,0);
         assertEquals(c.getGold(),1300);
 
@@ -205,9 +227,11 @@ public class ShopTest {
         d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
         d.setCharacter(c);
 
+        // sell nothing at the shop -> price = 0
         d.sellOneItemBycoordinates(0,0);
         assertEquals(c.getGold(),1000);
 
+        // sell nothing at the shop -> price = 0
         d.sellOneItemBycoordinates(1,0);
         assertEquals(c.getGold(),1000);
     }
