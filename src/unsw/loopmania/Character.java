@@ -13,6 +13,11 @@ public class Character extends MovingEntity {
     final double initialXp = 0; 
     final double initialGold = 0; 
     final double initialArmour = 0;
+    /** 
+    boolean hasHelment = false;
+    boolean hasShield = false;
+    boolean hasArmour = false;
+    */
     private double xp, gold, armour;
     private int towerDamage;
     private boolean campfireInRange;

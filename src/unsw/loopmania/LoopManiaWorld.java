@@ -52,6 +52,7 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of items
     private List<Entity> unequippedInventoryItems;
+    //Jayden implement equippedItems
     private List<Entity> equippedInventoryItems;
 
     // TODO = expand the range of buildings
