@@ -14,11 +14,11 @@ public class Character extends MovingEntity {
     final double initialXp = 0; 
     final double initialGold = 0; 
     final double initialArmour = 0;
-    /** 
-    boolean hasHelment = false;
-    boolean hasShield = false;
-    boolean hasArmour = false;
-    */
+     
+    private boolean hasHelmet = false;
+    private boolean hasShield = false;
+    private boolean hasArmour = false;
+
     private double xp, gold, armour;
     private int towerDamage;
     private boolean campfireInRange;
@@ -32,6 +32,10 @@ public class Character extends MovingEntity {
         this.setFightStrategy(new BasicFightStrategy());
         this.towerDamage = 0;
         this.campfireInRange = false;
+
+        this.hasHelmet = false;
+        this.hasShield = false;
+        this.hasArmour = false;
     }
 
     /**
@@ -159,6 +163,68 @@ public class Character extends MovingEntity {
             }
         }
         return false;
+    }
+
+    /**
+     * getter for hasArmour
+     * @return hasArmour
+     */
+    public boolean getHasArmour(){
+        return this.hasArmour;
+    }
+
+    /**
+     * setter for hasArmour
+     */
+    public void setHasArmour(boolean hasArmour){
+        this.hasArmour = hasArmour;
+    }
+
+    /**
+     * getter for hasShield
+     * @return hasShield
+     */
+    public boolean getHasShield(){
+        return this.hasShield;
+    }
+
+    /**
+     * setter for hasShield
+     */
+    public void setHasShield(boolean hasShield){
+        this.hasShield = hasShield;
+    }
+
+    /**
+     * getter for hasHelmet
+     * @return hasHelmet
+     */
+    public boolean getHasHelmet(){
+        return this.hasHelmet;
+    }
+
+    /**
+     * setter for hasHelmet
+     */
+    public void setHasHelmet(boolean hasHelmet){
+        this.hasHelmet = hasHelmet;
+    }
+
+    public double defenseApplication(double initialDamage) {
+        double currentDamage = initialDamage;
+        
+        if (hasArmour && !hasShield) {
+            currentDamage = (0.5)*initialDamage;
+        } else if (hasArmour && hasShield) {
+            currentDamage = (1-(0.5+0.2))*initialDamage;
+        } else if (!hasArmour && hasShield) {
+            currentDamage = (0.8)*initialDamage;
+        }
+        if (hasHelmet) {
+            currentDamage = (0.8)*currentDamage;
+        }
+        
+        return currentDamage;
     }
 
 }

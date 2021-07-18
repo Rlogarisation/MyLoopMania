@@ -1,18 +1,16 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
+
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
-import unsw.loopmania.Buildings.*;
 
 
 public class CharacterWeaponTest {
@@ -115,5 +113,62 @@ public class CharacterWeaponTest {
         List<Enemy> defeatedEnemies = currentWorld.runBattles();
         assert(vampire.getHp() == -16);
         assert(defeatedEnemies.contains(vampire));
+    }
+
+    /**
+     * check if the defense equipments actually defense enemies' attack
+     */
+    @Test
+    public void DefenseStrategyTest(){
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+        // character: hp = 100, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+    
+        // slug: hp = 20 and damage = 5, radius = 1.
+        Slug slug = new Slug(position00);
+        slug.setHp(100);
+        slug.setDamage(5);
+        character.setFightStrategy(new BasicFightStrategy());
+
+        //Sword: +6 damage, total damage = 10+6 = 16
+        character.setFightStrategy(new SwordStrategy());
+        character.setHasArmour(true);
+        slug.attack(slug.getDamage(),character);
+        assert(character.getHp() == 97.5);
+
+        character.setHasShield(true);
+        character.setHp(100);
+        slug.attack(slug.getDamage(),character);
+        assert(character.getHp() == 98.5);
+
+        character.setHasArmour(false);
+        character.setHp(100);
+        slug.attack(slug.getDamage(),character);
+        assert(character.getHp() == 96);
+
+        character.setHasShield(false);
+        character.setHasHelmet(true);
+        character.setHp(100);
+        slug.attack(slug.getDamage(),character);
+        assert(character.getHp() == 96);
+
     }
 }
