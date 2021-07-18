@@ -1,18 +1,16 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
+
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
-import unsw.loopmania.Buildings.*;
 
 
 public class CharacterWeaponTest {
