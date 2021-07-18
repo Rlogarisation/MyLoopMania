@@ -53,6 +53,7 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of items
     private List<Entity> unequippedInventoryItems;
+    //Jayden implement equippedItems
     private List<Entity> equippedInventoryItems;
 
     // TODO = expand the range of buildings
@@ -401,7 +402,6 @@ public class LoopManiaWorld {
             // due to mutating list we're iterating over
             killEnemy(e);
         }
-        System.out.println("Defeated: "+ defeatedEnemies);
         return defeatedEnemies;
     }
 

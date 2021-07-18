@@ -104,7 +104,19 @@ public class CharacterTest {
         myHero.setFightStrategy(normalStrategy);
         assertEquals(normalStrategy, myHero.getFightStrategy());
 
+        //Check goals system
+        assert(myHero.hasAchievedGoal() == false);
+        myHero.addXp(100000);
+        assert(myHero.hasAchievedGoal() == false);
+        myHero.addGold(100000);
+        assert(myHero.hasAchievedGoal() == true);
+        myHero.setGold(1);
+        assert(myHero.hasAchievedGoal() == false);
+        myHero.setCycleCount(80);
+        assert(myHero.hasAchievedGoal() == true);
 
-        
     }
+
+
+
 }

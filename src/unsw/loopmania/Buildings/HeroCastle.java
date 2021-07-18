@@ -28,6 +28,10 @@ public class HeroCastle extends StaticEntity{
         initializeShop();
     }
 
+    public int getNumCylesGoals(){
+        return numCyclesGoal;
+    }
+
     public void attach(VampireCastle building){
         this.vampireCastles.add(building);
     }
@@ -47,13 +51,15 @@ public class HeroCastle extends StaticEntity{
 
     public boolean buildingEffect(LoopManiaWorld lmw){
         Character character = lmw.getCharacter();
+        
 
         if (this.getX() == character.getX() && this.getY() == character.getY()){
+            character.setCycleCount(character.getCycleCount()+1);
             notifyAllObservers();
             this.numCyclesComplete = this.numCyclesComplete + 1;
             if (this.numCyclesComplete == this.numCyclesGoal){
                 this.numCyclesComplete = 0;
-                this.numCyclesGoal = this.numCyclesGoal + 1;
+                this.numCyclesGoal = this.numCyclesGoal + 1; 
                 return true;
             }
         }
