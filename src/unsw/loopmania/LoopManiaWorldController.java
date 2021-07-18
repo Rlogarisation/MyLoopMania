@@ -122,7 +122,7 @@ public class LoopManiaWorldController {
     private Image vampireEnemyImage;
     private Image zombieEnemyImage;
     private Image swordImage;
-    private Image basicBuildingImage;
+    private Image heroCastleImage;
 
     /**
      * the image currently being dragged, if there is one, otherwise null.
@@ -174,7 +174,7 @@ public class LoopManiaWorldController {
         vampireEnemyImage = new Image((new File("src/images/vampire.png")).toURI().toString());
         zombieEnemyImage = new Image((new File("src/images/zombie.png")).toURI().toString());
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
-        basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
+        heroCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
 
@@ -193,7 +193,6 @@ public class LoopManiaWorldController {
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
-
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {
             for (int y = 0; y < world.getHeight(); y++) {
@@ -228,6 +227,7 @@ public class LoopManiaWorldController {
         draggedEntity.setVisible(false);
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
+        
     }
 
     /**
@@ -237,6 +237,7 @@ public class LoopManiaWorldController {
         // TODO = handle more aspects of the behaviour required by the specification
         System.out.println("starting timer");
         isPaused = false;
+        onLoad(world.getHeroCastle());
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             List<Enemy> defeatedEnemies = world.runBattles();
@@ -354,12 +355,12 @@ public class LoopManiaWorldController {
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
         loadSword();
         loadVampireCastleCard();
-        loadCampFireCard();
+        //loadCampFireCard();
         loadTrapCard();
         loadZombiePitCard();
-        loadTowerCard();
+        //loadTowerCard();
         loadVillageCard();
-        loadBarracksCard();
+        //loadBarracksCard();
     }
 
     /**
@@ -431,6 +432,16 @@ public class LoopManiaWorldController {
             view = new ImageView(zombieEnemyImage);
         }
         addEntity(enemy, view);
+        squares.getChildren().add(view);
+    }
+
+    /**
+     * load hero castle into the GUI
+     * @param heroCastle
+     */
+    private void onLoad(HeroCastle heroCastle){
+        ImageView view = new ImageView(heroCastleImage);
+        addEntity(heroCastle, view);
         squares.getChildren().add(view);
     }
 
