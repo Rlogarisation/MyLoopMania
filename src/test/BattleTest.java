@@ -373,6 +373,62 @@ public class BattleTest {
         assertTrue(currentWorld.getCharacterIsAlive());
     }
 
+    @Test
+    /**
+     * Test for the creation of tranced ally.
+     */
+    public void trancedAllyTest() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+
+        // character: hp = 100, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+
+        // zombie: hp = 5 and damage = 5, havee chance to tranform ally into zombie.
+        // It got transformed into tranced ally with hp = 20, damage = 5.
+        Zombie zombie1 = new Zombie(position00);
+        currentWorld.addEnemy(zombie1);
+        zombie1.setIsTranced(true);
+    
+        // slug: hp = 10 and damage = 2, radius = 1.
+        Slug slug1 = new Slug(position00);
+        currentWorld.addEnemy(slug1);
+        slug1.setHp(10);
+
+        // trancedAlly will kill slug first with two attacks, met the condition for transformation.
+        // trancedAlly hp = 16, slug hp = 0.
+        // then transform back to zombie with hp = 5, damage = 5
+        // character hp = 95, zombie hp = -5.
+
+
+        List<Enemy> defeatedEnemy =  currentWorld.runBattles();
+
+
+        assertTrue(defeatedEnemy.contains(zombie1));
+        assertTrue(defeatedEnemy.contains(slug1));
+        assertTrue(currentWorld.getAllyList().isEmpty());
+        assertEquals(-5, zombie1.getHp());
+        assertEquals(95, character.getHp());
+        assertTrue(currentWorld.getCharacterIsAlive());
+    }
+
     
 
 
