@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
+import unsw.loopmania.Buildings.Campfire;
 
 /**
  * BattleTest for runBattle function in LoopManiaWorld.
@@ -549,6 +551,109 @@ public class BattleTest {
         assertEquals(95, character.getHp());
         assertTrue(currentWorld.getCharacterIsAlive());
     }
+
+
+
+    @Test
+    /**
+     * Test the campfire property when character is with range.
+     */
+    public void campfireWithinRangeTest() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+        Campfire newCampfire = new Campfire(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        // character: hp = 100, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+
+    
+        // slug: hp = 20 and damage = 2, radius = 1.
+        Slug slug1 = new Slug(position00);
+        currentWorld.addEnemy(slug1);
+        slug1.setHp(20);
+        slug1.setDamage(2);
+
+
+        List<Enemy> defeatedEnemy =  currentWorld.runBattles();
+
+        /**
+         * The battle will finished within 1 attack, character's damage will double to 20.
+         * if character.hp is anything not 98, then it is incorrect.
+         */
+
+        assertTrue(defeatedEnemy.contains(slug1));
+        assertTrue(currentWorld.getAllyList().isEmpty());
+        assertEquals(98, character.getHp());
+        assertEquals(0, slug1.getHp());
+        assertTrue(currentWorld.getCharacterIsAlive());
+    }
+
+    @Test
+    /**
+     * Test when character is dead.
+     */
+    public void characterDeadTest() {
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+
+        // character: hp = 5, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+        character.setHp(5);
+
+
+        // slug: hp = 20 and damage = 2, radius = 1.
+        Slug slug1 = new Slug(position00);
+        currentWorld.addEnemy(slug1);
+        slug1.setHp(20);
+        slug1.setDamage(5);
+
+
+        List<Enemy> defeatedEnemy =  currentWorld.runBattles();
+
+
+        assertTrue(defeatedEnemy.isEmpty());
+        assertTrue(currentWorld.getAllyList().isEmpty());
+        assertEquals(0, character.getHp());
+        assertEquals(10, slug1.getHp());
+        assertTrue(!currentWorld.getCharacterIsAlive());
+    }
+
+
+    
 
     
 
