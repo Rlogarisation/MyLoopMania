@@ -20,15 +20,22 @@ public class VampireStrategy implements FightStrategy{
      */
     public void attack(double initialDamage, MovingEntity entity) {
         double currentHp = entity.getHp();
+        double totalDamage = initialDamage;
         if (chanceGenerator(chance)) {
             // Random next double will generate a number between 0 to 1 as double,
             // and times with a multiplier, which can be changed at anytime.
             double addtionalDamage = (new Random()).nextDouble() * CritDamageMulti;
-            double totalDamage = initialDamage + addtionalDamage;
+            totalDamage = initialDamage + addtionalDamage;
+            if (entity instanceof Character) {
+                totalDamage = ((Character) entity).defenseApplication(totalDamage);            
+            }
             entity.setHp(currentHp - totalDamage);
         }
         else {
-            entity.setHp(currentHp - initialDamage);
+            if (entity instanceof Character) {
+                totalDamage = ((Character) entity).defenseApplication(totalDamage);            
+            }
+            entity.setHp(currentHp - totalDamage);
         }
     }
 
