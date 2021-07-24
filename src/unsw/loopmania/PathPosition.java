@@ -52,6 +52,28 @@ public class PathPosition{
     }
 
     /**
+     * Move foward/clockwise through the path to get the down path position
+     * @return a Pair of integers with the x and y position
+     */
+    public Pair<Integer, Integer> moveDownPathPos(){
+        int newPathPos = (currentPositionInPath + 1)%orderedPath.size();
+        int x = (orderedPath.get(newPathPos).getValue0());
+        int y = (orderedPath.get(newPathPos).getValue1());
+        return new Pair<>(x, y);
+    }
+
+    /**
+     * Move foward/clockwise through the path to get the up path position
+     * @return a Pair of integers with the x and y position
+     */
+    public Pair<Integer, Integer> moveUpPathPos(){
+        int newPathPos = (currentPositionInPath - 1 + orderedPath.size())%orderedPath.size();
+        int x = (orderedPath.get(newPathPos).getValue0());
+        int y = (orderedPath.get(newPathPos).getValue1());
+        return new Pair<>(x, y);
+    }
+
+    /**
      * change the x and y SimpleIntegerProperties to reflect the current values of
      * the current position in the path, and the ordered path.
      */

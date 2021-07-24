@@ -1,6 +1,8 @@
 package unsw.loopmania;
 
-
+import java.util.List;
+import org.javatuples.Pair;
+import unsw.loopmania.Buildings.*;
 
 /**
  * Public class for enemy type Vampire
@@ -58,6 +60,50 @@ public class Vampire extends Enemy {
      */
     public void setCampfireInRange(boolean yesNo){
         this.campfireInRange = yesNo;
+    }
+
+    /**
+     * Move the enemy in different random direction.
+     * 50% for going clockwise direction,
+     * and 50% anti-clockwise direction.
+     */
+    public void move(List<Building> buildingList) {
+        boolean notComplete = true;
+        if (campfireInRange){
+            Pair<Integer, Integer> newPositionDown;
+            Pair<Integer, Integer> newPositionUp;
+            //check the down path
+            newPositionDown = moveDownPathPos();
+            if (!samePositionAsCampfire(buildingList, newPositionDown) && notComplete){
+                moveDownPath();
+                notComplete = false;
+            }
+
+            //check the up path
+            newPositionUp = moveUpPathPos();
+            if (!samePositionAsCampfire(buildingList, newPositionUp) && notComplete){
+                moveUpPath();
+                notComplete = false;
+            }
+        }
+        
+        //No options have occured
+        if (notComplete){
+            this.moveRandom();
+        }
+    }
+
+    public boolean samePositionAsCampfire(List<Building> buildingList, Pair<Integer, Integer> newPos){
+
+        for (Building b: buildingList){
+            if (b instanceof Campfire){
+                if (Math.pow((newPos.getValue0()-b.getX()), 2) +  Math.pow((newPos.getValue1()-b.getY()), 2) <= Math.pow(1, 2)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     
