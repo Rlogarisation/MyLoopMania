@@ -69,27 +69,32 @@ public class Vampire extends Enemy {
      */
     public void move(List<Building> buildingList) {
         boolean notComplete = true;
-        if (campfireInRange){
-            Pair<Integer, Integer> newPositionDown;
-            Pair<Integer, Integer> newPositionUp;
-            //check the down path
-            newPositionDown = moveDownPathPos();
-            if (!inRangeOfCampfire(buildingList, newPositionDown) && notComplete){
-                moveDownPath();
-                notComplete = false;
-            }
+        Pair<Integer, Integer> newPositionDown;
+        Pair<Integer, Integer> newPositionUp;
+        newPositionDown = moveDownPathPos();
+        newPositionUp = moveUpPathPos();
+        boolean downPos = inRangeOfCampfire(buildingList, newPositionDown);
+        boolean upPos = inRangeOfCampfire(buildingList, newPositionUp);
 
-            //check the up path
-            newPositionUp = moveUpPathPos();
-            if (!inRangeOfCampfire(buildingList, newPositionUp) && notComplete){
-                moveUpPath();
-                notComplete = false;
-            }
+        //Both position are in range of campfire and vampire is currently not in range
+        if (downPos && upPos && !campfireInRange){
+            //do nothing
+            notComplete = false;
+        } 
+        //Only downPos is in range and not upPos
+        else if(downPos && !upPos){
+            moveUpPath();
+            notComplete = false;
+        } 
+        //Only upPos is in range and not downPos
+        else if(upPos && !downPos){
+            moveDownPath();
+            notComplete = false;
         }
-        
-        //No options have occured
+
+        //Otherwise move in a random direction
         if (notComplete){
-            this.moveRandom();
+            moveRandom();
         }
     }
 
