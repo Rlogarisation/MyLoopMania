@@ -74,14 +74,14 @@ public class Vampire extends Enemy {
             Pair<Integer, Integer> newPositionUp;
             //check the down path
             newPositionDown = moveDownPathPos();
-            if (!samePositionAsCampfire(buildingList, newPositionDown) && notComplete){
+            if (!inRangeOfCampfire(buildingList, newPositionDown) && notComplete){
                 moveDownPath();
                 notComplete = false;
             }
 
             //check the up path
             newPositionUp = moveUpPathPos();
-            if (!samePositionAsCampfire(buildingList, newPositionUp) && notComplete){
+            if (!inRangeOfCampfire(buildingList, newPositionUp) && notComplete){
                 moveUpPath();
                 notComplete = false;
             }
@@ -93,7 +93,7 @@ public class Vampire extends Enemy {
         }
     }
 
-    public boolean samePositionAsCampfire(List<Building> buildingList, Pair<Integer, Integer> newPos){
+    public boolean inRangeOfCampfire(List<Building> buildingList, Pair<Integer, Integer> newPos){
 
         for (Building b: buildingList){
             if (b instanceof Campfire){
