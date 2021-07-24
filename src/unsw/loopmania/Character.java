@@ -14,7 +14,7 @@ public class Character extends MovingEntity {
     final double initialXp = 0; 
     final double initialGold = 0; 
     final double initialArmour = 0;
-     
+    
     private boolean hasHelmet = false;
     private boolean hasShield = false;
     private boolean hasArmour = false;
@@ -23,6 +23,7 @@ public class Character extends MovingEntity {
     private int towerDamage;
     private boolean campfireInRange;
     private int cycleCount;
+
 
     public Character(PathPosition position) {
         super(position);

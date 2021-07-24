@@ -1,6 +1,8 @@
 package unsw.loopmania;
 
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
@@ -73,8 +75,10 @@ public abstract class MovingEntity extends Entity {
         return y().get();
     }
 
+
     /**
      * Set health of current moving entity.
+     * update progressBar
      * @param hp the health as double.
      */
     public void setHp(double hp) {

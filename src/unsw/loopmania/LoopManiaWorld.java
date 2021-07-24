@@ -115,6 +115,7 @@ public class LoopManiaWorld {
         gameMode = GAME_MODE.STANDARD;
     }
 
+
     public int getWidth() {
         return width;
     }
@@ -196,6 +197,14 @@ public class LoopManiaWorld {
      */
     public void setGameMode(GAME_MODE gameMode) {
         this.gameMode = gameMode;
+    }
+
+    /**
+     * get the gamemode. This is necessary because it is loaded as a special condition out of the file
+     * @return gameMode as string
+     */
+    public GAME_MODE getGameMode() {
+        return this.gameMode;
     }
 
     /**
