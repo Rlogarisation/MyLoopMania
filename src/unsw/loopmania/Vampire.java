@@ -63,9 +63,8 @@ public class Vampire extends Enemy {
     }
 
     /**
-     * Move the enemy in different random direction.
-     * 50% for going clockwise direction,
-     * and 50% anti-clockwise direction.
+     * Specific code for the vampire movement to ensure that they will move outside of the campfire range
+     * And will not walk into the range of a campfire if there is another available option
      */
     public void move(List<Building> buildingList) {
         boolean notComplete = true;
