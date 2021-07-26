@@ -1,7 +1,5 @@
 package unsw.loopmania;
 
-import java.util.List;
-import unsw.loopmania.Buildings.Building;
 
 /**
  * Public class for enemy type Zombie
@@ -43,8 +41,6 @@ public class Zombie extends Enemy {
         return this.supportRadius;
     }
 
-    public void move(List<Building> buildingList) {
-        this.moveRandom();
-    }
+
 
 }

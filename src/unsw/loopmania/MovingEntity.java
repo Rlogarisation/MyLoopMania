@@ -1,8 +1,5 @@
 package unsw.loopmania;
 
-
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import org.javatuples.Pair;

@@ -66,6 +66,7 @@ public class Vampire extends Enemy {
      * Specific code for the vampire movement to ensure that they will move outside of the campfire range
      * And will not walk into the range of a campfire if there is another available option
      */
+    @Override
     public void move(List<Building> buildingList) {
         boolean notComplete = true;
         Pair<Integer, Integer> newPositionDown;
