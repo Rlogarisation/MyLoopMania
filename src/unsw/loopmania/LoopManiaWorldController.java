@@ -3,6 +3,7 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 
@@ -10,6 +11,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,10 +30,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.text.Text;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
+import unsw.loopmania.LoopManiaWorld.GAME_MODE;
+
 import java.util.EnumMap;
 
 import java.io.File;
@@ -100,6 +107,17 @@ public class LoopManiaWorldController {
 
     @FXML
     private GridPane unequippedInventory;
+
+    @FXML
+    private ProgressBar healthBar;
+    static DoubleProperty healthUpdater = new SimpleDoubleProperty(.0);
+    @FXML
+    private Text characterGold;
+    static DoubleProperty goldUpdater = new SimpleDoubleProperty(0);
+    @FXML
+    private Text characterXP;
+    static DoubleProperty XPUpdater = new SimpleDoubleProperty(0);
+
 
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
@@ -193,6 +211,7 @@ public class LoopManiaWorldController {
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
+
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {
             for (int y = 0; y < world.getHeight(); y++) {
@@ -201,6 +220,9 @@ public class LoopManiaWorldController {
                 squares.add(groundView, x, y);
             }
         }
+
+        healthBar.setStyle("-fx-accent: red;");
+        healthBar.progressProperty().bind(healthUpdater);
 
         // load entities loaded from the file in the loader into the squares gridpane
         for (ImageView entity : entityImages){
@@ -230,17 +252,41 @@ public class LoopManiaWorldController {
         
     }
 
+    public void updateBars(){
+        healthUpdater.set(((double)world.getCharacter().getHp()/100));
+        characterGold.setText(String.valueOf(world.getCharacter().getGold()));
+        characterXP.setText(String.valueOf(world.getCharacter().getXp()));
+
+    }
+
+    public void setGameMode(String gameMode){
+        switch(gameMode){
+            case "Standard":
+            world.setGameMode(GAME_MODE.STANDARD);
+            break;
+            case "Berserker":
+            world.setGameMode(GAME_MODE.BERSERKER);
+            break;
+            case "Survival":
+            world.setGameMode(GAME_MODE.SURVIVAL);
+            break;
+        }
+    }
+
     /**
      * create and run the timer
      */
     public void startTimer(){
         // TODO = handle more aspects of the behaviour required by the specification
         System.out.println("starting timer");
+        System.out.println(world.getGameMode());
         isPaused = false;
         onLoad(world.getHeroCastle());
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             List<Enemy> defeatedEnemies = world.runBattles();
+            //Update character stats
+            updateBars();
             for (Enemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
             }
