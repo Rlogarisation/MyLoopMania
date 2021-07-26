@@ -555,16 +555,26 @@ public class LoopManiaWorld {
      * @param attackEquipment is the attack equipment to be inserted in equippedInventory
      */
     public AttackEquipment equipOneItem(AttackEquipment attackEquipment) {
-        // check if the equipment is from unequipped inventory
         
         for (Entity item : equippedInventoryItems) {
             if (item instanceof AttackEquipment) {
+                
+                // unequip the item from the character
+                character.unequipAttackEquipment();
+
+                // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);  
-                removeUnequippedInventoryItem(attackEquipment);             
+                unequippedInventoryItems.add(item);
+                
                 break;
             }
         }
+
+        // equip the attack equipment 
+        removeUnequippedInventoryItem(attackEquipment);
+        equippedInventoryItems.add(attackEquipment);
+        character.equipAttackEquipment(attackEquipment);
+
         if (attackEquipment instanceof Sword) {
             character.setFightStrategy(new SwordStrategy());
         }
@@ -574,33 +584,65 @@ public class LoopManiaWorld {
         if (attackEquipment instanceof Stake) {
             character.setFightStrategy(new StakeStrategy());
         }
-        equippedInventoryItems.add(attackEquipment);
+        
         return attackEquipment; 
 
     }
 
     /**
      * equip an equipment for attack
-     * @param defenseEquipment is the attack equipment to be inserted in equippedInventory
+     * @param defenseEquipment is the defense equipment to be inserted in equippedInventory
      */
     public DefenseEquipment equipOneItem(DefenseEquipment defenseEquipment) {
-        for (Entity item : unequippedInventoryItems) {
-            if (defenseEquipment instanceof Armour && item instanceof Armour && !character.getHasArmour()) {
-                removeUnequippedInventoryItem(item);
-                character.setHasArmour(true);
-                equippedInventoryItems.add(defenseEquipment);  
+        
+        for (Entity item : equippedInventoryItems) {
+
+            if (defenseEquipment instanceof Armour && item instanceof Armour) {
+                
+                // unequip the item from the character
+                character.unequipArmour();
+
+                // move the item the character were wearing into unequipped inventory 
+                removeEquippedInventoryItem(item); 
+                unequippedInventoryItems.add(item);
+
+                 // equip the armour 
+                removeUnequippedInventoryItem(defenseEquipment);
+                equippedInventoryItems.add(defenseEquipment);
+                character.equipArmour((Armour) defenseEquipment);
+ 
                 break;
             }
-            if (defenseEquipment instanceof Shield && item instanceof Shield && !character.getHasShield()) {
-                removeUnequippedInventoryItem(item);
-                character.setHasShield(true);
-                equippedInventoryItems.add(defenseEquipment);  
+            if (defenseEquipment instanceof Shield && item instanceof Shield) {
+ 
+                // unequip the item from the character
+                character.unequipShield();
+
+                // move the item the character were wearing into unequipped inventory 
+                removeEquippedInventoryItem(item); 
+                unequippedInventoryItems.add(item);
+
+                 // equip the shield 
+                removeUnequippedInventoryItem(defenseEquipment);
+                equippedInventoryItems.add(defenseEquipment);
+                character.equipShield((Shield) defenseEquipment);
+ 
                 break;
             }
-            if (defenseEquipment instanceof Helmet && item instanceof Helmet && !character.getHasHelmet()) {
-                removeUnequippedInventoryItem(item);
-                character.setHasHelmet(true);
-                equippedInventoryItems.add(defenseEquipment);  
+            if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
+                
+                // unequip the item from the character
+                character.unequipHelmet();
+
+                // move the item the character were wearing into unequipped inventory 
+                removeEquippedInventoryItem(item); 
+                unequippedInventoryItems.add(item);
+
+                 // equip the Helmet
+                removeUnequippedInventoryItem(defenseEquipment);
+                equippedInventoryItems.add(defenseEquipment);
+                character.equipHelmet((Helmet) defenseEquipment);
+  
                 break;
             }
         }      
