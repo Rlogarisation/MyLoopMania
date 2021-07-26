@@ -2,6 +2,7 @@ package unsw.loopmania;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * represents the main character in the backend of the game world
@@ -13,14 +14,15 @@ public class Character extends MovingEntity {
     final double initialMovingSpeed = 2;
     final double initialXp = 0; 
     final double initialGold = 0; 
-    final double initialDoggieCoin = 0;
+    final int initialDoggieCoin = 0;
     final double initialArmour = 0;
     
     private boolean hasHelmet = false;
     private boolean hasShield = false;
     private boolean hasArmour = false;
 
-    private double xp, gold, armour, doggieCoin;
+    private double xp, gold, armour; 
+    private int doggieCoin;
     private int towerDamage;
     private boolean campfireInRange;
     private int cycleCount;
@@ -91,27 +93,56 @@ public class Character extends MovingEntity {
 
     /**
      * Add certain amount of doggie coin as increment.
-     * @param goldIncrement the amount of doggie coin gained during battle with doggie as double.
+     * @param goldIncrement the amount of doggie coin gained during battle with doggie as int.
      */
-    public void addDoggieCoin(double doggieCoinIncrement) {
+    public void addDoggieCoin(int doggieCoinIncrement) {
         this.doggieCoin += doggieCoinIncrement;
     }
 
     /**
      * Get the doggie coin of current character.
-     * @return doggie coin of current character as double.
+     * @return doggie coin of current character as int.
      */
-    public double getDoggieCoin() {
+    public int getDoggieCoin() {
         return this.doggieCoin;
     }
 
     /**
      * Set the doggie coin of current character.
      */
-    public void setDoggieCoin(double doggieCoin) {
+    public void setDoggieCoin(int doggieCoin) {
         this.doggieCoin = doggieCoin;
     }
 
+    /**
+     * Doggie coin price can flutuate to an extraordinary extent during to certain event.
+     * calling this funtion can cause the doggie coin 
+     * increase or decrease random amount within current price range.
+     * for example,
+     * if currentDoggieCoin is 26, then it will become [0, 52].
+     * larger amount of coins will correspond to larger flutuation, vice-versa.
+     * so, if coin = 0, no flutuation.
+     * this function will not cause doggie coin price fall below 0.
+     */
+    public void flutuateDoggieCoinPrice() {
+        int currentPrice = this.getDoggieCoin();
+        this.setDoggieCoin(new Random().nextInt(currentPrice * 2));
+    }
+
+    /**
+     * Doggie coin price can increase to an extraordinary extent when Elon Maske has created.
+     * calling this funtion can cause the doggie coin 
+     * increase random amount for at least 2 times and at most 3 times more.
+     * for example,
+     * if currentDoggieCoin is 26, then it will become [26, 104].
+     * larger amount of coins will correspond to larger flutuation, vice-versa.
+     * so, if coin = 0, no flutuation.
+     * this function will not cause doggie coin price fall below 0. 
+     */
+    public void increaseDoggieCoinDrastically() {
+        int currentPrice = this.getDoggieCoin();
+        this.setDoggieCoin(currentPrice + (new Random()).nextInt(currentPrice * 3));
+    }
 
     /**
      * Add certain amount of armour as increment.
