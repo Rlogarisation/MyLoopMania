@@ -5,6 +5,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import org.javatuples.Pair;
+
 /**
  * The moving entity abstract class.
  * @author Zheng Luo (z5206267)
@@ -41,6 +43,22 @@ public abstract class MovingEntity extends Entity {
      */
     public void moveUpPath() {
         position.moveUpPath();
+    }
+
+    /**
+     * Get the position of the next clockwise path position
+     * @return A pair of integers of the path position
+     */
+    public Pair<Integer, Integer> moveDownPathPos(){
+        return position.moveDownPathPos();
+    }
+
+    /**
+     * Get the position of the next anticlockwise path position
+     * @return A pair of integers of the path position
+     */
+    public Pair<Integer, Integer> moveUpPathPos(){
+        return position.moveUpPathPos();
     }
 
     /**

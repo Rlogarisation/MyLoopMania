@@ -62,7 +62,7 @@ public class EnemyTest {
 
         
         // Check move function.
-        slugA.move();
+        slugA.move(currentWorld.getBuildingList());
 
         // Check hp.
         assertEquals(initialHp, slugA.getHp());
@@ -169,7 +169,7 @@ public class EnemyTest {
         assertEquals(0, myZombie.getY());
 
         // Check move function.
-        myZombie.move();
+        myZombie.move(currentWorld.getBuildingList());
 
         // Check hp.
         assertEquals(initialHp, myZombie.getHp());
@@ -276,7 +276,7 @@ public class EnemyTest {
         assertEquals(0, myVampire.getY());
 
         // Check move function.
-        myVampire.move();
+        myVampire.move(currentWorld.getBuildingList());
         
         // Check hp.
         assertEquals(initialHp, myVampire.getHp());

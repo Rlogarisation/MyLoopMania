@@ -1,6 +1,9 @@
 package unsw.loopmania;
 
 import java.util.Random;
+import java.util.List;
+import unsw.loopmania.Buildings.Building;
+
 
 /**
  * Abstract class for enemy, including different enemies' behaviours 
@@ -16,12 +19,14 @@ public abstract class Enemy extends MovingEntity{
         super(position);
     }
 
+    public abstract void move(List<Building> buildingList);
+
     /**
      * Move the enemy in different random direction.
      * 50% for going clockwise direction,
      * and 50% anti-clockwise direction.
      */
-    public void move() {
+    public final void moveRandom(){
         int directionChoice = (new Random()).nextInt(2);
         if (directionChoice == 0){
             moveUpPath();
