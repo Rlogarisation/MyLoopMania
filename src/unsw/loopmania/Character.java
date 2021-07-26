@@ -13,13 +13,14 @@ public class Character extends MovingEntity {
     final double initialMovingSpeed = 2;
     final double initialXp = 0; 
     final double initialGold = 0; 
+    final double initialDoggieCoin = 0;
     final double initialArmour = 0;
     
     private boolean hasHelmet = false;
     private boolean hasShield = false;
     private boolean hasArmour = false;
 
-    private double xp, gold, armour;
+    private double xp, gold, armour, doggieCoin;
     private int towerDamage;
     private boolean campfireInRange;
     private int cycleCount;
@@ -29,6 +30,8 @@ public class Character extends MovingEntity {
         super(position);
         this.setHp(initialHp);
         this.setDamage(initialDamage);
+        this.setGold(initialGold);
+        this.setDoggieCoin(initialDoggieCoin);
         this.setMovingSpeed(initialMovingSpeed);
         this.setFightStrategy(new BasicFightStrategy());
         this.towerDamage = 0;
@@ -85,6 +88,30 @@ public class Character extends MovingEntity {
     public void setGold(double gold) {
         this.gold = gold;
     }
+
+    /**
+     * Add certain amount of doggie coin as increment.
+     * @param goldIncrement the amount of doggie coin gained during battle with doggie as double.
+     */
+    public void addDoggieCoin(double doggieCoinIncrement) {
+        this.doggieCoin += doggieCoinIncrement;
+    }
+
+    /**
+     * Get the doggie coin of current character.
+     * @return doggie coin of current character as double.
+     */
+    public double getDoggieCoin() {
+        return this.doggieCoin;
+    }
+
+    /**
+     * Set the doggie coin of current character.
+     */
+    public void setDoggieCoin(double doggieCoin) {
+        this.doggieCoin = doggieCoin;
+    }
+
 
     /**
      * Add certain amount of armour as increment.
