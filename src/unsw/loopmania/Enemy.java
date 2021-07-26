@@ -19,7 +19,13 @@ public abstract class Enemy extends MovingEntity{
         super(position);
     }
 
-    public abstract void move(List<Building> buildingList);
+    /**
+     * Enemy default movement, which moves randomly.
+     * @param buildingList all nearby build list.
+     */
+    public void move(List<Building> buildingList) {
+        this.moveRandom();
+    }
 
     /**
      * Move the enemy in different random direction.
@@ -35,6 +41,8 @@ public abstract class Enemy extends MovingEntity{
             moveDownPath();
         }
     }
+
+    
 
     /**
      * Set the chance of effect to be trigged,
