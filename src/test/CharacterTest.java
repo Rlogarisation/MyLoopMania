@@ -147,10 +147,7 @@ public class CharacterTest {
         Character myHero = new Character(position00);
         currentWorld.setCharacter(myHero);
 
-        Map<String, Double> stats = myHero.getCharacterStats();
-        assertEquals(initialGold, stats.get("Gold"));
-        assertEquals(initialXp, stats.get("xp"));
-        assertEquals(null, stats.get("cycleCount"));
+        myHero.printCharacterStats();
 
     }
 

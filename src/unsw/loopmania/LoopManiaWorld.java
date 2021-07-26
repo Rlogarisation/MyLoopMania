@@ -510,7 +510,7 @@ public class LoopManiaWorld {
             //if extra card character gets some xp,gold and a potion
             character.addGold(5);
             character.addXp(10);
-            this.addUnequippedHealthPotion();
+            //this.addUnequippedHealthPotion();
             removeCard(0);
         }
         if(newCard instanceof VampireCastleCard){
@@ -827,7 +827,6 @@ public class LoopManiaWorld {
      * run moves which occur with every tick without needing to spawn anything immediately
      */
     public void runTickMoves(){
-        
         character.moveDownPath();
         character.setTowerDamage(0);
         character.setCampfireInRange(false);

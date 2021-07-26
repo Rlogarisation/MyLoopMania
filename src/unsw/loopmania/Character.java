@@ -168,15 +168,17 @@ public class Character extends MovingEntity {
     }
 
     /**
-     * Get a hashmap of character stats
-     * @return hashmaps of character stats
+     * print character stats
      */
-    public Map<String, Double> getCharacterStats(){
-        Map<String, Double> charStats = new HashMap<>();
-        charStats.put("Gold", gold);
-        charStats.put("xp", xp);
-        charStats.put("cycles", (double)cycleCount);
-        return charStats;
+    public void printCharacterStats(){
+        System.out.println("Gold: "+ gold);
+        System.out.println("xp: " + xp);
+        System.out.println("cycles: "+ (double)cycleCount);
+        System.out.println("Current Attack: "+  this.getFightStrategy());
+        System.out.println("Helmet: "+  this.hasHelmet);
+        System.out.println("Shield: "+  this.hasShield);
+        System.out.println("Armour: "+  this.hasArmour);
+        
     }
 
     /**
