@@ -1,6 +1,8 @@
 package unsw.loopmania;
 
-
+import java.util.List;
+import org.javatuples.Pair;
+import unsw.loopmania.Buildings.*;
 
 /**
  * Public class for enemy type Vampire
@@ -58,6 +60,55 @@ public class Vampire extends Enemy {
      */
     public void setCampfireInRange(boolean yesNo){
         this.campfireInRange = yesNo;
+    }
+
+    /**
+     * Specific code for the vampire movement to ensure that they will move outside of the campfire range
+     * And will not walk into the range of a campfire if there is another available option
+     */
+    @Override
+    public void move(List<Building> buildingList) {
+        boolean notComplete = true;
+        Pair<Integer, Integer> newPositionDown;
+        Pair<Integer, Integer> newPositionUp;
+        newPositionDown = moveDownPathPos();
+        newPositionUp = moveUpPathPos();
+        boolean downPos = inRangeOfCampfire(buildingList, newPositionDown);
+        boolean upPos = inRangeOfCampfire(buildingList, newPositionUp);
+
+        //Both position are in range of campfire and vampire is currently not in range
+        if (downPos && upPos && !campfireInRange){
+            //do nothing
+            notComplete = false;
+        } 
+        //Only downPos is in range and not upPos
+        else if(downPos && !upPos){
+            moveUpPath();
+            notComplete = false;
+        } 
+        //Only upPos is in range and not downPos
+        else if(upPos && !downPos){
+            moveDownPath();
+            notComplete = false;
+        }
+
+        //Otherwise move in a random direction
+        if (notComplete){
+            moveRandom();
+        }
+    }
+
+    public boolean inRangeOfCampfire(List<Building> buildingList, Pair<Integer, Integer> newPos){
+
+        for (Building b: buildingList){
+            if (b instanceof Campfire){
+                if (Math.pow((newPos.getValue0()-b.getX()), 2) +  Math.pow((newPos.getValue1()-b.getY()), 2) <= Math.pow(1, 2)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     

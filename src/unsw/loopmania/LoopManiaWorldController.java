@@ -113,10 +113,10 @@ public class LoopManiaWorldController {
     static DoubleProperty healthUpdater = new SimpleDoubleProperty(.0);
     @FXML
     private Text characterGold;
-    static DoubleProperty goldUpdater = new SimpleDoubleProperty(0);
+    static DoubleProperty goldUpdater = new SimpleDoubleProperty(.0);
     @FXML
     private Text characterXP;
-    static DoubleProperty XPUpdater = new SimpleDoubleProperty(0);
+    static DoubleProperty XPUpdater = new SimpleDoubleProperty(.0);
 
 
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
@@ -285,14 +285,14 @@ public class LoopManiaWorldController {
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             List<Enemy> defeatedEnemies = world.runBattles();
-            //Update character stats
-            updateBars();
             for (Enemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
             }
             if (world.getCharacterIsAlive()){
                 world.runTickMoves();
-                System.out.println(world.getCharacter().getCharacterStats());
+                world.getCharacter().printCharacterStats();
+                //Update character stats
+                updateBars();
                 if(world.getCharacter().hasAchievedGoal()){
                     System.out.println("CONGRATS!!!!!");
                     pause();
@@ -397,6 +397,54 @@ public class LoopManiaWorldController {
     }
 
     /**
+     * load a staff from the world, and pair it with an image in the GUI
+     */
+    private void loadStaff(){
+        // TODO = load more types of weapon
+        // start by getting first available coordinates
+        Staff staff = world.addUnequippedStaff();
+        onLoad(staff);
+    }
+
+
+    /**
+     * load a stake from the world, and pair it with an image in the GUI
+     */
+    private void loadStake(){
+        Stake stake = world.addUnequippedStake();
+        onLoad(stake);
+    }
+
+    /**
+     * load a stake from the world, and pair it with an image in the GUI
+     */
+    private void loadArmour(){
+        Armour armour = world.addUnequippedArmour();
+        onLoad(armour);
+    }
+
+    /**
+     * load a stake from the world, and pair it with an image in the GUI
+     */
+    private void loadShield(){
+        Shield Shield = world.addUnequippedShield();
+        onLoad(Shield);
+    }
+
+    /**
+     * load a stake from the world, and pair it with an image in the GUI
+     */
+    private void loadHelmet(){
+        Helmet Helmet = world.addUnequippedHelmet();
+        onLoad(Helmet);
+    }
+
+    private void loadHealthPotion(){
+        HealthPotion healthPotion = world.addUnequippedHealthPotion();
+    }
+    
+
+    /**
      * run GUI events after an enemy is defeated, such as spawning items/experience/gold
      * @param enemy defeated enemy for which we should react to the death of
      */
@@ -405,13 +453,11 @@ public class LoopManiaWorldController {
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
         loadSword();
-        loadVampireCastleCard();
-        loadCampFireCard();
-        loadTrapCard();
-        loadZombiePitCard();
-        loadTowerCard();
-        loadVillageCard();
-        loadBarracksCard();
+        loadStaff();
+        loadStake();
+        loadShield();
+        loadHelmet();
+        loadArmour();
     }
 
     /**
@@ -458,16 +504,43 @@ public class LoopManiaWorldController {
         cards.getChildren().add(view);
     }
 
+
     /**
-     * load a sword into the GUI.
+     * load equipment into the GUI.
      * Particularly, we must connect to the drag detection event handler,
      * and load the image into the unequippedInventory GridPane.
-     * @param sword
+     * @param Equipment the specific equipment being loaded
      */
-    private void onLoad(Sword sword) {
-        ImageView view = new ImageView(swordImage);
+    private void onLoad(Equipment item) {
+        ImageView view = null;
+        Image itemImage = null;
+        if(item instanceof Sword){
+            itemImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+            view = new ImageView(itemImage);
+        }
+        if(item instanceof Staff){
+            itemImage = new Image((new File("src/images/staff.png")).toURI().toString());
+            view = new ImageView(itemImage);
+        }
+        if(item instanceof Stake){
+            itemImage = new Image((new File("src/images/stake.png")).toURI().toString());
+            view = new ImageView(itemImage);
+        }
+        if(item instanceof Armour){
+            itemImage = new Image((new File("src/images/armour.png")).toURI().toString());
+            view = new ImageView(itemImage);
+        }
+        if(item instanceof Shield){
+            itemImage = new Image((new File("src/images/shield.png")).toURI().toString());
+            view = new ImageView(itemImage);
+        }
+        if(item instanceof Helmet){
+            itemImage = new Image((new File("src/images/helmet.png")).toURI().toString());
+            view = new ImageView(itemImage);
+        }
+
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
-        addEntity(sword, view);
+        addEntity(item, view);
         unequippedInventory.getChildren().add(view);
     }
 
@@ -583,9 +656,12 @@ public class LoopManiaWorldController {
                                 onLoad(newBuilding);
                                 break;
                             case ITEM:
+                                Equipment equippedItem = equipItemByCoordinates(nodeX, nodeY, x, y);
+                                if(equippedItem == null){
+                                    return;
+                                }
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
-                                // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
-                                removeItemByCoordinates(nodeX, nodeY);
+                                //removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
                                 break;
                             default:
@@ -674,6 +750,42 @@ public class LoopManiaWorldController {
     }
 
     /**
+     * remove an item from the unequipped inventory by its x and y coordinates in the unequipped inventory gridpane
+     * @param nodeX x coordinate from 0 to unequippedInventoryWidth-1
+     * @param nodeY y coordinate from 0 to unequippedInventoryHeight-1
+     */
+    private Equipment equipItemByCoordinates(int nodeX, int nodeY, int x, int y) {
+        //Get item type from nodeX and nodeY
+        Entity item = world.getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
+        world.getEquippedInventoryItemEntityByCoordinates(x, y);
+        //Depending on type check if valid drop and return if not
+        if(item instanceof AttackEquipment && x == 0 && y ==1){
+            AttackEquipment newAttackEquipment = (AttackEquipment)item;
+            world.equipOneItem(newAttackEquipment);
+            return newAttackEquipment;
+        }
+        else if (item instanceof Armour && x == 1 && y == 1){
+            Armour newArmour = (Armour)item;
+            world.equipOneItem(newArmour);
+            return newArmour;
+
+        }
+        else if (item instanceof Shield && x == 2 && y == 1){
+            Shield newShield = (Shield)item;
+            world.equipOneItem(newShield);
+            return newShield;
+        }
+        else if (item instanceof Helmet && x == 1 && y == 0){
+            Helmet newHelmet= (Helmet)item;
+            world.equipOneItem(newHelmet);
+            return newHelmet;
+        }
+        return null;
+
+    }
+
+
+    /**
      * add drag event handlers to an ImageView
      * @param view the view to attach drag event handlers to
      * @param draggableType the type of item being dragged - card or item
@@ -703,7 +815,7 @@ public class LoopManiaWorldController {
                         draggedEntity.setImage(vampireCastleCardImage);
                         break;
                     case ITEM:
-                        draggedEntity.setImage(swordImage);
+                        draggedEntity.setImage(currentlyDraggedImage.getImage());
                         break;
                     default:
                         break;

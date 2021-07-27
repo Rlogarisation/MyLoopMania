@@ -1,6 +1,5 @@
 package unsw.loopmania;
 
-
 /**
  * Public class for enemy type Slug
  * @author Zheng Luo (z5206267)

@@ -2,6 +2,7 @@ package unsw.loopmania;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * represents the main character in the backend of the game world
@@ -13,6 +14,7 @@ public class Character extends MovingEntity {
     final double initialMovingSpeed = 2;
     final double initialXp = 0; 
     final double initialGold = 0; 
+    final int initialDoggieCoin = 0;
     final double initialArmour = 0;
 
     private CharacterEquipment equipments;
@@ -20,7 +22,8 @@ public class Character extends MovingEntity {
     private boolean hasShield = false;
     private boolean hasArmour = false;
 
-    private double xp, gold, armour;
+    private double xp, gold, armour; 
+    private int doggieCoin;
     private int towerDamage;
     private boolean campfireInRange;
     private int cycleCount;
@@ -30,6 +33,8 @@ public class Character extends MovingEntity {
         super(position);
         this.setHp(initialHp);
         this.setDamage(initialDamage);
+        this.setGold(initialGold);
+        this.setDoggieCoin(initialDoggieCoin);
         this.setMovingSpeed(initialMovingSpeed);
         this.setFightStrategy(new BasicFightStrategy());
         this.towerDamage = 0;
@@ -89,6 +94,59 @@ public class Character extends MovingEntity {
     }
 
     /**
+     * Add certain amount of doggie coin as increment.
+     * @param goldIncrement the amount of doggie coin gained during battle with doggie as int.
+     */
+    public void addDoggieCoin(int doggieCoinIncrement) {
+        this.doggieCoin += doggieCoinIncrement;
+    }
+
+    /**
+     * Get the doggie coin of current character.
+     * @return doggie coin of current character as int.
+     */
+    public int getDoggieCoin() {
+        return this.doggieCoin;
+    }
+
+    /**
+     * Set the doggie coin of current character.
+     */
+    public void setDoggieCoin(int doggieCoin) {
+        this.doggieCoin = doggieCoin;
+    }
+
+    /**
+     * Doggie coin price can flutuate to an extraordinary extent during to certain event.
+     * calling this funtion can cause the doggie coin 
+     * increase or decrease random amount within current price range.
+     * for example,
+     * if currentDoggieCoin is 26, then it will become [0, 52].
+     * larger amount of coins will correspond to larger flutuation, vice-versa.
+     * so, if coin = 0, no flutuation.
+     * this function will not cause doggie coin price fall below 0.
+     */
+    public void flutuateDoggieCoinPrice() {
+        int currentPrice = this.getDoggieCoin();
+        this.setDoggieCoin(new Random().nextInt(currentPrice * 2));
+    }
+
+    /**
+     * Doggie coin price can increase to an extraordinary extent when Elon Maske has created.
+     * calling this funtion can cause the doggie coin 
+     * increase random amount for at least 2 times and at most 3 times more.
+     * for example,
+     * if currentDoggieCoin is 26, then it will become [26, 104].
+     * larger amount of coins will correspond to larger flutuation, vice-versa.
+     * so, if coin = 0, no flutuation.
+     * this function will not cause doggie coin price fall below 0. 
+     */
+    public void increaseDoggieCoinDrastically() {
+        int currentPrice = this.getDoggieCoin();
+        this.setDoggieCoin(currentPrice + (new Random()).nextInt(currentPrice * 3));
+    }
+
+    /**
      * Add certain amount of armour as increment.
      * @param armourIncrement the amount of armour gained by equipping armour as double.
      */
@@ -112,15 +170,17 @@ public class Character extends MovingEntity {
     }
 
     /**
-     * Get a hashmap of character stats
-     * @return hashmaps of character stats
+     * print character stats
      */
-    public Map<String, Double> getCharacterStats(){
-        Map<String, Double> charStats = new HashMap<>();
-        charStats.put("Gold", gold);
-        charStats.put("xp", xp);
-        charStats.put("cycles", (double)cycleCount);
-        return charStats;
+    public void printCharacterStats(){
+        System.out.println("Gold: "+ gold);
+        System.out.println("xp: " + xp);
+        System.out.println("cycles: "+ (double)cycleCount);
+        System.out.println("Current Attack: "+  this.getFightStrategy());
+        System.out.println("Helmet: "+  this.hasHelmet);
+        System.out.println("Shield: "+  this.hasShield);
+        System.out.println("Armour: "+  this.hasArmour);
+        
     }
 
     /**
