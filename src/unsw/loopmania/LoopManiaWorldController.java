@@ -2,7 +2,7 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
@@ -37,6 +37,9 @@ import javafx.util.Duration;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
+import unsw.loopmania.RareItems.AndurilSword;
+import unsw.loopmania.RareItems.TheOneRing;
+import unsw.loopmania.RareItems.TreeStump;
 
 import java.util.EnumMap;
 
@@ -441,6 +444,25 @@ public class LoopManiaWorldController {
 
     private void loadHealthPotion(){
         HealthPotion healthPotion = world.addUnequippedHealthPotion();
+        onLoad(healthPotion);
+    }
+
+    private void loadRareItem(){
+        ArrayList<String> validRareItems = world.getValidRareItems();
+        Random random = new Random();
+        int prob = random.nextInt(20);
+        if(validRareItems.contains("The_One_Ring") && prob == 0){
+            TheOneRing theOneRing = world.addUnequippedTheOneRing();
+            onLoad(theOneRing);
+        }
+        else if(validRareItems.contains("Anduril_Flame_Of_The_West") && prob == 1){
+            AndurilSword AndurilSword = world.addUnequippedAndurilSword();
+            onLoad(AndurilSword);
+        }
+        else if(validRareItems.contains("Tree_Stump") && prob == 2){
+            TreeStump TreeStump = world.addUnequippedTreeStump();
+            onLoad(TreeStump);
+        }
     }
     
 
@@ -452,12 +474,9 @@ public class LoopManiaWorldController {
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
-        loadSword();
-        loadStaff();
-        loadStake();
-        loadShield();
-        loadHelmet();
-        loadArmour();
+        loadRareItem();
+        loadTrapCard();
+        loadTowerCard();
     }
 
     /**
@@ -504,6 +523,23 @@ public class LoopManiaWorldController {
         cards.getChildren().add(view);
     }
 
+ /**
+     * load potion into the GUI.
+     * Particularly, we must connect to the drag detection event handler,
+     * and load the image into the unequippedInventory GridPane.
+     * @param potion the specific potion being loaded
+     */
+    private void onLoad(HealthPotion potion){
+        Image itemImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
+        ImageView view = new ImageView(itemImage);
+        if(potion instanceof TheOneRing){
+            itemImage  = new Image((new File("src/images/the_one_ring.png")).toURI().toString());
+            view = new ImageView(itemImage);
+        }
+        addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
+        addEntity(potion, view);
+        unequippedInventory.getChildren().add(view);
+    }
 
     /**
      * load equipment into the GUI.
@@ -538,7 +574,15 @@ public class LoopManiaWorldController {
             itemImage = new Image((new File("src/images/helmet.png")).toURI().toString());
             view = new ImageView(itemImage);
         }
+        if(item instanceof AndurilSword){
+            itemImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString());
+            view = new ImageView(itemImage);
+        }
+        if(item instanceof TreeStump){
+            itemImage = new Image((new File("src/images/tree_stump.png")).toURI().toString());
+            view = new ImageView(itemImage);
 
+        }
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
         addEntity(item, view);
         unequippedInventory.getChildren().add(view);
@@ -843,7 +887,7 @@ public class LoopManiaWorldController {
                             //The drag-and-drop gesture entered the target
                             //show the user that it is an actual gesture target
                                 if(event.getGestureSource() != n && event.getDragboard().hasImage()){
-                                    n.setOpacity(0.7);
+                                  //  n.setOpacity(0.7);
                                 }
                             }
                             event.consume();
