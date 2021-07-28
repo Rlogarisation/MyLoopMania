@@ -14,6 +14,7 @@ import org.javatuples.Pair;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
+import unsw.loopmania.RareItems.TheOneRing;
 
 /**
  * this test file tests all the basic equipments(Attack,Defense),

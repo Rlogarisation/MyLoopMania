@@ -9,6 +9,9 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Buildings.Building;
+import unsw.loopmania.RareItems.AndurilSword;
+import unsw.loopmania.RareItems.TheOneRing;
+import unsw.loopmania.RareItems.TreeStump;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
 
@@ -34,6 +37,12 @@ public class LoopManiaWorld {
      * height of the world in GridPane cells
      */
     private int height;
+
+
+    /** 
+     * valid rare items from JSON configuration
+     */
+    private ArrayList<String> validRareItems;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -109,6 +118,7 @@ public class LoopManiaWorld {
         cardEntities = new ArrayList<>();
         equippedInventoryItems = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
+        validRareItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingList = new ArrayList<>();
         this.heroCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
@@ -122,6 +132,14 @@ public class LoopManiaWorld {
 
     public int getHeight() {
         return height;
+    }
+
+    public ArrayList<String> getValidRareItems(){
+        return this.validRareItems;
+    }
+
+    public void setValidRareItems(ArrayList<String> rareItemList){
+        this.validRareItems = rareItemList;
     }
 
     public Character getCharacter(){
@@ -820,6 +838,46 @@ public class LoopManiaWorld {
     }
 
     /**
+     * spawn 'the one ring' in the world and return 'the one ring' entity
+     * @return 'the one ring' to be spawned in the controller as a JavaFX node
+     */
+    public AndurilSword addUnequippedAndurilSword(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        
+        // now we insert 'the andurilSword', as we know we have at least made a slot available...
+        AndurilSword AndurilSword = new AndurilSword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(AndurilSword);
+        return AndurilSword;
+    }
+
+    /**
+     * spawn 'the one ring' in the world and return 'the one ring' entity
+     * @return 'the one ring' to be spawned in the controller as a JavaFX node
+     */
+    public TreeStump addUnequippedTreeStump(){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null){
+            // give 50 gold and 100xp to the character when the oldest item discarded.
+            this.character.addGold(50);
+            this.character.addXp(100);
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+        }
+        
+        // now we insert 'the tree stump', as we know we have at least made a slot available...
+        TreeStump TreeStump = new TreeStump(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        unequippedInventoryItems.add(TreeStump);
+        return TreeStump;
+    }
+
+    /**
      * Restores the character's health
      * if the character has health potions
      */
@@ -1059,10 +1117,6 @@ public class LoopManiaWorld {
                     itemPrice = ((HealthPotion) item).getPrice();
                     break;
                 }    
-                if (chosenItem instanceof RareItem) {
-                    itemPrice = ((RareItem) item).getPrice();
-                    break;
-                }
             }
         }
         if (chosenItem != null) {
