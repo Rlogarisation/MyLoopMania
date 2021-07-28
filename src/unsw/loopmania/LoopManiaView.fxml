@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -116,7 +117,7 @@
 
 
          
-         <GridPane layoutX="-7.0" layoutY="57.0" prefHeight="200.0" prefWidth="92.0">
+         <GridPane layoutX="-7.0" layoutY="57.0" prefHeight="120.0" prefWidth="115.0">
       <children>
          <ProgressBar fx:id="healthBar" layoutX="42.0" layoutY="31.0" prefHeight="25.0" prefWidth="79.0" progress="0.0" GridPane.columnIndex="1">
                      <GridPane.margin>
@@ -161,6 +162,15 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
          </Text>
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Text fill="#125e2e" strokeType="OUTSIDE" strokeWidth="0.0" text="Allies" textAlignment="CENTER" underline="true" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="Geeza Pro Regular" size="13.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Text>
       </children>
                <columnConstraints>
                   <ColumnConstraints />
@@ -171,13 +181,25 @@
                   <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
+                  <RowConstraints />
                </rowConstraints>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-   </GridPane>
-   </children>
+      </GridPane>
+       <GridPane fx:id="allyGrid" layoutY="200.0" prefHeight="50.0" prefWidth="84.0">
+       <columnConstraints>
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
+            <children>
+            </children>
+      </GridPane>
+      </children>
       </VBox>
    </HBox>
+  
    
 </AnchorPane>
