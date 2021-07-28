@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.management.openmbean.OpenDataException;
+
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 
@@ -16,11 +18,15 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -29,9 +35,15 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import unsw.loopmania.cards.*;
@@ -43,6 +55,7 @@ import unsw.loopmania.RareItems.TreeStump;
 
 import java.util.EnumMap;
 import java.util.Iterator;
+import java.util.HashMap;
 import java.io.File;
 import java.io.IOException;
 
@@ -103,6 +116,37 @@ public class LoopManiaWorldController {
     private AnchorPane anchorPaneRoot;
     
     /**
+     * 
+     */
+    @FXML
+     private HBox hBox;
+
+    /**
+     * 
+     */
+    @FXML
+     private Pane shopPane;
+
+    /**
+     * 
+     */
+    @FXML
+    private GridPane shop;
+
+    /**
+     * 
+     */
+    @FXML
+    private Button shopOpenButton;
+
+    /**
+     * 
+     */
+    @FXML
+    private Button exitButton;
+
+
+    /**
      * equippedItems gridpane is for equipped items (e.g. swords, shield, axe)
      */
     @FXML
@@ -143,7 +187,16 @@ public class LoopManiaWorldController {
     private Image basicEnemyImage;
     private Image vampireEnemyImage;
     private Image zombieEnemyImage;
+    
+    // Image for items
     private Image swordImage;
+    private Image stakeImage;
+    private Image staffImage;
+    private Image armourImage;
+    private Image shieldImage;
+    private Image helmetImage;
+    private Image potionImage;
+    
     private Image heroCastleImage;
 
     /**
@@ -184,6 +237,10 @@ public class LoopManiaWorldController {
      */
     private MenuSwitcher mainMenuSwitcher;
 
+
+
+
+
     /**
      * @param world world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be loaded into the GUI
@@ -195,7 +252,9 @@ public class LoopManiaWorldController {
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         vampireEnemyImage = new Image((new File("src/images/vampire.png")).toURI().toString());
         zombieEnemyImage = new Image((new File("src/images/zombie.png")).toURI().toString());
+        
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        
         heroCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
@@ -253,6 +312,8 @@ public class LoopManiaWorldController {
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
         
+        setHeroShop();       
+
     }
 
     public void updateBars(){
@@ -302,7 +363,7 @@ public class LoopManiaWorldController {
         isPaused = false;
         onLoad(world.getHeroCastle());
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.03), event -> {
             List<Enemy> defeatedEnemies = world.runBattles();
             for (Enemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
@@ -336,8 +397,10 @@ public class LoopManiaWorldController {
             }
             boolean openShop = world.runHeroCastle();
             if (openShop){
-                //Openshop
+                changeToShop();
             }
+            //shopOpenButton.setVisible(false);
+
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -1069,5 +1132,88 @@ public class LoopManiaWorldController {
         System.out.println("current method = "+currentMethodLabel);
         System.out.println("In application thread? = "+Platform.isFxApplicationThread());
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
+    }
+
+    /**
+     * 
+     */
+    private void changeToShop() {
+        pause();
+        hBox.setVisible(false);
+        shopPane.setVisible(true);
+        //shopOpenButton.setVisible(false);
+    }
+
+    /**
+     * 
+     */
+    private void changeToGame() {
+        hBox.setVisible(true);
+        shopPane.setVisible(false);
+        //shopOpenButton.setVisible(true);
+    }
+
+    @FXML
+    private void handleShopOpenButtonAction(ActionEvent event){
+        changeToShop();         
+    }
+
+    private void setHeroShop() {
+
+        shop.getChildren().removeAll();
+
+        HashMap<String,StaticEntity> shopItems = world.getHeroCastle().getShopItems();
+
+        int i = 0; int j = 0;
+        for ( String key : shopItems.keySet() ) {
+            Text itemName = new Text("   " + key + "          "); 
+            Image itemImage = null;
+            Button buyButton = new Button();
+            Button sellButton = new Button();
+
+            StaticEntity item = shopItems.get(key);
+            buyButton.setOnAction(event -> {
+                Boolean isBought = world.buyOneItemBycoordinates(item.getX(),item.getY());
+                if (!isBought) {
+                    System.out.println("You need more gold");
+                }
+            });
+            sellButton.setOnAction(event -> {
+                Boolean isSold = world.sellOneItemByItem(item);
+                if (!isSold) {
+                    System.out.println("You don't have this item");
+                }
+            });
+            exitButton.setOnAction(event -> {
+                changeToGame();
+            });
+
+            if (key == "Health Potion") { 
+                itemName = new Text("   " + key + "            ");
+                itemName.setStyle("-fx-font: 15 arial;"); 
+            } else { itemName.setStyle("-fx-font: 17 arial;"); 
+            }
+            
+            buyButton.setText("Buy");
+            sellButton.setText("Sell");
+            buyButton.setStyle("-fx-font: 13 arial;");
+            sellButton.setStyle("-fx-font: 13 arial;");
+            buyButton.setMinWidth(shop.getPrefWidth());
+            sellButton.setMinWidth(shop.getPrefWidth());
+            
+            switch(key) {
+                case "Sword": itemImage = swordImage; break;
+                case "Health Potion": itemImage = swordImage; break;
+                default:
+                    itemImage = 
+                    new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
+                    break; 
+            }
+            shop.add(itemName, i, j);
+            shop.add(new ImageView(itemImage), i+1, j);
+            shop.add(buyButton, i+2, j);
+            shop.add(sellButton, i+3, j);
+            j++;
+        }
     }
 }
