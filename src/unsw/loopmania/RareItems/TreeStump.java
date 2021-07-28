@@ -13,5 +13,4 @@ public class TreeStump extends Shield{
         this.setPrice(price);
         this.setDefense(defense);
     }
-    
 }

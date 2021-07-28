@@ -10,6 +10,5 @@ public class AndurilSword extends Sword{
         super(x, y);
         this.setPrice(price);
         this.setDamage(damage);
-    }
-    
+    } 
 }

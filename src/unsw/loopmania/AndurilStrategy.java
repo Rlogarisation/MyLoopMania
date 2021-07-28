@@ -8,7 +8,9 @@ public class AndurilStrategy implements FightStrategy {
     public void attack(double initialDamage, MovingEntity entity) {
         double currentHp = entity.getHp();
         double totalDamage = initialDamage + damage;
-        //TODO: Add extra damage to bosses
+        if(entity instanceof ElanMuske){
+            totalDamage= totalDamage*3;
+        }
         entity.setHp(currentHp - totalDamage);
     }
 }
