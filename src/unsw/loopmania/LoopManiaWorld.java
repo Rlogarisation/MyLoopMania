@@ -388,7 +388,8 @@ public class LoopManiaWorld {
                 break;
             }
 
-            currentEnemy.attack(currentEnemy.getDamage(), character);
+            double enemyDamageToCharacter = character.defenseApplication(currentEnemy.getDamage());
+            currentEnemy.attack(enemyDamageToCharacter, character);
             if (character.getHp() <= 0) {
                 characterIsAlive = false;
                 break;

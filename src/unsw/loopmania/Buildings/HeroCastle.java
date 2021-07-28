@@ -111,4 +111,6 @@ public class HeroCastle extends StaticEntity{
         return this.shop;
     }
 
+        //TODO: able to select what boss enemy to spawn
+
 }

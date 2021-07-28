@@ -19,7 +19,10 @@ public class Character extends MovingEntity {
     
     private boolean hasHelmet = false;
     private boolean hasShield = false;
+    private boolean hasStump = false;
     private boolean hasArmour = false;
+
+    private boolean isStun = false;
 
     private double xp, gold, armour; 
     private int doggieCoin;
@@ -41,7 +44,9 @@ public class Character extends MovingEntity {
 
         this.hasHelmet = false;
         this.hasShield = false;
+        this.hasStump = false;
         this.hasArmour = false;
+        this.isStun = false;
     }
 
     /**
@@ -257,6 +262,21 @@ public class Character extends MovingEntity {
     }
 
     /**
+     * getter for hasStump
+     * @return hasStump
+     */
+    public boolean getHasStump(){
+        return this.hasStump;
+    }
+
+    /**
+     * setter for hasStump
+     */
+    public void setHasStump(boolean hasStump){
+        this.hasStump = hasStump;
+    }
+
+    /**
      * getter for hasHelmet
      * @return hasHelmet
      */
@@ -279,7 +299,7 @@ public class Character extends MovingEntity {
      */
     public double defenseApplication(double initialDamage) {
         double currentDamage = initialDamage;
-        
+        //TODO: implement stump
         if (hasArmour && !hasShield) {
             currentDamage = (0.5)*initialDamage;
         } else if (hasArmour && hasShield) {
@@ -292,6 +312,30 @@ public class Character extends MovingEntity {
         }
         
         return currentDamage;
+    }
+
+    /**
+     * If the character has a helmet equipped, the damage inflicted by 
+     * the character will be reduced by 10% due to reduction in visibility
+     */
+    @Override
+    public double getDamage(){
+        double currentDamage = super.getDamage();
+        if (hasHelmet){
+            currentDamage = (0.9) * currentDamage;
+        }
+        if (isStun){
+            currentDamage = 0;
+            this.isStun = false;
+        }
+        return currentDamage;
+    }
+
+    /**
+     * make the character stunned
+     */
+    public void makeStun(){
+        this.isStun = true;
     }
 
 }
