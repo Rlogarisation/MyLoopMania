@@ -247,7 +247,6 @@ public class LoopManiaWorldController {
                 unequippedInventory.add(emptySlotView, x, y);
             }
         }
-        world.addAlly(new Ally(world.getCharacter().getPathPosition()));
         // create the draggable icon
         draggedEntity = new DragIcon();
         draggedEntity.setVisible(false);
