@@ -175,9 +175,20 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-   </GridPane>
-   </children>
+      </GridPane>
+       <GridPane fx:id="allyGrid" layoutY="200.0" prefHeight="50.0" prefWidth="158.0">
+       <columnConstraints>
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
+            <children>
+            </children>
+      </GridPane>
+      </children>
       </VBox>
    </HBox>
+  
    
 </AnchorPane>

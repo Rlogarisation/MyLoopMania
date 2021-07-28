@@ -42,7 +42,7 @@ import unsw.loopmania.RareItems.TheOneRing;
 import unsw.loopmania.RareItems.TreeStump;
 
 import java.util.EnumMap;
-
+import java.util.Iterator;
 import java.io.File;
 import java.io.IOException;
 
@@ -101,7 +101,7 @@ public class LoopManiaWorldController {
      */
     @FXML
     private AnchorPane anchorPaneRoot;
-
+    
     /**
      * equippedItems gridpane is for equipped items (e.g. swords, shield, axe)
      */
@@ -121,7 +121,8 @@ public class LoopManiaWorldController {
     private Text characterXP;
     static DoubleProperty XPUpdater = new SimpleDoubleProperty(.0);
 
-
+    @FXML
+    private GridPane allyGrid;
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
 
@@ -246,7 +247,7 @@ public class LoopManiaWorldController {
                 unequippedInventory.add(emptySlotView, x, y);
             }
         }
-
+        world.addAlly(new Ally(world.getCharacter().getPathPosition()));
         // create the draggable icon
         draggedEntity = new DragIcon();
         draggedEntity.setVisible(false);
@@ -260,6 +261,22 @@ public class LoopManiaWorldController {
         characterGold.setText(String.valueOf(world.getCharacter().getGold()));
         characterXP.setText(String.valueOf(world.getCharacter().getXp()));
 
+    }
+
+    public void updateAllyList(){
+        allyGrid.getChildren().clear();
+        List<Ally> allyList = world.getAllyList();
+        Iterator<Ally> allyIter = allyList.iterator(); 
+        for (int x=0; x<4; x++){
+            for (int y=0; y<2; y++){
+                if(allyIter.hasNext()){
+                    Image allyImage = new Image((new File("src/images/deep_elf_master_archer.png")).toURI().toString());
+                    ImageView allyView = new ImageView(allyImage);
+                    allyIter.next();
+                    allyGrid.add(allyView,x, y);
+                }
+            }
+        }
     }
 
     public void setGameMode(String gameMode){
@@ -296,6 +313,8 @@ public class LoopManiaWorldController {
                 world.getCharacter().printCharacterStats();
                 //Update character stats
                 updateBars();
+                //update ally list
+                updateAllyList();
                 if(world.getCharacter().hasAchievedGoal()){
                     System.out.println("CONGRATS!!!!!");
                     pause();
@@ -474,7 +493,7 @@ public class LoopManiaWorldController {
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
-        loadRareItem();
+        loadBarracksCard();
     }
 
     /**
