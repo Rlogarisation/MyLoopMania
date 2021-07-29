@@ -16,7 +16,8 @@ public class Character extends MovingEntity {
     final double initialGold = 0; 
     final int initialDoggieCoin = 0;
     final double initialArmour = 0;
-    
+
+    private CharacterEquipment equipments;
     private boolean hasHelmet = false;
     private boolean hasShield = false;
     private boolean hasArmour = false;
@@ -39,6 +40,7 @@ public class Character extends MovingEntity {
         this.towerDamage = 0;
         this.campfireInRange = false;
 
+        this.equipments = new CharacterEquipment();
         this.hasHelmet = false;
         this.hasShield = false;
         this.hasArmour = false;
@@ -304,6 +306,77 @@ public class Character extends MovingEntity {
         }
         
         return currentDamage;
+    }
+
+    /**
+     * equip the character with an attack equipment
+     * @return attackEquipment
+     */
+    public AttackEquipment equipAttackEquipment(AttackEquipment attackEquipment){
+        equipments.equipAttackEquipment(attackEquipment);
+        return attackEquipment;
+    }
+
+    /**
+     * equip the character with an armour
+     * @return armour
+     */
+    public Armour equipArmour(Armour armour){
+        equipments.equipArmour(armour);
+        setHasArmour(true);
+        return armour;
+    }
+
+    /**
+     * equip the character with a shield
+     * @return shield
+     */
+    public Shield equipShield(Shield shield){
+        equipments.equipShield(shield);
+        setHasShield(true);
+        return shield;
+    }
+
+    /**
+     * equip the character with a helmet
+     * @return helmet
+     */
+    public Helmet equipHelmet(Helmet helmet){
+        equipments.equipHelmet(helmet);
+        setHasHelmet(true);
+        return helmet;
+    }
+
+    /**
+     * unequip the attack equipment for the character
+     */
+    public void unequipAttackEquipment(){
+        equipments.unequipAttackEquipment();
+    }
+
+    /**
+     * unequip the armour for the character
+     */
+    public void unequipArmour(){
+        equipments.unequipArmour();
+        setHasArmour(false);
+    }
+
+    /**
+     * unequip the Shield for the character
+     */
+    public void unequipShield(){
+        equipments.unequipShield();
+        setHasShield(false);
+    }    
+
+    /**
+     * unequip the helmet for the character
+     */
+    public void unequipHelmet(){
+        equipments.unequipHelmet();
+        setHasHelmet(false);
+
     }
 
 }
