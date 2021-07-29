@@ -68,7 +68,7 @@
             
             </VBox>
             
-            <VBox>
+            <VBox fx:id="vBox">
                <children>
                   <!-- equippedItems contains the equipment equipped by the character in special slots -->
                   <!-- TODO = extend this to have slots for equipping armour, shields, helmets, and any other equippable items -->
@@ -208,17 +208,17 @@
                   <children>
                   </children>
             </GridPane>
-               <Button fx:id="shopOpenButtion" mnemonicParsing="false" onAction="#handleShopOpenButtonAction" text="Shop" visible="false" />
             </children>
             </VBox>
+         <Button fx:id="shopOpenButtion" onAction="#handleShopOpenButtonAction" text="Shop" visible="false" />
          </HBox>
          
          <Pane fx:id="shopPane" prefHeight="400.0" prefWidth="400.0" visible="false">
             <children>
             
-               <TextField alignment="CENTER" layoutX="90.0" layoutY="10.0" promptText="Hero's Shop" text="Hero's Shop">
+               <Text  layoutX="140.0" layoutY="30.0" text=" Hero's Shop ">
                   <font>
-                     <Font name="Arial Black" size="15.0" />
+                     <Font name="Arial Black" size="16.0" />
                   </font>
                   <effect>
                      <Lighting>
@@ -230,9 +230,9 @@
                         </light>
                      </Lighting>
                   </effect>
-               </TextField>
+               </Text>
             
-               <GridPane fx:id="shop" alignment="CENTER" gridLinesVisible="false" hgap="6" layoutX="70.0" layoutY="45.0" vgap="6">
+               <GridPane fx:id="shop" alignment="CENTER" gridLinesVisible="false" hgap="6" layoutX="81.0" layoutY="45.0" vgap="6">
                   <columnConstraints>
                      <ColumnConstraints minWidth="100.0" prefWidth="100.0" />
                   </columnConstraints>
@@ -241,7 +241,7 @@
                      </rowConstraints>
                </GridPane>
             
-               <Button fx:id="exitButton" layoutX="170.0" layoutY="425.0" style="-fx-font: 16 arial" text="exit" />
+               <Button fx:id="exitButton" layoutX="180.0" layoutY="425.0" style="-fx-font: 16 arial" text="exit" />
                
             </children>
          </Pane>

@@ -39,6 +39,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.text.Text;
@@ -119,6 +120,13 @@ public class LoopManiaWorldController {
      */
     @FXML
      private HBox hBox;
+
+    /**
+     * hBox is the game background in stackPane -> achorPaneRoot.
+     * we can use it to control game visibility.
+     */
+    @FXML
+    private VBox vBox;
 
     /**
      * shopPane is the shop background in stackPane -> achorPaneRoot.
@@ -269,6 +277,7 @@ public class LoopManiaWorldController {
     public void initialize() {
         // TODO = load more images/entities during initialization
         
+
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
@@ -1169,6 +1178,16 @@ public class LoopManiaWorldController {
 
         // make sure the shop is empty 
         shop.getChildren().removeAll();
+
+        /*
+        Button shopOpenButton = new Button("Shop");
+        shopOpenButton.setOnAction(event -> {
+            if (isPaused && ) {
+                changeToShop();    
+            }
+        });
+        vBox.getChildren().add(shopOpenButton);
+        */
 
         HashMap<String,StaticEntity> shopItems = world.getHeroCastle().getShopItems();
 
