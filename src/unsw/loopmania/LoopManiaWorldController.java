@@ -39,11 +39,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import unsw.loopmania.cards.*;
@@ -116,31 +115,41 @@ public class LoopManiaWorldController {
     private AnchorPane anchorPaneRoot;
     
     /**
-     * 
+     * hBox is the game background in stackPane -> achorPaneRoot.
+     * we can use it to control game visibility.
      */
     @FXML
      private HBox hBox;
 
     /**
-     * 
+     * hBox is the game background in stackPane -> achorPaneRoot.
+     * we can use it to control game visibility.
+     */
+    @FXML
+    private VBox vBox;
+
+    /**
+     * shopPane is the shop background in stackPane -> achorPaneRoot.
+     * we can use it to control shop visibility. 
      */
     @FXML
      private Pane shopPane;
 
     /**
-     * 
+     * shop is the shop background which lists the shop items.
      */
     @FXML
     private GridPane shop;
 
     /**
-     * 
+     * shopOpenButton is the button 
+     * we can re-open the shop after we close the shop.
      */
     @FXML
     private Button shopOpenButton;
 
     /**
-     * 
+     * exitButton is the button we can exit the shop and return to game.
      */
     @FXML
     private Button exitButton;
@@ -152,21 +161,28 @@ public class LoopManiaWorldController {
     @FXML
     private GridPane equippedItems;
 
+    /**
+     * unEquippedItems gridpane is for unequipped items (e.g. swords, shield, axe)
+     */
     @FXML
     private GridPane unequippedInventory;
 
+    
     @FXML
     private ProgressBar healthBar;
     static DoubleProperty healthUpdater = new SimpleDoubleProperty(.0);
+
     @FXML
     private Text characterGold;
     static DoubleProperty goldUpdater = new SimpleDoubleProperty(.0);
+    
     @FXML
     private Text characterXP;
     static DoubleProperty XPUpdater = new SimpleDoubleProperty(.0);
 
     @FXML
     private GridPane allyGrid;
+    
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
 
@@ -190,12 +206,6 @@ public class LoopManiaWorldController {
     
     // Image for items
     private Image swordImage;
-    private Image stakeImage;
-    private Image staffImage;
-    private Image armourImage;
-    private Image shieldImage;
-    private Image helmetImage;
-    private Image potionImage;
     
     private Image heroCastleImage;
 
@@ -237,10 +247,6 @@ public class LoopManiaWorldController {
      */
     private MenuSwitcher mainMenuSwitcher;
 
-
-
-
-
     /**
      * @param world world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be loaded into the GUI
@@ -271,6 +277,7 @@ public class LoopManiaWorldController {
     public void initialize() {
         // TODO = load more images/entities during initialization
         
+
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
@@ -1135,7 +1142,8 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * 
+     * this function changes the scene from game to the shop
+     * This function hide the game and show the shop.
      */
     private void changeToShop() {
         pause();
@@ -1145,7 +1153,8 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * 
+     * this function changes the scene from shop to the game
+     * To re-open the shop, we set re-open button
      */
     private void changeToGame() {
         hBox.setVisible(true);
@@ -1153,14 +1162,32 @@ public class LoopManiaWorldController {
         //shopOpenButton.setVisible(true);
     }
 
+    /**
+     * this function handles re-opening shop. 
+     */
     @FXML
     private void handleShopOpenButtonAction(ActionEvent event){
         changeToShop();         
     }
 
+    /**
+     * set hero shop in hero castle.
+     * we can buy and sell items from the shop
+     */
     private void setHeroShop() {
 
+        // make sure the shop is empty 
         shop.getChildren().removeAll();
+
+        /*
+        Button shopOpenButton = new Button("Shop");
+        shopOpenButton.setOnAction(event -> {
+            if (isPaused && ) {
+                changeToShop();    
+            }
+        });
+        vBox.getChildren().add(shopOpenButton);
+        */
 
         HashMap<String,StaticEntity> shopItems = world.getHeroCastle().getShopItems();
 
@@ -1171,6 +1198,7 @@ public class LoopManiaWorldController {
             Button buyButton = new Button();
             Button sellButton = new Button();
 
+            // set a button for purchase
             StaticEntity item = shopItems.get(key);
             buyButton.setOnAction(event -> {
                 Boolean isBought = world.buyOneItemBycoordinates(item.getX(),item.getY());
@@ -1178,22 +1206,25 @@ public class LoopManiaWorldController {
                     System.out.println("You need more gold");
                 }
             });
+
+            // set a button for sale
             sellButton.setOnAction(event -> {
                 Boolean isSold = world.sellOneItemByItem(item);
                 if (!isSold) {
                     System.out.println("You don't have this item");
                 }
             });
+
+            // set a button to return to the game
             exitButton.setOnAction(event -> {
                 changeToGame();
             });
 
-            if (key == "Health Potion") { 
-                itemName = new Text("   " + key + "            ");
-                itemName.setStyle("-fx-font: 15 arial;"); 
-            } else { itemName.setStyle("-fx-font: 17 arial;"); 
-            }
+            // set little bit differently for long word item
+            itemName.setStyle("-fx-font: 13 arial;"); 
             
+            
+            // set style for buttons
             buyButton.setText("Buy");
             sellButton.setText("Sell");
             buyButton.setStyle("-fx-font: 13 arial;");
@@ -1201,19 +1232,27 @@ public class LoopManiaWorldController {
             buyButton.setMinWidth(shop.getPrefWidth());
             sellButton.setMinWidth(shop.getPrefWidth());
             
+            // set the images for the items
             switch(key) {
                 case "Sword": itemImage = swordImage; break;
-                case "Health Potion": itemImage = swordImage; break;
+                case "Health Potion": itemImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()); break;
+                case "The One Ring": itemImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString()); break;
+                case "Anduril": itemImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()); break;
+                case "Tree Stump": itemImage = new Image((new File("src/images/tree_stump.png")).toURI().toString()); break;
                 default:
-                    itemImage = 
-                    new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
-                    break; 
+                    itemImage = new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString()); break; 
             }
+
+            // add information about items in the shop
             shop.add(itemName, i, j);
             shop.add(new ImageView(itemImage), i+1, j);
-            shop.add(buyButton, i+2, j);
+            if (key != "The One Ring" && key != "Anduril" && key != "Tree Stump") {
+                shop.add(buyButton, i+2, j);
+            }
             shop.add(sellButton, i+3, j);
             j++;
         }
+
+        
     }
 }
