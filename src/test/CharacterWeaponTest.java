@@ -157,7 +157,6 @@ public class CharacterWeaponTest {
         character.setHasShield(true);
         character.setHp(100);
         slug.attack(slug.getDamage(),character);
-        System.out.println(character.getHp());
         assert(character.getHp() == 98.25);
 
         character.setHasArmour(false);
