@@ -7,6 +7,7 @@ import unsw.loopmania.Character;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.javatuples.Pair;
 
 
 public class HeroCastle extends StaticEntity{ 
@@ -18,6 +19,8 @@ public class HeroCastle extends StaticEntity{
     private int numCyclesComplete;
     private int numCyclesGoal;
     private HashMap<String,StaticEntity> shop;
+    private boolean spawnDoggie;
+    private boolean spawnElanMuske;
 
     public HeroCastle (SimpleIntegerProperty x, SimpleIntegerProperty y){
         super(x, y);
@@ -26,6 +29,8 @@ public class HeroCastle extends StaticEntity{
         this.numCyclesComplete = 0;
         this.numCyclesGoal = 1;
         initializeShop();
+        this.spawnDoggie = false;
+        this.spawnElanMuske = false;
     }
 
     public int getNumCylesGoals(){
@@ -46,6 +51,22 @@ public class HeroCastle extends StaticEntity{
      */
     public void attach(ZombiePit building){
         this.zombiePits.add(building);
+    }
+
+    public boolean getSpawnDoggie(){
+        return this.spawnDoggie;
+    }
+
+    public boolean getSpawnElanMuske(){
+        return this.spawnElanMuske;
+    }
+
+    public void setSpawnDoggie(boolean yesNo){
+        this.spawnDoggie = yesNo;
+    }
+
+    public void setSpawnElanMuske(boolean yesNo){
+        this.spawnElanMuske = yesNo;
     }
 
     /**
@@ -76,6 +97,10 @@ public class HeroCastle extends StaticEntity{
             character.setCycleCount(character.getCycleCount()+1);
             notifyAllObservers();
             this.numCyclesComplete = this.numCyclesComplete + 1;
+
+            if (character.getCycleCount() == 20) ;  //spawnBoss("Doggie", lmw);
+            else if (character.getCycleCount() == 40 && character.getXp() >= 10000) spawnBoss("ElanMuske", lmw);
+
             if (this.numCyclesComplete == this.numCyclesGoal){
                 this.numCyclesComplete = 0;
                 this.numCyclesGoal = this.numCyclesGoal + 1; 
@@ -111,6 +136,26 @@ public class HeroCastle extends StaticEntity{
         return this.shop;
     }
 
-        //TODO: able to select what boss enemy to spawn
+    
+    public void spawnBoss(String s, LoopManiaWorld lmw){
+        Pair<Integer, Integer> pos = lmw.possiblyGetBasicEnemySpawnPosition();
+        if (pos != null){
+            int indexInPath = lmw.getOrderedPath().indexOf(pos);
+            switch(s){
+                case "ElanMuske":
+                    Enemy elanMuske = new ElanMuske(new PathPosition(indexInPath, lmw.getOrderedPath()));
+                    lmw.addEnemy(elanMuske);
+                    this.spawnElanMuske = true;
+                    break;
+                case "Doggie":
+                    //Enemy doggie = new Doggie(new PathPosition(indexInPath, lmw.getOrderedPath()));
+                    //lmw.addEnemy(doggie);
+                    //this.spawnDoggie = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
 }

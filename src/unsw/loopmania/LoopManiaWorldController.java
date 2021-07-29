@@ -317,6 +317,11 @@ public class LoopManiaWorldController {
                 reactToEnemyDefeat(defeatedEnemy);
             }
             boolean openShop = world.runHeroCastle();
+            if (world.getHeroCastle().getSpawnDoggie()){
+                //onload doggie
+            } else if (world.getHeroCastle().getSpawnElanMuske()){
+                //onload elanMuske
+            }
             if (openShop){
                 //Openshop
             }
