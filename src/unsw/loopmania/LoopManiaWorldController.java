@@ -121,61 +121,31 @@ public class LoopManiaWorldController {
     private AnchorPane anchorPaneRoot;
     
     /**
-<<<<<<< HEAD
      * 
-=======
-     * hBox is the game background in stackPane -> achorPaneRoot.
-     * we can use it to control game visibility.
->>>>>>> origin
      */
     @FXML
      private HBox hBox;
 
     /**
-<<<<<<< HEAD
      * 
-=======
-     * hBox is the game background in stackPane -> achorPaneRoot.
-     * we can use it to control game visibility.
-     */
-    @FXML
-    private VBox vBox;
-
-    /**
-     * shopPane is the shop background in stackPane -> achorPaneRoot.
-     * we can use it to control shop visibility. 
->>>>>>> origin
      */
     @FXML
      private Pane shopPane;
 
     /**
-<<<<<<< HEAD
      * 
-=======
-     * shop is the shop background which lists the shop items.
->>>>>>> origin
      */
     @FXML
     private GridPane shop;
 
     /**
-<<<<<<< HEAD
      * 
-=======
-     * shopOpenButton is the button 
-     * we can re-open the shop after we close the shop.
->>>>>>> origin
      */
     @FXML
     private Button shopOpenButton;
 
     /**
-<<<<<<< HEAD
      * 
-=======
-     * exitButton is the button we can exit the shop and return to game.
->>>>>>> origin
      */
     @FXML
     private Button exitButton;
@@ -232,15 +202,12 @@ public class LoopManiaWorldController {
     
     // Image for items
     private Image swordImage;
-<<<<<<< HEAD
     private Image stakeImage;
     private Image staffImage;
     private Image armourImage;
     private Image shieldImage;
     private Image helmetImage;
     private Image potionImage;
-=======
->>>>>>> origin
     
     private Image heroCastleImage;
 
