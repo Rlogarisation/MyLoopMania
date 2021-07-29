@@ -592,7 +592,14 @@ public class LoopManiaWorld {
         if (attackEquipment instanceof Stake) {
             character.setFightStrategy(new StakeStrategy());
         }
+<<<<<<< Updated upstream
         equippedInventoryItems.add(attackEquipment);
+=======
+        if(attackEquipment instanceof AndurilSword){
+            character.setFightStrategy(new StakeStrategy());
+        }
+        
+>>>>>>> Stashed changes
         return attackEquipment; 
 
     }

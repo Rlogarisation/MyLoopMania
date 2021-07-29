@@ -38,6 +38,7 @@ import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
 import unsw.loopmania.RareItems.AndurilSword;
+import unsw.loopmania.RareItems.ConfusingRareItem;
 import unsw.loopmania.RareItems.TheOneRing;
 import unsw.loopmania.RareItems.TreeStump;
 
@@ -319,7 +320,12 @@ public class LoopManiaWorldController {
                     pause();
                 }
                 printThreadingNotes("HANDLED TIMER");
-            } else{
+            }
+            //Try reviving character if it has onering
+            else if (!world.getCharacterIsAlive()){
+                world.reviveCharacter();
+            }
+            else{
                 printThreadingNotes("Character is Dead");
                 pause();
             }
@@ -465,22 +471,31 @@ public class LoopManiaWorldController {
         onLoad(healthPotion);
     }
 
-    private void loadRareItem(){
+    private StaticEntity loadRareItem(){
         ArrayList<String> validRareItems = world.getValidRareItems();
         Random random = new Random();
-        int prob = random.nextInt(20);
+        int prob = random.nextInt(3);
         if(validRareItems.contains("The_One_Ring") && prob == 0){
             TheOneRing theOneRing = world.addUnequippedTheOneRing();
             onLoad(theOneRing);
+            return theOneRing;
         }
         else if(validRareItems.contains("Anduril_Flame_Of_The_West") && prob == 1){
-            AndurilSword AndurilSword = world.addUnequippedAndurilSword();
-            onLoad(AndurilSword);
+            AndurilSword andurilSword = world.addUnequippedAndurilSword();
+            onLoad(andurilSword);
+            return andurilSword;
         }
         else if(validRareItems.contains("Tree_Stump") && prob == 2){
-            TreeStump TreeStump = world.addUnequippedTreeStump();
-            onLoad(TreeStump);
+            TreeStump treeStump = world.addUnequippedTreeStump();
+            onLoad(treeStump);
+            return treeStump;
         }
+        return null;
+    }
+
+    private StaticEntity loadConfusingRareItem(){
+        ConfusingRareItem newConfusingRareItem = new ConfusingRareItem(loadRareItem());
+        return newConfusingRareItem.getRareItem();
     }
     
 
