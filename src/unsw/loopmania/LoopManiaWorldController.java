@@ -41,9 +41,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import unsw.loopmania.cards.*;
@@ -155,21 +153,28 @@ public class LoopManiaWorldController {
     @FXML
     private GridPane equippedItems;
 
+    /**
+     * unEquippedItems gridpane is for unequipped items (e.g. swords, shield, axe)
+     */
     @FXML
     private GridPane unequippedInventory;
 
+    
     @FXML
     private ProgressBar healthBar;
     static DoubleProperty healthUpdater = new SimpleDoubleProperty(.0);
+
     @FXML
     private Text characterGold;
     static DoubleProperty goldUpdater = new SimpleDoubleProperty(.0);
+    
     @FXML
     private Text characterXP;
     static DoubleProperty XPUpdater = new SimpleDoubleProperty(.0);
 
     @FXML
     private GridPane allyGrid;
+    
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
 
@@ -193,12 +198,6 @@ public class LoopManiaWorldController {
     
     // Image for items
     private Image swordImage;
-    private Image stakeImage;
-    private Image staffImage;
-    private Image armourImage;
-    private Image shieldImage;
-    private Image helmetImage;
-    private Image potionImage;
     
     private Image heroCastleImage;
 
@@ -239,10 +238,6 @@ public class LoopManiaWorldController {
      * object handling switching to the main menu
      */
     private MenuSwitcher mainMenuSwitcher;
-
-
-
-
 
     /**
      * @param world world object loaded from file
@@ -1207,11 +1202,8 @@ public class LoopManiaWorldController {
             });
 
             // set little bit differently for long word item
-            if (key == "Health Potion") { 
-                itemName = new Text("   " + key + "            ");
-                itemName.setStyle("-fx-font: 15 arial;"); 
-            } else { itemName.setStyle("-fx-font: 17 arial;"); 
-            }
+            itemName.setStyle("-fx-font: 13 arial;"); 
+            
             
             // set style for buttons
             buyButton.setText("Buy");
@@ -1224,19 +1216,24 @@ public class LoopManiaWorldController {
             // set the images for the items
             switch(key) {
                 case "Sword": itemImage = swordImage; break;
-                case "Health Potion": itemImage = swordImage; break;
+                case "Health Potion": itemImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()); break;
+                case "The One Ring": itemImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString()); break;
+                case "Anduril": itemImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()); break;
+                case "Tree Stump": itemImage = new Image((new File("src/images/tree_stump.png")).toURI().toString()); break;
                 default:
-                    itemImage = 
-                    new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
-                    break; 
+                    itemImage = new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString()); break; 
             }
 
             // add information about items in the shop
             shop.add(itemName, i, j);
             shop.add(new ImageView(itemImage), i+1, j);
-            shop.add(buyButton, i+2, j);
+            if (key != "The One Ring" && key != "Anduril" && key != "Tree Stump") {
+                shop.add(buyButton, i+2, j);
+            }
             shop.add(sellButton, i+3, j);
             j++;
         }
+
+        
     }
 }
