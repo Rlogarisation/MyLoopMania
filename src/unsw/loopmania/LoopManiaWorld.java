@@ -311,8 +311,6 @@ public class LoopManiaWorld {
         return newAlly;
     }
 
-
-
     /**
      * Add TrancedAlly into ally list and kill currentEnemy
      * @param position where it has been spawn.
@@ -406,8 +404,7 @@ public class LoopManiaWorld {
                 break;
             }
 
-            double enemyDamageToCharacter = character.defenseApplication(currentEnemy.getDamage());
-            currentEnemy.attack(enemyDamageToCharacter, character);
+            currentEnemy.attack(currentEnemy.getDamage(), character);
             if (character.getHp() <= 0) {
                 characterIsAlive = false;
                 break;

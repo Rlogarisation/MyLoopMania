@@ -25,7 +25,7 @@ public class Character extends MovingEntity {
 
     private boolean isStun = false;
 
-    private double xp, gold; 
+    private double xp, gold, armour; 
     private int doggieCoin;
     private int towerDamage;
     private boolean campfireInRange;
@@ -161,6 +161,22 @@ public class Character extends MovingEntity {
     public void increaseDoggieCoinDrastically() {
         int currentPrice = this.getDoggieCoin();
         this.setDoggieCoin(currentPrice + (new Random()).nextInt(currentPrice * 3));
+    }
+
+    /**
+     * Add certain amount of armour as increment.
+     * @param armourIncrement the amount of armour gained by equipping armour as double.
+     */
+    public void addTotalArmour(double armourIncrement) {
+        this.armour += armourIncrement;
+    }
+
+    /**
+     * Get the total amount of armour for current character.
+     * @return armour of current character.
+     */
+    public double getTotalArmour() {
+        return this.armour;
     }
 
     public void setCycleCount(int cycleCount){
