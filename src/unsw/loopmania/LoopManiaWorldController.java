@@ -1188,19 +1188,14 @@ public class LoopManiaWorldController {
      * EventHandlers will run on the application thread.
      */
     private void printThreadingNotes(String currentMethodLabel){
-        System.out.println("\n###########################################");
+        System.out.println("\n###########:#########");
         System.out.println("current method = "+currentMethodLabel);
         System.out.println("In application thread? = "+Platform.isFxApplicationThread());
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
     /**
-<<<<<<< HEAD
      * 
-=======
-     * this function changes the scene from game to the shop
-     * This function hide the game and show the shop.
->>>>>>> origin
      */
     private void changeToShop() {
         pause();
@@ -1210,12 +1205,7 @@ public class LoopManiaWorldController {
     }
 
     /**
-<<<<<<< HEAD
      * 
-=======
-     * this function changes the scene from shop to the game
-     * To re-open the shop, we set re-open button
->>>>>>> origin
      */
     private void changeToGame() {
         hBox.setVisible(true);
@@ -1223,43 +1213,15 @@ public class LoopManiaWorldController {
         //shopOpenButton.setVisible(true);
     }
 
-<<<<<<< HEAD
-=======
-    /**
-     * this function handles re-opening shop. 
-     */
->>>>>>> origin
     @FXML
     private void handleShopOpenButtonAction(ActionEvent event){
         changeToShop();         
     }
 
-<<<<<<< HEAD
     private void setHeroShop() {
 
         shop.getChildren().removeAll();
 
-=======
-    /**
-     * set hero shop in hero castle.
-     * we can buy and sell items from the shop
-     */
-    private void setHeroShop() {
-
-        // make sure the shop is empty 
-        shop.getChildren().removeAll();
-
-        /*
-        Button shopOpenButton = new Button("Shop");
-        shopOpenButton.setOnAction(event -> {
-            if (isPaused && ) {
-                changeToShop();    
-            }
-        });
-        vBox.getChildren().add(shopOpenButton);
-        */
-
->>>>>>> origin
         HashMap<String,StaticEntity> shopItems = world.getHeroCastle().getShopItems();
 
         int i = 0; int j = 0;
@@ -1269,10 +1231,6 @@ public class LoopManiaWorldController {
             Button buyButton = new Button();
             Button sellButton = new Button();
 
-<<<<<<< HEAD
-=======
-            // set a button for purchase
->>>>>>> origin
             StaticEntity item = shopItems.get(key);
             buyButton.setOnAction(event -> {
                 Boolean isBought = world.buyOneItemBycoordinates(item.getX(),item.getY());
@@ -1280,40 +1238,22 @@ public class LoopManiaWorldController {
                     System.out.println("You need more gold");
                 }
             });
-<<<<<<< HEAD
-=======
-
-            // set a button for sale
->>>>>>> origin
             sellButton.setOnAction(event -> {
                 Boolean isSold = world.sellOneItemByItem(item);
                 if (!isSold) {
                     System.out.println("You don't have this item");
                 }
             });
-<<<<<<< HEAD
-=======
-
-            // set a button to return to the game
->>>>>>> origin
             exitButton.setOnAction(event -> {
                 changeToGame();
             });
 
-<<<<<<< HEAD
             if (key == "Health Potion") { 
                 itemName = new Text("   " + key + "            ");
                 itemName.setStyle("-fx-font: 15 arial;"); 
             } else { itemName.setStyle("-fx-font: 17 arial;"); 
             }
             
-=======
-            // set little bit differently for long word item
-            itemName.setStyle("-fx-font: 13 arial;"); 
-            
-            
-            // set style for buttons
->>>>>>> origin
             buyButton.setText("Buy");
             sellButton.setText("Sell");
             buyButton.setStyle("-fx-font: 13 arial;");
@@ -1321,7 +1261,6 @@ public class LoopManiaWorldController {
             buyButton.setMinWidth(shop.getPrefWidth());
             sellButton.setMinWidth(shop.getPrefWidth());
             
-<<<<<<< HEAD
             switch(key) {
                 case "Sword": itemImage = swordImage; break;
                 case "Health Potion": itemImage = swordImage; break;
@@ -1336,29 +1275,5 @@ public class LoopManiaWorldController {
             shop.add(sellButton, i+3, j);
             j++;
         }
-=======
-            // set the images for the items
-            switch(key) {
-                case "Sword": itemImage = swordImage; break;
-                case "Health Potion": itemImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()); break;
-                case "The One Ring": itemImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString()); break;
-                case "Anduril": itemImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()); break;
-                case "Tree Stump": itemImage = new Image((new File("src/images/tree_stump.png")).toURI().toString()); break;
-                default:
-                    itemImage = new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString()); break; 
-            }
-
-            // add information about items in the shop
-            shop.add(itemName, i, j);
-            shop.add(new ImageView(itemImage), i+1, j);
-            if (key != "The One Ring" && key != "Anduril" && key != "Tree Stump") {
-                shop.add(buyButton, i+2, j);
-            }
-            shop.add(sellButton, i+3, j);
-            j++;
-        }
-
-        
->>>>>>> origin
     }
 }
