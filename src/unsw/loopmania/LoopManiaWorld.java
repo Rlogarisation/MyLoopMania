@@ -573,16 +573,26 @@ public class LoopManiaWorld {
      * @param attackEquipment is the attack equipment to be inserted in equippedInventory
      */
     public AttackEquipment equipOneItem(AttackEquipment attackEquipment) {
-        // check if the equipment is from unequipped inventory
         
         for (Entity item : equippedInventoryItems) {
             if (item instanceof AttackEquipment) {
+                
+                // unequip the item from the character
+                character.unequipAttackEquipment();
+
+                // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);  
-                removeUnequippedInventoryItem(attackEquipment);             
+                unequippedInventoryItems.add(item);
+                
                 break;
             }
         }
+
+        // equip the attack equipment 
+        removeUnequippedInventoryItem(attackEquipment);
+        equippedInventoryItems.add(attackEquipment);
+        character.equipAttackEquipment(attackEquipment);
+
         if (attackEquipment instanceof Sword) {
             character.setFightStrategy(new SwordStrategy());
         }
@@ -602,26 +612,58 @@ public class LoopManiaWorld {
 
     /**
      * equip an equipment for attack
-     * @param defenseEquipment is the attack equipment to be inserted in equippedInventory
+     * @param defenseEquipment is the defense equipment to be inserted in equippedInventory
      */
     public DefenseEquipment equipOneItem(DefenseEquipment defenseEquipment) {
-        for (Entity item : unequippedInventoryItems) {
-            if (defenseEquipment instanceof Armour && item instanceof Armour && !character.getHasArmour()) {
-                removeUnequippedInventoryItem(item);
-                character.setHasArmour(true);
-                equippedInventoryItems.add(defenseEquipment);  
+        
+        for (Entity item : equippedInventoryItems) {
+
+            if (defenseEquipment instanceof Armour && item instanceof Armour) {
+                
+                // unequip the item from the character
+                character.unequipArmour();
+
+                // move the item the character were wearing into unequipped inventory 
+                removeEquippedInventoryItem(item); 
+                unequippedInventoryItems.add(item);
+
+                 // equip the armour 
+                removeUnequippedInventoryItem(defenseEquipment);
+                equippedInventoryItems.add(defenseEquipment);
+                character.equipArmour((Armour) defenseEquipment);
+ 
                 break;
             }
-            if (defenseEquipment instanceof Shield && item instanceof Shield && !character.getHasShield()) {
-                removeUnequippedInventoryItem(item);
-                character.setHasShield(true);
-                equippedInventoryItems.add(defenseEquipment);  
+            if (defenseEquipment instanceof Shield && item instanceof Shield) {
+ 
+                // unequip the item from the character
+                character.unequipShield();
+
+                // move the item the character were wearing into unequipped inventory 
+                removeEquippedInventoryItem(item); 
+                unequippedInventoryItems.add(item);
+
+                 // equip the shield 
+                removeUnequippedInventoryItem(defenseEquipment);
+                equippedInventoryItems.add(defenseEquipment);
+                character.equipShield((Shield) defenseEquipment);
+ 
                 break;
             }
-            if (defenseEquipment instanceof Helmet && item instanceof Helmet && !character.getHasHelmet()) {
-                removeUnequippedInventoryItem(item);
-                character.setHasHelmet(true);
-                equippedInventoryItems.add(defenseEquipment);  
+            if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
+                
+                // unequip the item from the character
+                character.unequipHelmet();
+
+                // move the item the character were wearing into unequipped inventory 
+                removeEquippedInventoryItem(item); 
+                unequippedInventoryItems.add(item);
+
+                 // equip the Helmet
+                removeUnequippedInventoryItem(defenseEquipment);
+                equippedInventoryItems.add(defenseEquipment);
+                character.equipHelmet((Helmet) defenseEquipment);
+  
                 break;
             }
         }      
@@ -1088,12 +1130,44 @@ public class LoopManiaWorld {
     }
 
     /**
+     * it sells one item from unequipped inventory items 
+     * and the character receives gold as a reward.
+     * @param itemNodeX indicates the x-coordinate of the chosen item
+     * @param itemNodeY indicates the y-coordinate of the chosen item
+     */
+    public boolean sellOneItemByItem(Entity sellingItem) {
+        Entity chosenItem = null;
+        int itemPrice = 0;
+        for (Entity item: unequippedInventoryItems) {
+            if (sellingItem.getClass().equals(item.getClass())) {
+                chosenItem = item;
+                if (chosenItem instanceof Equipment) {
+                    itemPrice = ((Equipment) item).getPrice();
+                    break;
+                }
+                if (chosenItem instanceof HealthPotion) {
+                    itemPrice = ((HealthPotion) item).getPrice();
+                    break;
+                }    
+            }
+        }
+        if (chosenItem != null) {
+            chosenItem.destroy();
+            removeUnequippedInventoryItem(chosenItem);
+            this.character.addGold((double) (itemPrice / 2));
+            return true;
+        }    
+        return false;
+    }
+
+
+    /**
      * character buys one item from the shop in hero castle 
      * and the character pay gold as a currency for the item.
      * @param itemNodeX indicates the x-coordinate of the chosen item in the shop
      * @param itemNodeY indicates the y-coordinate of the chosen item in the shop
      */
-    public void buyOneItemBycoordinates(int itemNodeX, int itemNodeY) {
+    public boolean buyOneItemBycoordinates(int itemNodeX, int itemNodeY) {
         
         HashMap<String,StaticEntity> itemShop = this.heroCastle.getShopItems();
         StaticEntity chosenItem = null;
@@ -1132,7 +1206,7 @@ public class LoopManiaWorld {
                         // if the game mode is berserker, the equipment price is 50% more expensive
                         this.character.setGold(characterGold - (1.5)*itemPrice);
                         this.setgotOneEquipmentFromShop(true);
-                        break;
+                        return true;
                     }
 
                     if (gameMode != GAME_MODE.BERSERKER && characterGold >= itemPrice) {
@@ -1143,7 +1217,7 @@ public class LoopManiaWorld {
                         if (chosenItem instanceof Shield) { this.addUnequippedShield(); }
                         if (chosenItem instanceof Helmet) { this.addUnequippedHelmet(); }
                         this.character.setGold(characterGold - itemPrice);
-                        break;
+                        return true;
                     }   
                 }
                 // case1) get a health potion
@@ -1155,15 +1229,16 @@ public class LoopManiaWorld {
                         // if the game mode is survival, the equipment is twice as expensive
                         this.character.setGold(characterGold - 2*itemPrice);
                         this.setgotOnePotionFromShop(true);
-                        break;
+                        return true;
                     } 
                     if (gameMode != GAME_MODE.SURVIVAL &&  characterGold >= itemPrice) {
                         this.addUnequippedHealthPotion();
                         this.character.setGold(characterGold - itemPrice);
-                        break;
+                        return true;
                     }   
                 }
             }
         }
+        return false;
     }
 }
