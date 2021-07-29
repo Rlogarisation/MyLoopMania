@@ -116,31 +116,34 @@ public class LoopManiaWorldController {
     private AnchorPane anchorPaneRoot;
     
     /**
-     * 
+     * hBox is the game background in stackPane -> achorPaneRoot.
+     * we can use it to control game visibility.
      */
     @FXML
      private HBox hBox;
 
     /**
-     * 
+     * shopPane is the shop background in stackPane -> achorPaneRoot.
+     * we can use it to control shop visibility. 
      */
     @FXML
      private Pane shopPane;
 
     /**
-     * 
+     * shop is the shop background which lists the shop items.
      */
     @FXML
     private GridPane shop;
 
     /**
-     * 
+     * shopOpenButton is the button 
+     * we can re-open the shop after we close the shop.
      */
     @FXML
     private Button shopOpenButton;
 
     /**
-     * 
+     * exitButton is the button we can exit the shop and return to game.
      */
     @FXML
     private Button exitButton;
@@ -1135,7 +1138,8 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * 
+     * this function changes the scene from game to the shop
+     * This function hide the game and show the shop.
      */
     private void changeToShop() {
         pause();
@@ -1145,7 +1149,8 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * 
+     * this function changes the scene from shop to the game
+     * To re-open the shop, we set re-open button
      */
     private void changeToGame() {
         hBox.setVisible(true);
@@ -1153,13 +1158,21 @@ public class LoopManiaWorldController {
         //shopOpenButton.setVisible(true);
     }
 
+    /**
+     * this function handles re-opening shop. 
+     */
     @FXML
     private void handleShopOpenButtonAction(ActionEvent event){
         changeToShop();         
     }
 
+    /**
+     * set hero shop in hero castle.
+     * we can buy and sell items from the shop
+     */
     private void setHeroShop() {
 
+        // make sure the shop is empty 
         shop.getChildren().removeAll();
 
         HashMap<String,StaticEntity> shopItems = world.getHeroCastle().getShopItems();
@@ -1171,6 +1184,7 @@ public class LoopManiaWorldController {
             Button buyButton = new Button();
             Button sellButton = new Button();
 
+            // set a button for purchase
             StaticEntity item = shopItems.get(key);
             buyButton.setOnAction(event -> {
                 Boolean isBought = world.buyOneItemBycoordinates(item.getX(),item.getY());
@@ -1178,22 +1192,28 @@ public class LoopManiaWorldController {
                     System.out.println("You need more gold");
                 }
             });
+
+            // set a button for sale
             sellButton.setOnAction(event -> {
                 Boolean isSold = world.sellOneItemByItem(item);
                 if (!isSold) {
                     System.out.println("You don't have this item");
                 }
             });
+
+            // set a button to return to the game
             exitButton.setOnAction(event -> {
                 changeToGame();
             });
 
+            // set little bit differently for long word item
             if (key == "Health Potion") { 
                 itemName = new Text("   " + key + "            ");
                 itemName.setStyle("-fx-font: 15 arial;"); 
             } else { itemName.setStyle("-fx-font: 17 arial;"); 
             }
             
+            // set style for buttons
             buyButton.setText("Buy");
             sellButton.setText("Sell");
             buyButton.setStyle("-fx-font: 13 arial;");
@@ -1201,6 +1221,7 @@ public class LoopManiaWorldController {
             buyButton.setMinWidth(shop.getPrefWidth());
             sellButton.setMinWidth(shop.getPrefWidth());
             
+            // set the images for the items
             switch(key) {
                 case "Sword": itemImage = swordImage; break;
                 case "Health Potion": itemImage = swordImage; break;
@@ -1209,6 +1230,8 @@ public class LoopManiaWorldController {
                     new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
                     break; 
             }
+
+            // add information about items in the shop
             shop.add(itemName, i, j);
             shop.add(new ImageView(itemImage), i+1, j);
             shop.add(buyButton, i+2, j);
