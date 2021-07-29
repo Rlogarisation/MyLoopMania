@@ -39,10 +39,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
-<<<<<<< HEAD
-=======
-import javafx.scene.layout.VBox;
->>>>>>> origin
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
