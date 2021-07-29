@@ -298,18 +298,14 @@ public class Character extends MovingEntity {
      */
     public double defenseApplication(double initialDamage) {
         double currentDamage = initialDamage;
-        //TODO: implement stump
-        if (hasArmour && !hasShield) {
-            currentDamage = (0.5)*initialDamage;
-        } else if (hasArmour && hasShield) {
-            currentDamage = (1-(0.5+0.2))*initialDamage;
-        } else if (!hasArmour && hasShield) {
-            currentDamage = (0.8)*initialDamage;
-        }
-        if (hasHelmet) {
-            currentDamage = (0.8)*currentDamage;
-        }
-        
+        double percentRemoved = 0;
+
+        if (hasArmour) percentRemoved = percentRemoved + 0.5;
+        if (hasStump) percentRemoved = percentRemoved + 0.25;
+        else if (hasShield && !hasStump) percentRemoved = percentRemoved + 0.15;
+        if (hasHelmet) percentRemoved = percentRemoved + 0.2;
+
+        currentDamage = (1 - percentRemoved) * currentDamage;
         return currentDamage;
     }
 
