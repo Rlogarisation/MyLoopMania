@@ -55,7 +55,7 @@ public class ElanMuske extends Enemy {
     public List<Enemy> healAllEnemies(List<Enemy> allFightingEnemy) {
         for (Enemy currentEnemy: allFightingEnemy) {
             double currentHp = currentEnemy.getHp();
-            currentEnemy.setHp(currentHp + currentHp * 0.1);
+            currentEnemy.setHp(currentHp + currentHp * 0.01);
         }
         return allFightingEnemy;
     }
