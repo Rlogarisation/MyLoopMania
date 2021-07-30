@@ -4,7 +4,6 @@ import java.util.Random;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.AttackEquipment;
-import unsw.loopmania.DefenseEquipment;
 import unsw.loopmania.StaticEntity;
 
 public class ConfusingRareItem extends StaticEntity{
@@ -39,6 +38,10 @@ public class ConfusingRareItem extends StaticEntity{
 
     public StaticEntity getInitialRareItem(){
         return this.initialRareItem;
+    }
+
+    public void setNewRareItem(StaticEntity newRareItem){
+        this.newRareItem = newRareItem;
     }
 
     public StaticEntity getNewRareItem(){
