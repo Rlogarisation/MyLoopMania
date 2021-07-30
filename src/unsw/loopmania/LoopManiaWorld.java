@@ -136,6 +136,10 @@ public class LoopManiaWorld {
         return height;
     }
 
+    public List<Entity> getEquippedInventoryItems() {
+        return this.equippedInventoryItems;
+    }
+
     public ArrayList<String> getValidRareItems(){
         return this.validRareItems;
     }
@@ -593,12 +597,22 @@ public class LoopManiaWorld {
 
                 // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);
-                
+
+                if (item instanceof Sword) {
+                    addUnequippedSword();
+                }
+                if (item instanceof Staff) {
+                    addUnequippedStaff();
+                }
+                if (item instanceof Stake) {
+                    addUnequippedStake();
+                }
+                if (item instanceof AndurilSword){
+                    addUnequippedAndurilSword();
+                }
                 break;
             }
         }
-
         // equip the attack equipment 
         removeUnequippedInventoryItem(attackEquipment);
         equippedInventoryItems.add(attackEquipment);
@@ -616,7 +630,7 @@ public class LoopManiaWorld {
         if(attackEquipment instanceof AndurilSword){
             character.setFightStrategy(new AndurilStrategy());
         }
-        equippedInventoryItems.add(attackEquipment);
+        
         return attackEquipment; 
 
     }
@@ -636,29 +650,7 @@ public class LoopManiaWorld {
 
                 // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);
-
-                 // equip the armour 
-                removeUnequippedInventoryItem(defenseEquipment);
-                equippedInventoryItems.add(defenseEquipment);
-                character.equipArmour((Armour) defenseEquipment);
- 
-                break;
-            }
-            if (defenseEquipment instanceof Shield && item instanceof Shield) {
- 
-                // unequip the item from the character
-                character.unequipShield();
-
-                // move the item the character were wearing into unequipped inventory 
-                removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);
-
-                 // equip the shield 
-                removeUnequippedInventoryItem(defenseEquipment);
-                equippedInventoryItems.add(defenseEquipment);
-                character.equipShield((Shield) defenseEquipment);
- 
+                addUnequippedArmour();
                 break;
             }
             if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
@@ -668,16 +660,52 @@ public class LoopManiaWorld {
 
                 // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);
-
-                 // equip the Helmet
-                removeUnequippedInventoryItem(defenseEquipment);
-                equippedInventoryItems.add(defenseEquipment);
-                character.equipHelmet((Helmet) defenseEquipment);
-  
+                addUnequippedHelmet();
                 break;
             }
-        }      
+            if ((defenseEquipment instanceof Shield || 
+            defenseEquipment instanceof TreeStump) && item instanceof Shield) {
+ 
+                // unequip the item from the character
+                character.unequipShield();
+
+                // move the item the character were wearing into unequipped inventory 
+                removeEquippedInventoryItem(item); 
+                addUnequippedShield();
+                break;
+            }
+            
+            if ((defenseEquipment instanceof Shield || 
+            defenseEquipment instanceof TreeStump) && item instanceof TreeStump) {
+                
+                // unequip the item from the character
+                character.unequipTreeStump();
+
+                // move the item the character were wearing into unequipped inventory 
+                removeEquippedInventoryItem(item); 
+                addUnequippedTreeStump();
+                break;
+            }
+        }
+
+        // equip the defense equipment 
+        removeUnequippedInventoryItem(defenseEquipment);
+        equippedInventoryItems.add(defenseEquipment);
+
+        // set character to equip the equipment
+        if (defenseEquipment instanceof Armour) {
+            character.equipArmour((Armour) defenseEquipment);
+        }    
+        if (defenseEquipment instanceof Shield) {
+            character.equipShield((Shield) defenseEquipment);
+        }    
+        if (defenseEquipment instanceof Shield) {
+            character.equipShield((Shield) defenseEquipment);
+        }    
+        if (defenseEquipment instanceof TreeStump) {
+            character.equipTreeStump((TreeStump) defenseEquipment);
+        }
+        
         return defenseEquipment;
     }
 
@@ -779,7 +807,6 @@ public class LoopManiaWorld {
      */
     public Stake addUnequippedStake(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
-        System.out.println(firstAvailableSlot);
         if (firstAvailableSlot == null){
             // give 50 gold and 100xp to the character when the oldest item discarded.
             this.character.addGold(50);
@@ -1018,7 +1045,6 @@ public class LoopManiaWorld {
      * @param item item to be removed
      */
     private void removeEquippedInventoryItem(Entity item){
-        item.destroy();
         equippedInventoryItems.remove(item);
     }
 
@@ -1039,11 +1065,15 @@ public class LoopManiaWorld {
      * @return unequipped inventory item at the input position
      */
     public Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y){
+        
+        System.out.println(unequippedInventoryItems);
+        
         for (Entity e: unequippedInventoryItems){
             if ((e.getX() == x) && (e.getY() == y)){
                 return e;
             }
         }
+        
         return null;
     }
 
