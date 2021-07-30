@@ -395,6 +395,18 @@ public class Character extends MovingEntity {
     }
 
     /**
+     * equip the character with a helmet
+     * @return helmet
+     */
+    public TreeStump equipTreeStump(TreeStump treeStump){
+        equipments.equipTreeStump(treeStump);
+        setHasStump(true);
+        return treeStump;
+    }
+
+
+
+    /**
      * unequip the attack equipment for the character
      */
     public void unequipAttackEquipment(){
@@ -423,7 +435,13 @@ public class Character extends MovingEntity {
     public void unequipHelmet(){
         equipments.unequipHelmet();
         setHasHelmet(false);
-
     }
 
+    /**
+     * unequip the tree stump for the character
+     */
+    public void unequipTreeStump(){
+        equipments.unequipTreeStump();
+        setHasStump(false);
+    }
 }

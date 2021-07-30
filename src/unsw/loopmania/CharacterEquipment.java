@@ -3,6 +3,8 @@ package unsw.loopmania;
 import java.util.HashMap;
 import java.util.Map;
 
+import unsw.loopmania.RareItems.TreeStump;
+
 /**
  * represents the equipments equipped by character in the backend of the game world
  * @author Kihwan Baek
@@ -13,12 +15,14 @@ public class CharacterEquipment {
     private Armour armour;
     private Shield shield;
     private Helmet helmet;
+    private TreeStump treeStump;
 
     public CharacterEquipment() {
         this.equipAttackEquipment(null);
         this.equipArmour(null);
         this.equipShield(null);
         this.equipHelmet(null);
+        this.equipTreeStump(null);
     }
 
     /**
@@ -58,6 +62,15 @@ public class CharacterEquipment {
     }
 
     /**
+     * equip the character with a helmet
+     * @return helmet
+     */
+    public TreeStump equipTreeStump(TreeStump treeStump){
+        this.treeStump = treeStump;
+        return treeStump;
+    }
+
+    /**
      * unequip the attack equipment for the character
      */
     public void unequipAttackEquipment(){
@@ -85,5 +98,10 @@ public class CharacterEquipment {
         this.helmet = null;
     }
 
-
+    /**
+     * unequip the trees tump for the character
+     */
+    public void unequipTreeStump(){
+        this.treeStump = null;
+    }
 }
