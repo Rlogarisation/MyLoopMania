@@ -311,8 +311,6 @@ public class LoopManiaWorld {
         return newAlly;
     }
 
-
-
     /**
      * Add TrancedAlly into ally list and kill currentEnemy
      * @param position where it has been spawn.
@@ -1023,7 +1021,7 @@ public class LoopManiaWorld {
      * get a randomly generated position which could be used to spawn an enemy
      * @return null if random choice is that wont be spawning an enemy or it isn't possible, or random coordinate pair if should go ahead
      */
-    private Pair<Integer, Integer> possiblyGetBasicEnemySpawnPosition(){
+    public Pair<Integer, Integer> possiblyGetBasicEnemySpawnPosition(){
         // TODO = modify this
         
         // has a chance spawning a basic enemy on a tile the character isn't on or immediately before or after (currently space required = 2)...

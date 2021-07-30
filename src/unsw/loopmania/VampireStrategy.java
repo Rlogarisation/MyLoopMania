@@ -21,6 +21,7 @@ public class VampireStrategy implements FightStrategy{
     public void attack(double initialDamage, MovingEntity entity) {
         double currentHp = entity.getHp();
         double totalDamage = initialDamage;
+        //TODO: Reduce chance by 60% if the character has a shield
         if (chanceGenerator(chance)) {
             // Random next double will generate a number between 0 to 1 as double,
             // and times with a multiplier, which can be changed at anytime.

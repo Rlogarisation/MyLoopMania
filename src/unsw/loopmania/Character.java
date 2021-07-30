@@ -20,7 +20,10 @@ public class Character extends MovingEntity {
     private CharacterEquipment equipments;
     private boolean hasHelmet = false;
     private boolean hasShield = false;
+    private boolean hasStump = false;
     private boolean hasArmour = false;
+
+    private boolean isStun = false;
 
     private double xp, gold, armour; 
     private int doggieCoin;
@@ -43,7 +46,9 @@ public class Character extends MovingEntity {
         this.equipments = new CharacterEquipment();
         this.hasHelmet = false;
         this.hasShield = false;
+        this.hasStump = false;
         this.hasArmour = false;
+        this.isStun = false;
     }
 
     /**
@@ -166,19 +171,20 @@ public class Character extends MovingEntity {
         this.armour += armourIncrement;
     }
 
-    public void setCycleCount(int cycleCount){
-        this.cycleCount = cycleCount;
-    }
-    
-    public int getCycleCount(){
-        return cycleCount;
-    }
     /**
      * Get the total amount of armour for current character.
      * @return armour of current character.
      */
     public double getTotalArmour() {
         return this.armour;
+    }
+
+    public void setCycleCount(int cycleCount){
+        this.cycleCount = cycleCount;
+    }
+    
+    public int getCycleCount(){
+        return cycleCount;
     }
 
     /**
@@ -271,6 +277,21 @@ public class Character extends MovingEntity {
     }
 
     /**
+     * getter for hasStump
+     * @return hasStump
+     */
+    public boolean getHasStump(){
+        return this.hasStump;
+    }
+
+    /**
+     * setter for hasStump
+     */
+    public void setHasStump(boolean hasStump){
+        this.hasStump = hasStump;
+    }
+
+    /**
      * getter for hasHelmet
      * @return hasHelmet
      */
@@ -293,19 +314,39 @@ public class Character extends MovingEntity {
      */
     public double defenseApplication(double initialDamage) {
         double currentDamage = initialDamage;
-        
-        if (hasArmour && !hasShield) {
-            currentDamage = (0.5)*initialDamage;
-        } else if (hasArmour && hasShield) {
-            currentDamage = (1-(0.5+0.2))*initialDamage;
-        } else if (!hasArmour && hasShield) {
-            currentDamage = (0.8)*initialDamage;
-        }
-        if (hasHelmet) {
-            currentDamage = (0.8)*currentDamage;
-        }
-        
+        double percentRemoved = 0;
+
+        if (hasArmour) percentRemoved = percentRemoved + 0.5;
+        if (hasStump) percentRemoved = percentRemoved + 0.25;
+        else if (hasShield && !hasStump) percentRemoved = percentRemoved + 0.15;
+        if (hasHelmet) percentRemoved = percentRemoved + 0.2;
+
+        currentDamage = (1 - percentRemoved) * currentDamage;
         return currentDamage;
+    }
+
+    /**
+     * If the character has a helmet equipped, the damage inflicted by 
+     * the character will be reduced by 10% due to reduction in visibility
+     */
+    @Override
+    public double getDamage(){
+        double currentDamage = super.getDamage();
+        if (hasHelmet){
+            currentDamage = (0.9) * currentDamage;
+        }
+        if (isStun){
+            currentDamage = 0;
+            this.isStun = false;
+        }
+        return currentDamage;
+    }
+
+    /**
+     * make the character stunned
+     */
+    public void makeStun(){
+        this.isStun = true;
     }
 
     /**
