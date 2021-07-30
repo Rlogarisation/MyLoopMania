@@ -931,7 +931,7 @@ public class LoopManiaWorldController {
             else if(item instanceof ConfusingRareItem){
                 ConfusingRareItem newCr = (ConfusingRareItem)item;
                 if(newCr.getSword() != null){
-                    world.equipOneItem(newCr.getSword());
+                    world.equipConfusingRareItem(newCr, newCr.getSword());
                     return newCr.getSword();
                 }
             }
@@ -951,7 +951,7 @@ public class LoopManiaWorldController {
             else if(item instanceof ConfusingRareItem){
                 ConfusingRareItem newCr = (ConfusingRareItem)item;
                 if(newCr.getShield() != null){
-                    world.equipOneItem(newCr.getShield());
+                    world.equipConfusingRareItem(newCr, newCr.getShield());
                     return newCr.getShield();
                 }
             }

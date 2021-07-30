@@ -670,6 +670,44 @@ public class LoopManiaWorld {
         return defenseEquipment;
     }
 
+    public ConfusingRareItem equipConfusingRareItem(ConfusingRareItem cRareItem, StaticEntity newItem){
+        if(newItem instanceof AndurilSword){
+            for(Entity item:equippedInventoryItems){
+                if(item instanceof AttackEquipment){
+                    // unequip the item from the character
+                    character.unequipAttackEquipment();
+                    // move the item the character were wearing into unequipped inventory 
+                    removeEquippedInventoryItem(item); 
+                    unequippedInventoryItems.add(item); 
+                    break;
+                }
+            }
+             // equip the andurilSword
+            removeUnequippedInventoryItem(cRareItem);
+            equippedInventoryItems.add(cRareItem);
+            character.equipAttackEquipment(cRareItem.getSword());
+            character.setFightStrategy(new AndurilStrategy());
+    }
+        if(newItem instanceof TreeStump){
+            for(Entity item:equippedInventoryItems){
+                if(item instanceof Shield){
+                    // unequip the item from the character
+                    character.unequipShield();
+                    // move the item the character were wearing into unequipped inventory 
+                    removeEquippedInventoryItem(item); 
+                    unequippedInventoryItems.add(item);
+                    break;
+                }
+            }
+             // equip the tree stump
+            removeUnequippedInventoryItem(cRareItem);
+            equippedInventoryItems.add(cRareItem);
+            character.equipShield(cRareItem.getShield());
+        }
+        return cRareItem;
+    }
+          
+
     /**
      * return an equipped inventory item by x and y coordinates
      * assumes that no 2 unequipped inventory items share x and y coordinates
@@ -922,7 +960,7 @@ public class LoopManiaWorld {
 
     /**
      * Revives character when it is dead
-     * @pre this.character.getHp() == 0
+     * @pre this.character.getHp() == 0, confusingrareitem only exists if in confusing game mode
      * @post this.character.getHp() == 100
      */
     public void reviveCharacter() {
@@ -932,6 +970,14 @@ public class LoopManiaWorld {
                 item.destroy();
                 removeUnequippedInventoryItem(item);
                 break;
+            }
+            else if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCrItem = (ConfusingRareItem)item;
+                if(newCrItem.hasOneRing()){
+                    this.character.setHp(100);
+                    item.destroy();
+                    removeUnequippedInventoryItem(item);
+                }
             }
         }        
     }

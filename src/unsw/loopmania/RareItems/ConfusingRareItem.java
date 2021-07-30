@@ -2,7 +2,6 @@ package unsw.loopmania.RareItems;
 
 import java.util.Random;
 
-
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.AttackEquipment;
 import unsw.loopmania.DefenseEquipment;
@@ -17,14 +16,12 @@ public class ConfusingRareItem extends StaticEntity{
             super(x,y);
             this.initialRareItem = initalRareItem;
             //Add new random rare item to class
-            randomise();
+            randomise(x,y);
     }
 
 
-    private StaticEntity randomise(){
+    private StaticEntity randomise(SimpleIntegerProperty x, SimpleIntegerProperty y){
         Random prob = new Random();
-        SimpleIntegerProperty x = new SimpleIntegerProperty();
-        SimpleIntegerProperty y = new SimpleIntegerProperty();
         switch(prob.nextInt(3)){
             case 0:
             this.newRareItem = new AndurilSword(x,y);
@@ -58,14 +55,24 @@ public class ConfusingRareItem extends StaticEntity{
         return null;
     }
 
-    public DefenseEquipment getShield(){
+    public TreeStump getShield(){
         if(initialRareItem instanceof TreeStump){
-            return (DefenseEquipment)initialRareItem;
+            return (TreeStump)initialRareItem;
         }
         else if(newRareItem instanceof TreeStump){
-            return (DefenseEquipment)newRareItem;
+            return (TreeStump)newRareItem;
         }
         return null;
+    }
+
+    public Boolean hasOneRing(){
+        if(initialRareItem instanceof TheOneRing){
+            return true;
+        }
+        else if(newRareItem instanceof TheOneRing){
+            return true;
+        }
+        return false;
     }
     
 }
