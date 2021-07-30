@@ -359,6 +359,8 @@ public class LoopManiaWorldController {
             case "Survival":
             world.setGameMode(GAME_MODE.SURVIVAL);
             break;
+            case "Confusing":
+            world.setGameMode(GAME_MODE.CONFUSING);
         }
     }
 
@@ -372,7 +374,7 @@ public class LoopManiaWorldController {
         isPaused = false;
         onLoad(world.getHeroCastle());
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.03), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             List<Enemy> defeatedEnemies = world.runBattles();
             for (Enemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
@@ -545,30 +547,22 @@ public class LoopManiaWorldController {
     private StaticEntity loadRareItem(){
         ArrayList<String> validRareItems = world.getValidRareItems();
         Random random = new Random();
-        int prob = random.nextInt(3);
-        if(validRareItems.contains("The_One_Ring") && prob == 0){
-            TheOneRing theOneRing = world.addUnequippedTheOneRing();
-            onLoad(theOneRing);
-            return theOneRing;
+        int prob = random.nextInt(1);
+        if(validRareItems.contains("The_One_Ring")){
+            StaticEntity theOneRing = world.addUnequippedTheOneRing();
+            onLoadRareItem(theOneRing);
         }
-        else if(validRareItems.contains("Anduril_Flame_Of_The_West") && prob == 1){
-            AndurilSword andurilSword = world.addUnequippedAndurilSword();
-            onLoad(andurilSword);
-            return andurilSword;
+        else if(validRareItems.contains("Anduril_Flame_Of_The_West") && prob == 5){
+            StaticEntity andurilSword = world.addUnequippedAndurilSword();
+            onLoadRareItem(andurilSword);;
         }
-        else if(validRareItems.contains("Tree_Stump") && prob == 2){
-            TreeStump treeStump = world.addUnequippedTreeStump();
-            onLoad(treeStump);
-            return treeStump;
+        else if(validRareItems.contains("Tree_Stump") && prob == 0){
+            StaticEntity treeStump = world.addUnequippedTreeStump();
+            onLoadRareItem(treeStump);
         }
         return null;
     }
 
-    private StaticEntity loadConfusingRareItem(){
-        ConfusingRareItem newConfusingRareItem = new ConfusingRareItem(loadRareItem());
-        return newConfusingRareItem.getRareItem();
-    }
-    
 
     /**
      * run GUI events after an enemy is defeated, such as spawning items/experience/gold
@@ -578,7 +572,7 @@ public class LoopManiaWorldController {
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
-        loadConfusingRareItem();
+        loadRareItem();
     }
 
     /**
@@ -623,6 +617,24 @@ public class LoopManiaWorldController {
 
         addEntity(card, view);
         cards.getChildren().add(view);
+    }
+
+    private void onLoadRareItem(StaticEntity rareItem){
+        if(rareItem instanceof TheOneRing){
+            onLoad((TheOneRing)rareItem);
+        }
+        if(rareItem instanceof AndurilSword){
+            onLoad((AndurilSword)rareItem);
+        }
+        if(rareItem instanceof TreeStump){
+            onLoad((TreeStump)rareItem);
+        }
+        if(rareItem instanceof ConfusingRareItem){
+            ConfusingRareItem cRareItem = (ConfusingRareItem)rareItem;
+            onLoadRareItem(cRareItem.getInitialRareItem());
+            System.out.println(cRareItem.getInitialRareItem());
+            System.out.println(cRareItem.getNewRareItem());
+        }
     }
 
  /**
@@ -905,10 +917,19 @@ public class LoopManiaWorldController {
         Entity item = world.getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
         world.getEquippedInventoryItemEntityByCoordinates(x, y);
         //Depending on type check if valid drop and return if not
-        if(item instanceof AttackEquipment && x == 0 && y ==1){
+        if(x == 0 && y ==1){
+            if(item instanceof AttackEquipment){
             AttackEquipment newAttackEquipment = (AttackEquipment)item;
             world.equipOneItem(newAttackEquipment);
             return newAttackEquipment;
+            }
+            else if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCr = (ConfusingRareItem)item;
+                if(newCr.getSword() != null){
+                    world.equipOneItem(newCr.getSword());
+                    return newCr.getSword();
+                }
+            }
         }
         else if (item instanceof Armour && x == 1 && y == 1){
             Armour newArmour = (Armour)item;
@@ -916,10 +937,19 @@ public class LoopManiaWorldController {
             return newArmour;
 
         }
-        else if (item instanceof Shield && x == 2 && y == 1){
-            Shield newShield = (Shield)item;
-            world.equipOneItem(newShield);
-            return newShield;
+        else if (x == 2 && y == 1){
+            if(item instanceof Shield){
+                Shield newShield = (Shield)item;
+                world.equipOneItem(newShield);
+                return newShield;
+            }
+            else if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCr = (ConfusingRareItem)item;
+                if(newCr.getShield() != null){
+                    world.equipOneItem(newCr.getShield());
+                    return newCr.getShield();
+                }
+            }
         }
         else if (item instanceof Helmet && x == 1 && y == 0){
             Helmet newHelmet= (Helmet)item;

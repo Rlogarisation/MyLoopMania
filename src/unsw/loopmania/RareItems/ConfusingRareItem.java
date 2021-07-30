@@ -4,14 +4,18 @@ import java.util.Random;
 
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.AttackEquipment;
+import unsw.loopmania.DefenseEquipment;
 import unsw.loopmania.StaticEntity;
 
-public class ConfusingRareItem{
+public class ConfusingRareItem extends StaticEntity{
     StaticEntity initialRareItem;
     StaticEntity newRareItem;
+    StaticEntity equipped;
 
-    public ConfusingRareItem(StaticEntity initialRareItem){
-            this.initialRareItem = initialRareItem;
+    public ConfusingRareItem(SimpleIntegerProperty x, SimpleIntegerProperty y, StaticEntity initalRareItem){
+            super(x,y);
+            this.initialRareItem = initalRareItem;
             //Add new random rare item to class
             randomise();
     }
@@ -35,8 +39,33 @@ public class ConfusingRareItem{
         return newRareItem;
     }
 
-    public StaticEntity getRareItem(){
-        return newRareItem;
+
+    public StaticEntity getInitialRareItem(){
+        return this.initialRareItem;
+    }
+
+    public StaticEntity getNewRareItem(){
+        return this.newRareItem;
+    }
+
+    public AttackEquipment getSword(){
+        if(initialRareItem instanceof AndurilSword){
+            return (AttackEquipment)initialRareItem;
+        }
+        else if(newRareItem instanceof AndurilSword){
+            return (AttackEquipment)newRareItem;
+        }
+        return null;
+    }
+
+    public DefenseEquipment getShield(){
+        if(initialRareItem instanceof TreeStump){
+            return (DefenseEquipment)initialRareItem;
+        }
+        else if(newRareItem instanceof TreeStump){
+            return (DefenseEquipment)newRareItem;
+        }
+        return null;
     }
     
 }
