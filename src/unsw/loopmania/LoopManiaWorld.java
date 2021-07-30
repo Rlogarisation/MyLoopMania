@@ -10,6 +10,7 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Buildings.Building;
 import unsw.loopmania.RareItems.AndurilSword;
+import unsw.loopmania.RareItems.ConfusingRareItem;
 import unsw.loopmania.RareItems.TheOneRing;
 import unsw.loopmania.RareItems.TreeStump;
 import unsw.loopmania.cards.*;
@@ -88,7 +89,8 @@ public class LoopManiaWorld {
     public enum GAME_MODE{
         STANDARD,
         SURVIVAL,
-        BERSERKER
+        BERSERKER,
+        CONFUSING
     }
 
     /** 
@@ -600,7 +602,10 @@ public class LoopManiaWorld {
         if (attackEquipment instanceof Stake) {
             character.setFightStrategy(new StakeStrategy());
         }
-        
+        if(attackEquipment instanceof AndurilSword){
+            character.setFightStrategy(new AndurilStrategy());
+        }
+        equippedInventoryItems.add(attackEquipment);
         return attackEquipment; 
 
     }
@@ -664,6 +669,44 @@ public class LoopManiaWorld {
         }      
         return defenseEquipment;
     }
+
+    public ConfusingRareItem equipConfusingRareItem(ConfusingRareItem cRareItem, StaticEntity newItem){
+        if(newItem instanceof AndurilSword){
+            for(Entity item:equippedInventoryItems){
+                if(item instanceof AttackEquipment){
+                    // unequip the item from the character
+                    character.unequipAttackEquipment();
+                    // move the item the character were wearing into unequipped inventory 
+                    removeEquippedInventoryItem(item); 
+                    unequippedInventoryItems.add(item); 
+                    break;
+                }
+            }
+             // equip the andurilSword
+            removeUnequippedInventoryItem(cRareItem);
+            equippedInventoryItems.add(cRareItem);
+            character.equipAttackEquipment(cRareItem.getSword());
+            character.setFightStrategy(new AndurilStrategy());
+    }
+        if(newItem instanceof TreeStump){
+            for(Entity item:equippedInventoryItems){
+                if(item instanceof Shield){
+                    // unequip the item from the character
+                    character.unequipShield();
+                    // move the item the character were wearing into unequipped inventory 
+                    removeEquippedInventoryItem(item); 
+                    unequippedInventoryItems.add(item);
+                    break;
+                }
+            }
+             // equip the tree stump
+            removeUnequippedInventoryItem(cRareItem);
+            equippedInventoryItems.add(cRareItem);
+            character.equipShield(cRareItem.getShield());
+        }
+        return cRareItem;
+    }
+          
 
     /**
      * return an equipped inventory item by x and y coordinates
@@ -819,7 +862,7 @@ public class LoopManiaWorld {
      * spawn 'the one ring' in the world and return 'the one ring' entity
      * @return 'the one ring' to be spawned in the controller as a JavaFX node
      */
-    public TheOneRing addUnequippedTheOneRing(){
+    public StaticEntity addUnequippedTheOneRing(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
             // give 50 gold and 100xp to the character when the oldest item discarded.
@@ -829,8 +872,15 @@ public class LoopManiaWorld {
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
         
-        // now we insert 'the one ring', as we know we have at least made a slot available...
-        TheOneRing theOneRing = new TheOneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        // now we insert 'the one ring', as we know we have at least made a slot available...  
+        SimpleIntegerProperty x = new SimpleIntegerProperty(firstAvailableSlot.getValue0());  
+        SimpleIntegerProperty y = new SimpleIntegerProperty(firstAvailableSlot.getValue1());  
+        TheOneRing theOneRing = new TheOneRing(x,y);
+        if(gameMode == GAME_MODE.CONFUSING){
+            ConfusingRareItem confusingRareItem = new ConfusingRareItem(x,y,theOneRing);
+            unequippedInventoryItems.add(confusingRareItem);
+            return confusingRareItem;
+        }
         unequippedInventoryItems.add(theOneRing);
         return theOneRing;
     }
@@ -839,7 +889,7 @@ public class LoopManiaWorld {
      * spawn 'the one ring' in the world and return 'the one ring' entity
      * @return 'the one ring' to be spawned in the controller as a JavaFX node
      */
-    public AndurilSword addUnequippedAndurilSword(){
+    public StaticEntity addUnequippedAndurilSword(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
             // give 50 gold and 100xp to the character when the oldest item discarded.
@@ -848,9 +898,15 @@ public class LoopManiaWorld {
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
-        
-        // now we insert 'the andurilSword', as we know we have at least made a slot available...
-        AndurilSword AndurilSword = new AndurilSword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        SimpleIntegerProperty x = new SimpleIntegerProperty(firstAvailableSlot.getValue0());  
+        SimpleIntegerProperty y = new SimpleIntegerProperty(firstAvailableSlot.getValue1());  
+        AndurilSword AndurilSword = new AndurilSword(x,y);
+        if(gameMode == GAME_MODE.CONFUSING){
+            ConfusingRareItem confusingRareItem = new ConfusingRareItem(x,y,AndurilSword);
+            unequippedInventoryItems.add(confusingRareItem);
+            return confusingRareItem;
+        }
+        // now we insert 'the andurilSword', as we know we have at least made a slot available...     
         unequippedInventoryItems.add(AndurilSword);
         return AndurilSword;
     }
@@ -859,7 +915,7 @@ public class LoopManiaWorld {
      * spawn 'the one ring' in the world and return 'the one ring' entity
      * @return 'the one ring' to be spawned in the controller as a JavaFX node
      */
-    public TreeStump addUnequippedTreeStump(){
+    public StaticEntity addUnequippedTreeStump(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
             // give 50 gold and 100xp to the character when the oldest item discarded.
@@ -868,9 +924,16 @@ public class LoopManiaWorld {
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
-        
+        SimpleIntegerProperty x = new SimpleIntegerProperty(firstAvailableSlot.getValue0());  
+        SimpleIntegerProperty y = new SimpleIntegerProperty(firstAvailableSlot.getValue1()); 
+        TreeStump TreeStump = new TreeStump(x,y); 
+        if(gameMode == GAME_MODE.CONFUSING){
+            ConfusingRareItem confusingRareItem = new ConfusingRareItem(x,y,TreeStump);
+            unequippedInventoryItems.add(confusingRareItem);
+            return confusingRareItem;
+        }
         // now we insert 'the tree stump', as we know we have at least made a slot available...
-        TreeStump TreeStump = new TreeStump(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        
         unequippedInventoryItems.add(TreeStump);
         return TreeStump;
     }
@@ -897,7 +960,7 @@ public class LoopManiaWorld {
 
     /**
      * Revives character when it is dead
-     * @pre this.character.getHp() == 0
+     * @pre this.character.getHp() == 0, confusingrareitem only exists if in confusing game mode
      * @post this.character.getHp() == 100
      */
     public void reviveCharacter() {
@@ -907,6 +970,14 @@ public class LoopManiaWorld {
                 item.destroy();
                 removeUnequippedInventoryItem(item);
                 break;
+            }
+            else if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCrItem = (ConfusingRareItem)item;
+                if(newCrItem.hasOneRing()){
+                    this.character.setHp(100);
+                    item.destroy();
+                    removeUnequippedInventoryItem(item);
+                }
             }
         }        
     }

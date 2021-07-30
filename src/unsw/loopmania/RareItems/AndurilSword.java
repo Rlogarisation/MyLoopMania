@@ -5,7 +5,7 @@ import unsw.loopmania.Sword;
 
 public class AndurilSword extends Sword{
     private final int price = 1500;
-    private final int damage = 12;
+    private final int damage = 8;
     public AndurilSword(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         this.setPrice(price);

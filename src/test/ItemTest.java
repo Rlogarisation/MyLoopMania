@@ -14,7 +14,9 @@ import org.javatuples.Pair;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
+import unsw.loopmania.RareItems.AndurilSword;
 import unsw.loopmania.RareItems.TheOneRing;
+import unsw.loopmania.RareItems.TreeStump;
 
 /**
  * this test file tests all the basic equipments(Attack,Defense),
@@ -177,6 +179,13 @@ public class ItemTest {
         assertEquals(null, item);
         assertTrue(itemClassSame);
 
+        //Test tree stump
+        d.addUnequippedTreeStump();
+        d.equipOneItem(new TreeStump(new SimpleIntegerProperty(x+4),y));
+        item = d.getEquippedInventoryItemEntityByCoordinates(4, 0);
+        assertTrue(item instanceof TreeStump);
+        assertTrue(c.getHasStump());
+
     }
 
     /**
@@ -208,6 +217,12 @@ public class ItemTest {
 
         strategy = c.getFightStrategy();
         assertTrue(strategy instanceof StakeStrategy);
+
+        d.equipOneItem(new AndurilSword(new SimpleIntegerProperty(x), y));
+
+        strategy = c.getFightStrategy();
+        assertTrue(strategy instanceof AndurilStrategy);
+
 
     }
 
