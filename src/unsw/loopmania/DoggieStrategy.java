@@ -15,12 +15,17 @@ public class DoggieStrategy implements FightStrategy {
      *  character cannot attack and will be attack by other enemies.
      */
     public void attack(double initialDamage, MovingEntity entity) {
-        if (chanceGenerator(chance)) {
-            if (entity instanceof Character) {
+        double currentHp = entity.getHp();
+        double currentDamage = initialDamage;
+
+        if (entity instanceof Character) {
+            currentDamage = ((Character) entity).defenseApplication(currentDamage);
+            if (chanceGenerator(chance)) {
                 Character myHero = (Character) entity;
                 myHero.makeStun();
-            }
+            }         
         }
+        entity.setHp(currentHp - currentDamage);
     }
 
     /**
