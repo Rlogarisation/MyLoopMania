@@ -115,6 +115,42 @@ public class CharacterWeaponTest {
         assert(defeatedEnemies.contains(vampire));
     }
 
+
+    @Test
+    public void AndurilStrategyTest(){
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+
+        // character: hp = 100, damage = 10.
+        Character character = new Character(position00);
+        currentWorld.setCharacter(character);
+    
+        // elanMuske: hp = 100 and damage = 10, radius = 3.
+        ElanMuske elanMuske = new ElanMuske(position00);
+        elanMuske.setHp(50);
+        currentWorld.addEnemy(elanMuske);
+        //AndurilSword: +8 damage, total damage = 10+8 = 18
+        //To elanMuske *3 damage, total damage = 22*3 = 54
+        character.setFightStrategy(new AndurilStrategy());
+        List<Enemy> defeatedEnemies = currentWorld.runBattles();
+        assert(elanMuske.getHp() == -4);
+        assert(defeatedEnemies.contains(elanMuske));
+    }
     /**
      * check if the defense equipments actually defense enemies' attack
      */

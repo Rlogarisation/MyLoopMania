@@ -39,16 +39,18 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
 import unsw.loopmania.RareItems.AndurilSword;
+import unsw.loopmania.RareItems.ConfusingRareItem;
 import unsw.loopmania.RareItems.TheOneRing;
 import unsw.loopmania.RareItems.TreeStump;
 
@@ -115,41 +117,31 @@ public class LoopManiaWorldController {
     private AnchorPane anchorPaneRoot;
     
     /**
-     * hBox is the game background in stackPane -> achorPaneRoot.
-     * we can use it to control game visibility.
+     * 
      */
     @FXML
      private HBox hBox;
 
     /**
-     * hBox is the game background in stackPane -> achorPaneRoot.
-     * we can use it to control game visibility.
-     */
-    @FXML
-    private VBox vBox;
-
-    /**
-     * shopPane is the shop background in stackPane -> achorPaneRoot.
-     * we can use it to control shop visibility. 
+     * 
      */
     @FXML
      private Pane shopPane;
 
     /**
-     * shop is the shop background which lists the shop items.
+     * 
      */
     @FXML
     private GridPane shop;
 
     /**
-     * shopOpenButton is the button 
-     * we can re-open the shop after we close the shop.
+     * 
      */
     @FXML
     private Button shopOpenButton;
 
     /**
-     * exitButton is the button we can exit the shop and return to game.
+     * 
      */
     @FXML
     private Button exitButton;
@@ -206,6 +198,12 @@ public class LoopManiaWorldController {
     
     // Image for items
     private Image swordImage;
+    private Image stakeImage;
+    private Image staffImage;
+    private Image armourImage;
+    private Image shieldImage;
+    private Image helmetImage;
+    private Image potionImage;
     
     private Image heroCastleImage;
 
@@ -246,6 +244,10 @@ public class LoopManiaWorldController {
      * object handling switching to the main menu
      */
     private MenuSwitcher mainMenuSwitcher;
+
+
+
+
 
     /**
      * @param world world object loaded from file
@@ -357,6 +359,8 @@ public class LoopManiaWorldController {
             case "Survival":
             world.setGameMode(GAME_MODE.SURVIVAL);
             break;
+            case "Confusing":
+            world.setGameMode(GAME_MODE.CONFUSING);
         }
     }
 
@@ -387,7 +391,12 @@ public class LoopManiaWorldController {
                     pause();
                 }
                 printThreadingNotes("HANDLED TIMER");
-            } else{
+            }
+            //Try reviving character if it has onering
+            else if (!world.getCharacterIsAlive()){
+                world.reviveCharacter();
+            }
+            else{
                 printThreadingNotes("Character is Dead");
                 pause();
             }
@@ -540,24 +549,25 @@ public class LoopManiaWorldController {
         onLoad(healthPotion);
     }
 
-    private void loadRareItem(){
+    private StaticEntity loadRareItem(){
         ArrayList<String> validRareItems = world.getValidRareItems();
         Random random = new Random();
-        int prob = random.nextInt(20);
-        if(validRareItems.contains("The_One_Ring") && prob == 0){
-            TheOneRing theOneRing = world.addUnequippedTheOneRing();
-            onLoad(theOneRing);
+        int prob = random.nextInt(1);
+        if(validRareItems.contains("The_One_Ring")){
+            StaticEntity theOneRing = world.addUnequippedTheOneRing();
+            onLoadRareItem(theOneRing);
         }
-        else if(validRareItems.contains("Anduril_Flame_Of_The_West") && prob == 1){
-            AndurilSword AndurilSword = world.addUnequippedAndurilSword();
-            onLoad(AndurilSword);
+        else if(validRareItems.contains("Anduril_Flame_Of_The_West") && prob == 5){
+            StaticEntity andurilSword = world.addUnequippedAndurilSword();
+            onLoadRareItem(andurilSword);;
         }
-        else if(validRareItems.contains("Tree_Stump") && prob == 2){
-            TreeStump TreeStump = world.addUnequippedTreeStump();
-            onLoad(TreeStump);
+        else if(validRareItems.contains("Tree_Stump") && prob == 0){
+            StaticEntity treeStump = world.addUnequippedTreeStump();
+            onLoadRareItem(treeStump);
         }
+        return null;
     }
-    
+
 
     /**
      * run GUI events after an enemy is defeated, such as spawning items/experience/gold
@@ -568,9 +578,6 @@ public class LoopManiaWorldController {
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
         loadRareItem();
-        loadTrapCard();
-        loadTowerCard();
-        loadBarracksCard();
     }
 
     /**
@@ -615,6 +622,24 @@ public class LoopManiaWorldController {
 
         addEntity(card, view);
         cards.getChildren().add(view);
+    }
+
+    private void onLoadRareItem(StaticEntity rareItem){
+        if(rareItem instanceof TheOneRing){
+            onLoad((TheOneRing)rareItem);
+        }
+        if(rareItem instanceof AndurilSword){
+            onLoad((AndurilSword)rareItem);
+        }
+        if(rareItem instanceof TreeStump){
+            onLoad((TreeStump)rareItem);
+        }
+        if(rareItem instanceof ConfusingRareItem){
+            ConfusingRareItem cRareItem = (ConfusingRareItem)rareItem;
+            onLoadRareItem(cRareItem.getInitialRareItem());
+            System.out.println(cRareItem.getInitialRareItem());
+            System.out.println(cRareItem.getNewRareItem());
+        }
     }
 
  /**
@@ -897,10 +922,19 @@ public class LoopManiaWorldController {
         Entity item = world.getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
         world.getEquippedInventoryItemEntityByCoordinates(x, y);
         //Depending on type check if valid drop and return if not
-        if(item instanceof AttackEquipment && x == 0 && y ==1){
+        if(x == 0 && y ==1){
+            if(item instanceof AttackEquipment){
             AttackEquipment newAttackEquipment = (AttackEquipment)item;
             world.equipOneItem(newAttackEquipment);
             return newAttackEquipment;
+            }
+            else if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCr = (ConfusingRareItem)item;
+                if(newCr.getSword() != null){
+                    world.equipConfusingRareItem(newCr, newCr.getSword());
+                    return newCr.getSword();
+                }
+            }
         }
         else if (item instanceof Armour && x == 1 && y == 1){
             Armour newArmour = (Armour)item;
@@ -908,10 +942,19 @@ public class LoopManiaWorldController {
             return newArmour;
 
         }
-        else if (item instanceof Shield && x == 2 && y == 1){
-            Shield newShield = (Shield)item;
-            world.equipOneItem(newShield);
-            return newShield;
+        else if (x == 2 && y == 1){
+            if(item instanceof Shield){
+                Shield newShield = (Shield)item;
+                world.equipOneItem(newShield);
+                return newShield;
+            }
+            else if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCr = (ConfusingRareItem)item;
+                if(newCr.getShield() != null){
+                    world.equipConfusingRareItem(newCr, newCr.getShield());
+                    return newCr.getShield();
+                }
+            }
         }
         else if (item instanceof Helmet && x == 1 && y == 0){
             Helmet newHelmet= (Helmet)item;
@@ -1143,15 +1186,14 @@ public class LoopManiaWorldController {
      * EventHandlers will run on the application thread.
      */
     private void printThreadingNotes(String currentMethodLabel){
-        System.out.println("\n###########################################");
+        System.out.println("\n###########:#########");
         System.out.println("current method = "+currentMethodLabel);
         System.out.println("In application thread? = "+Platform.isFxApplicationThread());
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
     /**
-     * this function changes the scene from game to the shop
-     * This function hide the game and show the shop.
+     * 
      */
     private void changeToShop() {
         pause();
@@ -1161,8 +1203,7 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * this function changes the scene from shop to the game
-     * To re-open the shop, we set re-open button
+     * 
      */
     private void changeToGame() {
         hBox.setVisible(true);
@@ -1171,32 +1212,14 @@ public class LoopManiaWorldController {
         //shopOpenButton.setVisible(true);
     }
 
-    /**
-     * this function handles re-opening shop. 
-     */
     @FXML
     private void handleShopOpenButtonAction(ActionEvent event){
         changeToShop();         
     }
 
-    /**
-     * set hero shop in hero castle.
-     * we can buy and sell items from the shop
-     */
     private void setHeroShop() {
 
-        // make sure the shop is empty 
         shop.getChildren().removeAll();
-
-        /*
-        Button shopOpenButton = new Button("Shop");
-        shopOpenButton.setOnAction(event -> {
-            if (isPaused && ) {
-                changeToShop();    
-            }
-        });
-        vBox.getChildren().add(shopOpenButton);
-        */
 
         HashMap<String,StaticEntity> shopItems = world.getHeroCastle().getShopItems();
 
@@ -1207,7 +1230,6 @@ public class LoopManiaWorldController {
             Button buyButton = new Button();
             Button sellButton = new Button();
 
-            // set a button for purchase
             StaticEntity item = shopItems.get(key);
             buyButton.setOnAction(event -> {
                 Boolean isBought = world.buyOneItemBycoordinates(item.getX(),item.getY());
@@ -1215,25 +1237,22 @@ public class LoopManiaWorldController {
                     System.out.println("You need more gold");
                 }
             });
-
-            // set a button for sale
             sellButton.setOnAction(event -> {
                 Boolean isSold = world.sellOneItemByItem(item);
                 if (!isSold) {
                     System.out.println("You don't have this item");
                 }
             });
-
-            // set a button to return to the game
             exitButton.setOnAction(event -> {
                 changeToGame();
             });
 
-            // set little bit differently for long word item
-            itemName.setStyle("-fx-font: 13 arial;"); 
+            if (key == "Health Potion") { 
+                itemName = new Text("   " + key + "            ");
+                itemName.setStyle("-fx-font: 15 arial;"); 
+            } else { itemName.setStyle("-fx-font: 17 arial;"); 
+            }
             
-            
-            // set style for buttons
             buyButton.setText("Buy");
             sellButton.setText("Sell");
             buyButton.setStyle("-fx-font: 13 arial;");
@@ -1241,27 +1260,19 @@ public class LoopManiaWorldController {
             buyButton.setMinWidth(shop.getPrefWidth());
             sellButton.setMinWidth(shop.getPrefWidth());
             
-            // set the images for the items
             switch(key) {
                 case "Sword": itemImage = swordImage; break;
-                case "Health Potion": itemImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()); break;
-                case "The One Ring": itemImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString()); break;
-                case "Anduril": itemImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()); break;
-                case "Tree Stump": itemImage = new Image((new File("src/images/tree_stump.png")).toURI().toString()); break;
+                case "Health Potion": itemImage = swordImage; break;
                 default:
-                    itemImage = new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString()); break; 
+                    itemImage = 
+                    new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
+                    break; 
             }
-
-            // add information about items in the shop
             shop.add(itemName, i, j);
             shop.add(new ImageView(itemImage), i+1, j);
-            if (key != "The One Ring" && key != "Anduril" && key != "Tree Stump") {
-                shop.add(buyButton, i+2, j);
-            }
+            shop.add(buyButton, i+2, j);
             shop.add(sellButton, i+3, j);
             j++;
         }
-
-        
     }
 }
