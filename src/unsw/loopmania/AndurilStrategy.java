@@ -3,7 +3,7 @@ package unsw.loopmania;
 import unsw.loopmania.RareItems.AndurilSword;
 
 public class AndurilStrategy implements FightStrategy {
-    private final int damage = 12;
+    private final int damage = 8;
     @Override
     public void attack(double initialDamage, MovingEntity entity) {
         double currentHp = entity.getHp();
