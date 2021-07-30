@@ -368,6 +368,12 @@ public class LoopManiaWorld {
                 enemiesJoiningBattle.add(newZombie);
                 enemyList.add(newZombie);
             }
+            // ElanMuske increases health for all other enemy if in range.
+            if (currentEnemy instanceof ElanMuske && chanceGenerator(0.3)) {
+                ElanMuske elan = (ElanMuske) currentEnemy;
+                enemiesJoiningBattle = elan.healAllEnemies(enemiesJoiningBattle);
+            }
+
             if (currentAlly.getHp() <= 0) {
                 removeAlly(currentAlly);
                 allyIndex++;
@@ -404,6 +410,11 @@ public class LoopManiaWorld {
                 enemyIndex++;
                 //Enemy dies 
                 break;
+            }
+            // ElanMuske increases health for all other enemy if in range.
+            if (currentEnemy instanceof ElanMuske && chanceGenerator(0.3)) {
+                ElanMuske elan = (ElanMuske) currentEnemy;
+                enemiesJoiningBattle = elan.healAllEnemies(enemiesJoiningBattle);
             }
 
             currentEnemy.attack(currentEnemy.getDamage(), character);
