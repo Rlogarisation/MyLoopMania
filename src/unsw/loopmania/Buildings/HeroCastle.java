@@ -151,9 +151,9 @@ public class HeroCastle extends StaticEntity{
                     this.spawnElanMuske = true;
                     break;
                 case "Doggie":
-                    //Enemy doggie = new Doggie(new PathPosition(indexInPath, lmw.getOrderedPath()));
-                    //lmw.addEnemy(doggie);
-                    //this.spawnDoggie = true;
+                    Enemy doggie = new Doggie(new PathPosition(indexInPath, lmw.getOrderedPath()));
+                    lmw.addEnemy(doggie);
+                    this.spawnDoggie = true;
                     break;
                 default:
                     break;
