@@ -174,5 +174,7 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     an enemy.
     * We assume that the character can sell the item for half the original price.
     * We assume that when the character is in the castle, we can purchase items by double clicking.  
+    * We assume that if we add new equipment to the character, 
+    the corresponding equipment already exists in equipped inventory is removed from the game.
     #
 

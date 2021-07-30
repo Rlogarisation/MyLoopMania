@@ -136,6 +136,10 @@ public class LoopManiaWorld {
         return height;
     }
 
+    public List<Entity> getEquippedInventoryItems() {
+        return this.equippedInventoryItems;
+    }
+
     public ArrayList<String> getValidRareItems(){
         return this.validRareItems;
     }
@@ -588,17 +592,13 @@ public class LoopManiaWorld {
         for (Entity item : equippedInventoryItems) {
             if (item instanceof AttackEquipment) {
                 
-                // unequip the item from the character
+                // unequip the item from the character -> remove the item already equipped
                 character.unequipAttackEquipment();
-
-                // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);
                 
                 break;
             }
         }
-
         // equip the attack equipment 
         removeUnequippedInventoryItem(attackEquipment);
         equippedInventoryItems.add(attackEquipment);
@@ -616,7 +616,7 @@ public class LoopManiaWorld {
         if(attackEquipment instanceof AndurilSword){
             character.setFightStrategy(new AndurilStrategy());
         }
-        equippedInventoryItems.add(attackEquipment);
+        
         return attackEquipment; 
 
     }
@@ -627,57 +627,50 @@ public class LoopManiaWorld {
      */
     public DefenseEquipment equipOneItem(DefenseEquipment defenseEquipment) {
         
+        // unequip the item from the character
         for (Entity item : equippedInventoryItems) {
-
             if (defenseEquipment instanceof Armour && item instanceof Armour) {
-                
-                // unequip the item from the character
                 character.unequipArmour();
-
-                // move the item the character were wearing into unequipped inventory 
-                removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);
-
-                 // equip the armour 
-                removeUnequippedInventoryItem(defenseEquipment);
-                equippedInventoryItems.add(defenseEquipment);
-                character.equipArmour((Armour) defenseEquipment);
- 
-                break;
-            }
-            if (defenseEquipment instanceof Shield && item instanceof Shield) {
- 
-                // unequip the item from the character
-                character.unequipShield();
-
-                // move the item the character were wearing into unequipped inventory 
-                removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);
-
-                 // equip the shield 
-                removeUnequippedInventoryItem(defenseEquipment);
-                equippedInventoryItems.add(defenseEquipment);
-                character.equipShield((Shield) defenseEquipment);
- 
+                removeEquippedInventoryItem(item); // -> remove the item already equipped
                 break;
             }
             if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
-                
-                // unequip the item from the character
                 character.unequipHelmet();
-
-                // move the item the character were wearing into unequipped inventory 
-                removeEquippedInventoryItem(item); 
-                unequippedInventoryItems.add(item);
-
-                 // equip the Helmet
-                removeUnequippedInventoryItem(defenseEquipment);
-                equippedInventoryItems.add(defenseEquipment);
-                character.equipHelmet((Helmet) defenseEquipment);
-  
+                removeEquippedInventoryItem(item); // -> remove the item already equipped
                 break;
             }
-        }      
+            if ((defenseEquipment instanceof Shield || 
+            defenseEquipment instanceof TreeStump) && item instanceof Shield) {
+                character.unequipShield();
+                removeEquippedInventoryItem(item); 
+                break;
+            }
+            if ((defenseEquipment instanceof Shield || 
+            defenseEquipment instanceof TreeStump) && item instanceof TreeStump) {
+                character.unequipTreeStump();
+                removeEquippedInventoryItem(item); 
+                break;
+            }
+        }
+
+        // equip the defense equipment 
+        removeUnequippedInventoryItem(defenseEquipment);
+        equippedInventoryItems.add(defenseEquipment);
+
+        // set character to equip the equipment
+        if (defenseEquipment instanceof Armour) {
+            character.equipArmour((Armour) defenseEquipment);
+        }    
+        if (defenseEquipment instanceof Shield) {
+            character.equipShield((Shield) defenseEquipment);
+        }    
+        if (defenseEquipment instanceof Shield) {
+            character.equipShield((Shield) defenseEquipment);
+        }    
+        if (defenseEquipment instanceof TreeStump) {
+            character.equipTreeStump((TreeStump) defenseEquipment);
+        }
+        
         return defenseEquipment;
     }
 
@@ -779,7 +772,6 @@ public class LoopManiaWorld {
      */
     public Stake addUnequippedStake(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
-        System.out.println(firstAvailableSlot);
         if (firstAvailableSlot == null){
             // give 50 gold and 100xp to the character when the oldest item discarded.
             this.character.addGold(50);
@@ -990,7 +982,19 @@ public class LoopManiaWorld {
                     removeUnequippedInventoryItem(item);
                 }
             }
-        }        
+        } 
+        //Also check equipped inventory to check if oneRing exists
+        for(Entity item: equippedInventoryItems){
+            if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCrItem = (ConfusingRareItem)item;
+                if(newCrItem.hasOneRing()){
+                    this.character.setHp(100);
+                    item.destroy();
+                    removeEquippedInventoryItem(item);
+                    break;
+                }
+        }
+    }       
     }
 
     /**
@@ -1018,7 +1022,6 @@ public class LoopManiaWorld {
      * @param item item to be removed
      */
     private void removeEquippedInventoryItem(Entity item){
-        item.destroy();
         equippedInventoryItems.remove(item);
     }
 
@@ -1039,11 +1042,13 @@ public class LoopManiaWorld {
      * @return unequipped inventory item at the input position
      */
     public Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y){
+        
         for (Entity e: unequippedInventoryItems){
             if ((e.getX() == x) && (e.getY() == y)){
                 return e;
             }
         }
+        
         return null;
     }
 

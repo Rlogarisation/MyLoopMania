@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -101,23 +102,48 @@ public class ItemTest {
         Character c = new Character(new PathPosition(0,orderedPath));
         d.setCharacter(c);
 
+        // case1) equip a sword
         int x = 0;
         SimpleIntegerProperty y = new SimpleIntegerProperty(0);
         d.addUnequippedSword();
-        d.equipOneItem(new Sword(new SimpleIntegerProperty(x), y));
 
-        Entity item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
-        Boolean itemClassSame = (item instanceof Sword);
+        Entity item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        Boolean  itemClassSame = (item instanceof Sword);
+        assertTrue(itemClassSame);
+
+        d.equipOneItem((AttackEquipment) item);
+
+        // check if the sword is equipped to the character
+        item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
+        itemClassSame = (item instanceof Sword);
         assertTrue(itemClassSame);
         
-        d.addUnequippedStaff();
-        d.equipOneItem(new Staff(new SimpleIntegerProperty(x+1), y));
+        // case2) equip a staff
+        d.addUnequippedStaff(); // coordinate -> (0,0)
+        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        d.equipOneItem((AttackEquipment) item);
+        
+        // check the staff was equipped to the character
+        item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
+        itemClassSame = (item instanceof Staff);
+        assertTrue(itemClassSame);
+
+        // case3) equip a stake
+        d.addUnequippedStake(); // coordinate -> (0,0)
+        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        d.equipOneItem((AttackEquipment) item);
 
         item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
-        assertEquals(null, item);
+        itemClassSame = (item instanceof Stake);
+        assertTrue(itemClassSame);
 
-        item = d.getEquippedInventoryItemEntityByCoordinates(1,0);
-        itemClassSame = (item instanceof Staff);
+        // case3) equip an Anduril sword
+        d.addUnequippedAndurilSword(); // coordinate -> (0,0)
+        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        d.equipOneItem((AttackEquipment) item);
+
+        item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
+        itemClassSame = (item instanceof AndurilSword);
         assertTrue(itemClassSame);
     }
 
@@ -134,58 +160,52 @@ public class ItemTest {
         d.setCharacter(new Character(new PathPosition(0,orderedPath)));
         Character c = d.getCharacter();
 
+        // cas1) equip an armour
         int x = 0;
         SimpleIntegerProperty y = new SimpleIntegerProperty(0);
         d.addUnequippedArmour();
-        d.equipOneItem(new Armour(new SimpleIntegerProperty(x), y));
-    
-        Entity item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
+
+        Entity item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
         Boolean itemClassSame = (item instanceof Armour);
         assertTrue(itemClassSame);
-        assertTrue(c.getHasArmour());
 
-        d.addUnequippedArmour();
-        d.equipOneItem(new Armour(new SimpleIntegerProperty(x+1), y));
+        d.equipOneItem((DefenseEquipment) item);
 
-        item = d.getEquippedInventoryItemEntityByCoordinates(1,0);
-        assertEquals(null, item);
+        // check if the armour is equipped to the character
+        item = d.getEquippedInventoryItems().get(0);
+        itemClassSame = (item instanceof Armour);
+        assertTrue(itemClassSame);
 
-        d.addUnequippedShield();
-        d.equipOneItem(new Shield(new SimpleIntegerProperty(x+1), y));
+        // case2) equip an Shield
+        d.addUnequippedShield(); // coordinate -> (0,0)
+        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        d.equipOneItem((DefenseEquipment) item);
         
-        item = d.getEquippedInventoryItemEntityByCoordinates(1,0);
+        // check the shield was equipped to the character
+        item = d.getEquippedInventoryItems().get(1);
         itemClassSame = (item instanceof Shield);
         assertTrue(itemClassSame);
-        assertTrue(c.getHasShield());
-
-        d.addUnequippedShield();
-        d.equipOneItem(new Shield(new SimpleIntegerProperty(x+2), y));
         
-        item = d.getEquippedInventoryItemEntityByCoordinates(2,0);
-        assertEquals(null, item);
-        
-        d.addUnequippedHelmet();
-        d.equipOneItem(new Helmet(new SimpleIntegerProperty(x+2), y));
+        // case3) equip a Helmet
+        d.addUnequippedHelmet(); // coordinate -> (0,0)
+        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        d.equipOneItem((DefenseEquipment) item);
 
-        item = d.getEquippedInventoryItemEntityByCoordinates(2,0);
+        // check the helmet was equipped to the character
+        item = d.getEquippedInventoryItems().get(2);
         itemClassSame = (item instanceof Helmet);
         assertTrue(itemClassSame);
-        assertTrue(c.getHasHelmet());
 
-        d.addUnequippedShield();
-        d.equipOneItem(new Helmet(new SimpleIntegerProperty(x+3), y));
-        
-        item = d.getEquippedInventoryItemEntityByCoordinates(3,0);
-        assertEquals(null, item);
-        assertTrue(itemClassSame);
-
-        //Test tree stump
+        // case4) equip a tree stump
         d.addUnequippedTreeStump();
-        d.equipOneItem(new TreeStump(new SimpleIntegerProperty(x+4),y));
-        item = d.getEquippedInventoryItemEntityByCoordinates(4, 0);
-        assertTrue(item instanceof TreeStump);
-        assertTrue(c.getHasStump());
+        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        d.equipOneItem((DefenseEquipment) item);
 
+        // check the tree stump was equipped to the character
+        item = d.getEquippedInventoryItems().get(2);
+        itemClassSame = (item instanceof TreeStump);
+        assertTrue(itemClassSame);
+        
     }
 
     /**
@@ -205,7 +225,6 @@ public class ItemTest {
         d.equipOneItem(new Sword(new SimpleIntegerProperty(x), y));
 
         FightStrategy strategy = c.getFightStrategy();
-        System.out.println(strategy);
         assertTrue(strategy instanceof SwordStrategy);
 
         d.equipOneItem(new Staff(new SimpleIntegerProperty(x), y));

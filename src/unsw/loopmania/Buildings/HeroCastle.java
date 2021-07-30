@@ -12,7 +12,7 @@ import org.javatuples.Pair;
 
 public class HeroCastle extends StaticEntity{ 
 
-    private static final int nItems = 7;
+    private static final int nItems = 10;
 
     private List<VampireCastle> vampireCastles;
     private List<ZombiePit> zombiePits;
