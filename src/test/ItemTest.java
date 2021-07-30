@@ -102,7 +102,7 @@ public class ItemTest {
         Character c = new Character(new PathPosition(0,orderedPath));
         d.setCharacter(c);
 
-        // equip a sword
+        // case1) equip a sword
         int x = 0;
         SimpleIntegerProperty y = new SimpleIntegerProperty(0);
         d.addUnequippedSword();
@@ -118,37 +118,20 @@ public class ItemTest {
         itemClassSame = (item instanceof Sword);
         assertTrue(itemClassSame);
         
-        // check if the sword doesn't exist in unequipped inventory
-        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
-        itemClassSame = (item instanceof Sword);
-        assertFalse(itemClassSame);
-
-        
-        // case1) equip a staff
+        // case2) equip a staff
         d.addUnequippedStaff(); // coordinate -> (0,0)
         item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
         d.equipOneItem((AttackEquipment) item);
-        
-        // check the already equipped sword was returned to unequipped inventory
-        item = d.getUnequippedInventoryItemEntityByCoordinates(1,0);
-        itemClassSame = (item instanceof Sword);
-        assertTrue(itemClassSame);
         
         // check the staff was equipped to the character
         item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
         itemClassSame = (item instanceof Staff);
         assertTrue(itemClassSame);
 
-        
         // case3) equip a stake
         d.addUnequippedStake(); // coordinate -> (0,0)
         item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
         d.equipOneItem((AttackEquipment) item);
-
-        // check the already equipped staff was returned to unequipped inventory
-        item = d.getUnequippedInventoryItemEntityByCoordinates(2,0);
-        itemClassSame = (item instanceof Staff);
-        assertTrue(itemClassSame);
 
         item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
         itemClassSame = (item instanceof Stake);
@@ -159,15 +142,9 @@ public class ItemTest {
         item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
         d.equipOneItem((AttackEquipment) item);
 
-        // check the already equipped stake was returned to unequipped inventory
-        item = d.getUnequippedInventoryItemEntityByCoordinates(3,0);
-        itemClassSame = (item instanceof Stake);
-        assertTrue(itemClassSame);
-
         item = d.getEquippedInventoryItemEntityByCoordinates(0,0);
         itemClassSame = (item instanceof AndurilSword);
         assertTrue(itemClassSame);
-
     }
 
     /**
@@ -199,11 +176,6 @@ public class ItemTest {
         itemClassSame = (item instanceof Armour);
         assertTrue(itemClassSame);
 
-        // check if the armour doesn't exist in unequipped inventory
-        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
-        assertEquals(item,null);
-        
-
         // case2) equip an Shield
         d.addUnequippedShield(); // coordinate -> (0,0)
         item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
@@ -224,16 +196,10 @@ public class ItemTest {
         itemClassSame = (item instanceof Helmet);
         assertTrue(itemClassSame);
 
-
         // case4) equip a tree stump
         d.addUnequippedTreeStump();
         item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
         d.equipOneItem((DefenseEquipment) item);
-
-        // check the already equipped shield was returned to unequipped inventory
-        item = d.getUnequippedInventoryItemEntityByCoordinates(1,0);
-        itemClassSame = (item instanceof Shield);
-        assertTrue(itemClassSame);
 
         // check the tree stump was equipped to the character
         item = d.getEquippedInventoryItems().get(2);
