@@ -42,9 +42,10 @@ public class DoggieTest {
         int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
 
-        // character: hp = 100, damage = 10.
+        // character: hp = 100, damage = 5.
         Character character = new Character(position00);
         currentWorld.setCharacter(character);
+        character.setDamage(5);
 
         // Doggie: hp = 40, damage = 5
         Doggie myDog = new Doggie(position00);
@@ -53,7 +54,8 @@ public class DoggieTest {
         List<Enemy> defeatedEnemy =  currentWorld.runBattles();
         // make sure doggie is dead.
         assertTrue(defeatedEnemy.contains(myDog));
-        assertEquals(80, character.getHp());
+        // Test for stun.
+        assertTrue(character.getHp() < 60);
         // Character will get a doggie coin.
         assertTrue(character.getDoggieCoinQuantity() == 1);
 
@@ -142,7 +144,6 @@ public class DoggieTest {
         List<Enemy> defeatedEnemy =  currentWorld.runBattles();
         // make sure Elan is dead.
         assertTrue(defeatedEnemy.contains(ManToMoon));
-        assertEquals(50, character.getHp());
 
         // Doggie coin price can increase significantly.
         assertTrue(character.getDoggieCoinPrice() > 1);
