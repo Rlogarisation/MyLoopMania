@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import unsw.loopmania.RareItems.TreeStump;
+
 /**
  * represents the main character in the backend of the game world
  * @author Zheng Luo (z5206267)
@@ -373,10 +375,14 @@ public class Character extends MovingEntity {
      * @return shield
      */
     public Shield equipShield(Shield shield){
+        if(shield instanceof TreeStump){
+            setHasStump(true);
+        }
         equipments.equipShield(shield);
         setHasShield(true);
         return shield;
     }
+
 
     /**
      * equip the character with a helmet

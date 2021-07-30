@@ -552,16 +552,16 @@ public class LoopManiaWorldController {
     private StaticEntity loadRareItem(){
         ArrayList<String> validRareItems = world.getValidRareItems();
         Random random = new Random();
-        int prob = random.nextInt(1);
-        if(validRareItems.contains("The_One_Ring")){
+        int prob = random.nextInt(20);
+        if(validRareItems.contains("The_One_Ring") && prob == 1){
             StaticEntity theOneRing = world.addUnequippedTheOneRing();
             onLoadRareItem(theOneRing);
         }
-        else if(validRareItems.contains("Anduril_Flame_Of_The_West") && prob == 5){
+        else if(validRareItems.contains("Anduril_Flame_Of_The_West") && prob == 2){
             StaticEntity andurilSword = world.addUnequippedAndurilSword();
             onLoadRareItem(andurilSword);;
         }
-        else if(validRareItems.contains("Tree_Stump") && prob == 0){
+        else if(validRareItems.contains("Tree_Stump") && prob == 3){
             StaticEntity treeStump = world.addUnequippedTreeStump();
             onLoadRareItem(treeStump);
         }
