@@ -577,6 +577,9 @@ public class LoopManiaWorldController {
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
+        if (enemy instanceof Doggie) {
+            world.addDoggieCoinForCharacter();
+        }
         loadRareItem();
     }
 

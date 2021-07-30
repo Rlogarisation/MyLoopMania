@@ -199,6 +199,10 @@ public class LoopManiaWorld {
         characterIsAlive = true;
     }
 
+    public void addDoggieCoinForCharacter() {
+        this.character.addDoggieCoin(1);
+    }
+
     public boolean getCharacterIsAlive(){
         return this.characterIsAlive;
     }
