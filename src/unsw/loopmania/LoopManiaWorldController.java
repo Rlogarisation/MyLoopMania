@@ -412,6 +412,11 @@ public class LoopManiaWorldController {
                 reactToEnemyDefeat(defeatedEnemy);
             }
             boolean openShop = world.runHeroCastle();
+            if (world.getHeroCastle().getSpawnDoggie()){
+                //onload doggie
+            } else if (world.getHeroCastle().getSpawnElanMuske()){
+                //onload elanMuske
+            }
             if (openShop){
                 changeToShop();
             }
@@ -573,6 +578,12 @@ public class LoopManiaWorldController {
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
         loadRareItem();
+<<<<<<< HEAD
+=======
+        loadTrapCard();
+        loadTowerCard();
+        loadBarracksCard();
+>>>>>>> origin
     }
 
     /**
@@ -1019,7 +1030,7 @@ public class LoopManiaWorldController {
                             //The drag-and-drop gesture entered the target
                             //show the user that it is an actual gesture target
                                 if(event.getGestureSource() != n && event.getDragboard().hasImage()){
-                                    n.setOpacity(0.7);
+                                  //  n.setOpacity(0.7);
                                 }
                             }
                             event.consume();
@@ -1203,6 +1214,7 @@ public class LoopManiaWorldController {
     private void changeToGame() {
         hBox.setVisible(true);
         shopPane.setVisible(false);
+        startTimer();
         //shopOpenButton.setVisible(true);
     }
 
