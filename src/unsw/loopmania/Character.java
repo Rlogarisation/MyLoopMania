@@ -375,10 +375,14 @@ public class Character extends MovingEntity {
      * @return shield
      */
     public Shield equipShield(Shield shield){
+        if(shield instanceof TreeStump){
+            setHasStump(true);
+        }
         equipments.equipShield(shield);
         setHasShield(true);
         return shield;
     }
+
 
     /**
      * equip the character with a helmet

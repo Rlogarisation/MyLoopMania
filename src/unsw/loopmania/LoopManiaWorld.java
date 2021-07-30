@@ -982,7 +982,19 @@ public class LoopManiaWorld {
                     removeUnequippedInventoryItem(item);
                 }
             }
-        }        
+        } 
+        //Also check equipped inventory to check if oneRing exists
+        for(Entity item: equippedInventoryItems){
+            if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCrItem = (ConfusingRareItem)item;
+                if(newCrItem.hasOneRing()){
+                    this.character.setHp(100);
+                    item.destroy();
+                    removeEquippedInventoryItem(item);
+                    break;
+                }
+        }
+    }       
     }
 
     /**
