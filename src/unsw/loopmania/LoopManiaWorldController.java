@@ -583,7 +583,7 @@ public class LoopManiaWorldController {
         }
 
         if (enemy instanceof ElanMuske) {
-            world.getCharacter().increaseDoggieCoinDrastically();
+            world.getCharacter().increaseDoggieCoinPriceDrastically();
         }
         
         loadRareItem();
