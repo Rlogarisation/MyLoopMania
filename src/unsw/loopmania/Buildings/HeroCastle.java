@@ -98,7 +98,7 @@ public class HeroCastle extends StaticEntity{
             notifyAllObservers();
             this.numCyclesComplete = this.numCyclesComplete + 1;
 
-            if (character.getCycleCount() == 20) ;  //spawnBoss("Doggie", lmw);
+            if (character.getCycleCount() == 20) spawnBoss("Doggie", lmw);
             else if (character.getCycleCount() == 40 && character.getXp() >= 10000) spawnBoss("ElanMuske", lmw);
 
             if (this.numCyclesComplete == this.numCyclesGoal){
@@ -141,7 +141,7 @@ public class HeroCastle extends StaticEntity{
 
     
     public void spawnBoss(String s, LoopManiaWorld lmw){
-        Pair<Integer, Integer> pos = lmw.possiblyGetBasicEnemySpawnPosition();
+        Pair<Integer, Integer> pos = lmw.possiblyGetBossSpawnPosition();
         if (pos != null){
             int indexInPath = lmw.getOrderedPath().indexOf(pos);
             switch(s){
