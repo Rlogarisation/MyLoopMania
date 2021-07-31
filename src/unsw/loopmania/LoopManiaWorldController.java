@@ -663,7 +663,7 @@ public class LoopManiaWorldController {
      * Has a 1/3 chance of giving the character a non-rare item
      */
     private void zombieVampireDefeatItem(){
-        int val = new Random().nextInt(6);
+        int val = new Random().nextInt(18);
         if (val < 6 && world.getUnequippedInventoryItems().size() == 16){
             world.getCharacter().addGold(200);
         }
