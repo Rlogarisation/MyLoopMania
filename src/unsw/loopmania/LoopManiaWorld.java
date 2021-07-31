@@ -970,6 +970,7 @@ public class LoopManiaWorld {
         for (Entity item : unequippedInventoryItems) {
             if (item instanceof TheOneRing) {
                 this.character.setHp(100);
+                this.characterIsAlive = true;
                 item.destroy();
                 removeUnequippedInventoryItem(item);
                 break;
