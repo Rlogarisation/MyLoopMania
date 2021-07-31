@@ -1,7 +1,7 @@
 {
   "width": 8,
   "height": 14,
-  "rare_items": ["The_One_Ring", "Anduril_Flame_Of_The_West", "Tree_Stump"],
+  "rare_items": ["the_one_ring", "anduril_flame_of_the_west", "tree_stump"],
   "goal-condition": {"goal": "experience", "quantity": 123456 },
   "entities": [
     {"x": 0, "y": 0, "type": "hero_castle"}
