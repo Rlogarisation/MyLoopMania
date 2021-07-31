@@ -11,6 +11,7 @@ import org.codefx.libfx.listener.handle.ListenerHandles;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -39,6 +40,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -46,6 +48,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import javafx.animation.PauseTransition;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
@@ -117,35 +120,51 @@ public class LoopManiaWorldController {
     private AnchorPane anchorPaneRoot;
     
     /**
-     * 
+     * hBox contains all frontend parts except shop
+     * when the shop is open, hBox is hidden
      */
     @FXML
      private HBox hBox;
 
     /**
-     * 
+     * shopPane contains all frontend parts for shop
+     * when the game is in progress, hBox is hidden
      */
     @FXML
      private Pane shopPane;
 
     /**
-     * 
+     * shop contains all items in shop
+     * the player call buy and sell the items
      */
     @FXML
     private GridPane shop;
 
     /**
-     * 
+     * this button is used for re-opening the shop
      */
     @FXML
     private Button shopOpenButton;
 
     /**
-     * 
+     * this button is used to close the store
      */
     @FXML
     private Button exitButton;
 
+    /**
+     * it shows a message when the player click 'buy' button for an item and
+     * doesn't have enough money to purchase the item
+     */
+    @FXML
+    private BorderPane moreGold;
+
+    /**
+     * it shows a message when the player click 'sell' button for an item
+     * and he doesn't have the item
+     */
+    @FXML
+    private BorderPane donHaveItem;
 
     /**
      * equippedItems gridpane is for equipped items (e.g. swords, shield, axe)
@@ -1243,15 +1262,27 @@ public class LoopManiaWorldController {
 
             StaticEntity item = shopItems.get(key);
             buyButton.setOnAction(event -> {
+                Timeline timeline1 = new Timeline();
+                timeline1.getKeyFrames().add(
+                    new KeyFrame(Duration.seconds(0.5),
+                    new KeyValue(moreGold.visibleProperty(), false)));
                 Boolean isBought = world.buyOneItemBycoordinates(item.getX(),item.getY());
                 if (!isBought) {
-                    System.out.println("You need more gold");
+                    moreGold.setVisible(true);
+                    timeline1.play();
                 }
+
+
             });
             sellButton.setOnAction(event -> {
                 Boolean isSold = world.sellOneItemByItem(item);
+                Timeline timeline2 = new Timeline();
+                    timeline2.getKeyFrames().add(
+                        new KeyFrame(Duration.seconds(0.5),
+                        new KeyValue(donHaveItem.visibleProperty(), false)));
                 if (!isSold) {
-                    System.out.println("You don't have this item");
+                    donHaveItem.setVisible(true);
+                    timeline2.play();
                 }
             });
             exitButton.setOnAction(event -> {
