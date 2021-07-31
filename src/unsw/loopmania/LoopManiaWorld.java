@@ -422,13 +422,13 @@ public class LoopManiaWorld {
             }
 
             currentEnemy.attack(currentEnemy.getDamage(), character);
-            if (character.getHp() <= 0) {
-                characterIsAlive = false;
-                break;
-            }
             if (currentEnemy.getHp() <= 0) {
                 enemyIndex++;
                 defeatedEnemies.add(currentEnemy);
+            }
+            if (character.getHp() <= 0) {
+                characterIsAlive = false;
+                break;
             }
             
         }
@@ -661,8 +661,8 @@ public class LoopManiaWorld {
         if (defenseEquipment instanceof Armour) {
             character.equipArmour((Armour) defenseEquipment);
         }    
-        if (defenseEquipment instanceof Shield) {
-            character.equipShield((Shield) defenseEquipment);
+        if (defenseEquipment instanceof Helmet) {
+            character.equipHelmet((Helmet) defenseEquipment);
         }    
         if (defenseEquipment instanceof Shield) {
             character.equipShield((Shield) defenseEquipment);
@@ -970,6 +970,7 @@ public class LoopManiaWorld {
         for (Entity item : unequippedInventoryItems) {
             if (item instanceof TheOneRing) {
                 this.character.setHp(100);
+                this.characterIsAlive = true;
                 item.destroy();
                 removeUnequippedInventoryItem(item);
                 break;

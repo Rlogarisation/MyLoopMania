@@ -576,10 +576,7 @@ public class LoopManiaWorldController {
     private void reactToEnemyDefeat(Enemy enemy){
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
-        // TODO = provide different benefits to defeating the enemy based on the type of enemy
-        loadSword();
-        loadStaff();
-        loadShield();
+
         if (enemy instanceof Doggie) {
             world.getCharacter().addDoggieCoin(1);
             world.getCharacter().flutuateDoggieCoinPrice();
@@ -588,7 +585,56 @@ public class LoopManiaWorldController {
         if (enemy instanceof ElanMuske) {
             world.getCharacter().increaseDoggieCoinPriceDrastically();
         }
-        
+
+        if (enemy instanceof Slug) {
+            world.getCharacter().addGold(50);
+            int val = new Random().nextInt(4);
+            if (val == 0){
+                loadVampireCastleCard();
+            } else if (val == 1){
+                loadZombiePitCard();
+            }
+        }
+
+        if (enemy instanceof Zombie) {
+            world.getCharacter().addGold(100);
+            zombieVampireDefeatCards();
+            zombieVampireDefeatItem();
+        }
+
+        if (enemy instanceof Vampire){
+            world.getCharacter().addGold(150);
+            zombieVampireDefeatCards();
+            zombieVampireDefeatItem();
+        }
+
+        loadRareItem();
+    }
+
+
+    /**
+     * Has a 1/3 chance of giving the character a non spawning card
+     */
+    private void zombieVampireDefeatCards(){
+        int val = new Random().nextInt(15);
+        if (val == 0) loadBarracksCard();
+        else if (val == 1) loadCampFireCard();
+        else if (val == 2) loadTowerCard();
+        else if (val == 3) loadTrapCard();
+        else if (val == 4) loadVillageCard();
+    }
+    
+    /**
+     * Has a 1/3 chance of giving the character a non-rare item
+     */
+    private void zombieVampireDefeatItem(){
+        int val = new Random().nextInt(6);
+        if (val == 0) loadSword();
+        else if (val == 1) loadStaff();
+        else if (val == 2) loadStake();
+        else if (val == 3) loadShield();
+        else if (val == 4) loadHelmet();
+        else if (val == 5) loadArmour();
     }
 
     /**
