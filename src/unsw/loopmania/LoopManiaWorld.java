@@ -422,13 +422,13 @@ public class LoopManiaWorld {
             }
 
             currentEnemy.attack(currentEnemy.getDamage(), character);
-            if (character.getHp() <= 0) {
-                characterIsAlive = false;
-                break;
-            }
             if (currentEnemy.getHp() <= 0) {
                 enemyIndex++;
                 defeatedEnemies.add(currentEnemy);
+            }
+            if (character.getHp() <= 0) {
+                characterIsAlive = false;
+                break;
             }
             
         }

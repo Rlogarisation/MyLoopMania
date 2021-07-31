@@ -608,8 +608,7 @@ public class LoopManiaWorldController {
             zombieVampireDefeatItem();
         }
 
-        int val = new Random().nextInt(25);
-        if (val == 0) loadRareItem();
+        loadRareItem();
     }
 
 
@@ -624,7 +623,10 @@ public class LoopManiaWorldController {
         else if (val == 3) loadTrapCard();
         else if (val == 4) loadVillageCard();
     }
-
+    
+    /**
+     * Has a 1/3 chance of giving the character a non-rare item
+     */
     private void zombieVampireDefeatItem(){
         int val = new Random().nextInt(6);
         if (val == 0) loadSword();
