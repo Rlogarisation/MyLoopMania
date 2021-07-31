@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,6 +17,7 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.Character;
 import unsw.loopmania.Buildings.HeroCastle;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
+import unsw.loopmania.RareItems.TreeStump;
 
 /**
  * this test file tests shop basic functions(buy and sell)
@@ -178,7 +180,7 @@ public class ShopTest {
      * and balance remaining after selling items is correct.
      */
     @Test
-    public void testSellItems() {
+    public void testSellItemsByCooordinates() {
         LoopManiaWorld d = new LoopManiaWorld(1, 1, new ArrayList<>());
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<Pair<Integer,Integer>>();
         orderedPath.add(new Pair<Integer,Integer>(0,0));
@@ -217,7 +219,7 @@ public class ShopTest {
      * when it has no items at all in the inventory.
      */
     @Test
-    public void testSellNothing() {
+    public void testSellNothingByCoordinates() {
         LoopManiaWorld d = new LoopManiaWorld(1, 1, new ArrayList<>());
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<Pair<Integer,Integer>>();
         orderedPath.add(new Pair<Integer,Integer>(0,0));
@@ -236,4 +238,69 @@ public class ShopTest {
         assertEquals(c.getGold(),1000);
     }
 
+    /**
+     * This test checks if the character can sell items in the shop
+     * when it has no items at all in the inventory.
+     */
+    @Test
+    public void testSellByItem() {
+        LoopManiaWorld d = new LoopManiaWorld(1, 1, new ArrayList<>());
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<Pair<Integer,Integer>>();
+        orderedPath.add(new Pair<Integer,Integer>(0,0));
+        Character c = new Character(new PathPosition(0,orderedPath));
+        c.setGold(1000);
+
+        d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
+        d.setCharacter(c);
+
+        d.addUnequippedSword();
+        d.addUnequippedArmour();
+        d.addUnequippedShield();
+        d.addUnequippedHelmet();
+        d.addUnequippedHealthPotion();
+
+        Entity stump = new TreeStump(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        Entity sword = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        Entity armour = d.getUnequippedInventoryItemEntityByCoordinates(1,0);
+        Entity shield = d.getUnequippedInventoryItemEntityByCoordinates(2,0);
+        Entity helmet = d.getUnequippedInventoryItemEntityByCoordinates(3,0);
+        Entity potion = d.getUnequippedInventoryItemEntityByCoordinates(0,1);
+
+        // sell nothing at the shop -> price = 0
+        Boolean isSuccess = d.sellOneItemByItem(null);
+        assertFalse(isSuccess);
+        assertEquals(c.getGold(),1000);
+
+        // sell item which is not in inventory at the shop -> price = 0
+        isSuccess = d.sellOneItemByItem(stump);
+        assertFalse(isSuccess);
+        assertEquals(c.getGold(),1000);
+
+
+        // sell a swrod at the shop -> price = 400/2 = 200
+        isSuccess = d.sellOneItemByItem(sword);
+        assertTrue(isSuccess);
+        assertEquals(c.getGold(),1200);
+        
+        // sell an armour at the shop -> price = 300/2 = 150
+        isSuccess = d.sellOneItemByItem(armour);
+        assertTrue(isSuccess);
+        assertEquals(c.getGold(),1350);
+
+        // sell a shield at the shop -> price = 500/2 = 250
+        isSuccess = d.sellOneItemByItem(shield);
+        assertTrue(isSuccess);
+        assertEquals(c.getGold(),1600);
+
+        // sell a helmet at the shop -> price = 600/2 = 300
+        isSuccess = d.sellOneItemByItem(helmet);
+        assertTrue(isSuccess);
+        assertEquals(c.getGold(),1900);
+
+        // sell swrod at the shop -> price = 200/2 = 100
+        isSuccess = d.sellOneItemByItem(potion);
+        assertTrue(isSuccess);
+        assertEquals(c.getGold(),2000);
+    }
 }

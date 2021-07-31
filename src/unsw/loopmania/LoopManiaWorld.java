@@ -1221,7 +1221,7 @@ public class LoopManiaWorld {
         Entity chosenItem = null;
         int itemPrice = 0;
         for (Entity item: unequippedInventoryItems) {
-            if (sellingItem.getClass().equals(item.getClass())) {
+            if (sellingItem != null && sellingItem.getClass().equals(item.getClass())) {
                 chosenItem = item;
                 if (chosenItem instanceof Equipment) {
                     itemPrice = ((Equipment) item).getPrice();
