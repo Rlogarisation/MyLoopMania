@@ -1,6 +1,5 @@
 package unsw.loopmania.RareItems;
 
-import org.json.JSONObject;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.HealthPotion;
