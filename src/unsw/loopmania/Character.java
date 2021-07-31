@@ -370,6 +370,13 @@ public class Character extends MovingEntity {
     }
 
     /**
+     * getter for character's equipment
+     * @return characterEquipment
+     */
+    public CharacterEquipment getCharacterEquipment(){
+        return equipments;
+    }    
+    /**
      * equip the character with an attack equipment
      * @return attackEquipment
      */

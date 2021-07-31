@@ -199,10 +199,10 @@ public class CharacterTest {
         d.addUnequippedShield();
         d.addUnequippedHelmet();
 
-        Entity sword = d.getEquippedInventoryItemEntityByCoordinates(0,0);
-        Entity armour = d.getEquippedInventoryItemEntityByCoordinates(1,0);
-        Entity shield = d.getEquippedInventoryItemEntityByCoordinates(2,0);
-        Entity helmet = d.getEquippedInventoryItemEntityByCoordinates(3,0);
+        Entity sword = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        Entity armour = d.getUnequippedInventoryItemEntityByCoordinates(1,0);
+        Entity shield = d.getUnequippedInventoryItemEntityByCoordinates(2,0);
+        Entity helmet = d.getUnequippedInventoryItemEntityByCoordinates(3,0);
 
         // set the character to wear attack/defense equipment
         myHero.equipAttackEquipment((AttackEquipment) sword);
@@ -222,7 +222,8 @@ public class CharacterTest {
 
     @Test
     /**
-     * Test for character hasEquipment/unequip equipment functions
+     * Test for character hasEquipment/unequip equipment functions 
+     * and character equipment class
      */
     public void characterUnequipEquipmentsTest() {
         final double initialXp = 0; 
@@ -256,10 +257,10 @@ public class CharacterTest {
         d.addUnequippedShield();
         d.addUnequippedHelmet();
 
-        Entity sword = d.getEquippedInventoryItemEntityByCoordinates(0,0);
-        Entity armour = d.getEquippedInventoryItemEntityByCoordinates(1,0);
-        Entity shield = d.getEquippedInventoryItemEntityByCoordinates(2,0);
-        Entity helmet = d.getEquippedInventoryItemEntityByCoordinates(3,0);
+        Entity sword = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        Entity armour = d.getUnequippedInventoryItemEntityByCoordinates(1,0);
+        Entity shield = d.getUnequippedInventoryItemEntityByCoordinates(2,0);
+        Entity helmet = d.getUnequippedInventoryItemEntityByCoordinates(3,0);
 
         // set the character to wear attack/defense equipment
         myHero.equipAttackEquipment((AttackEquipment) sword);
@@ -291,6 +292,13 @@ public class CharacterTest {
         assertFalse(hasArmour);
         assertFalse(hasShield);
     
+        CharacterEquipment cEquipment = myHero.getCharacterEquipment();
+
+        assertEquals(cEquipment.getAttackEquipment(),null);
+        assertEquals(cEquipment.getArmour(),null);
+        assertEquals(cEquipment.getShield(),null);
+        assertEquals(cEquipment.getHelmet(),null);
+        assertEquals(cEquipment.getStump(),null);
 
 
     }
