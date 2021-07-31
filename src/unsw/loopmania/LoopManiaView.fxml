@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
@@ -18,6 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -216,7 +218,7 @@
          <Pane fx:id="shopPane" prefHeight="400.0" prefWidth="400.0" visible="false">
             <children>
             
-               <Text  layoutX="140.0" layoutY="30.0" text=" Hero's Shop ">
+               <Text layoutX="140.0" layoutY="30.0" text=" Hero's Shop ">
                   <font>
                      <Font name="Arial Black" size="16.0" />
                   </font>
@@ -245,6 +247,42 @@
                
             </children>
          </Pane>
+         <BorderPane fx:id="moreGold" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white" visible="false">
+            <center>
+               <Label alignment="CENTER" text="You need more gold!" textAlignment="CENTER" textFill="RED" BorderPane.alignment="CENTER">
+                  <font>
+                     <Font name="Arial" size="20.0" />
+                  </font>
+               </Label>
+            </center></BorderPane>
+         <BorderPane fx:id="donHaveItem" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white" visible="false">
+            <center>
+               <Label alignment="CENTER" text="You don't have this item!" textAlignment="CENTER" textFill="RED" BorderPane.alignment="CENTER">
+                  <font>
+                     <Font name="Arial" size="20.0" />
+                  </font>
+               </Label>
+            </center></BorderPane>
+         <Group fx:id="winMessage" cache="true" style="-fx-effect: bloom;" visible="false">
+            <children>
+               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DARKBLUE" height="80.0" stroke="BLACK" strokeType="INSIDE" width="280.0" x="10.0" y="10.0" />
+               <Text fill="YELLOW" strokeType="OUTSIDE" strokeWidth="0.0" text="YOU WON THE GAME!" textAlignment="CENTER" x="25.0" y="60.0">
+                  <font>
+                     <Font size="30.0" />
+                  </font>
+               </Text>
+            </children>
+         </Group>
+         <Group fx:id="loseMessage" cache="true" style="-fx-effect: bloom;" visible="false">
+            <children>
+               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="Red" height="80.0" stroke="BLACK" strokeType="INSIDE" width="280.0" x="10.0" y="10.0" />
+               <Text fill="White" strokeType="OUTSIDE" strokeWidth="0.0" text="     GAME OVER!" textAlignment="CENTER" x="24.0" y="60.0">
+                  <font>
+                     <Font size="30.0" />
+                  </font>
+               </Text>
+            </children>
+         </Group>
 
       </children>
    </StackPane>
