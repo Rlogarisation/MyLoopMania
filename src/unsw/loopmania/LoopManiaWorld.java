@@ -177,6 +177,9 @@ public class LoopManiaWorld {
         return this.allyList;
     }
 
+    public List<Entity> getUnequippedInventoryItems(){
+        return this.unequippedInventoryItems;
+    }
 
     /**
      * @return list of trancedAlly in allyList

@@ -664,7 +664,10 @@ public class LoopManiaWorldController {
      */
     private void zombieVampireDefeatItem(){
         int val = new Random().nextInt(6);
-        if (val == 0) loadSword();
+        if (val < 6 && world.getUnequippedInventoryItems().size() == 16){
+            world.getCharacter().addGold(200);
+        }
+        else if (val == 0) loadSword();
         else if (val == 1) loadStaff();
         else if (val == 2) loadStake();
         else if (val == 3) loadShield();
