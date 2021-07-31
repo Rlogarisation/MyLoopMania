@@ -156,14 +156,16 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
         * The sellable price is 1500 gold.
     2) Anduril, Flame of the West
         * The sellable price is set to be 1500 gold.
-        * Which can dealt extra 8 damage to all enemy, but 3 times the current damage for ElanMuske.
-        * Which can be either be purchased from the shop with 1500 golds or obtain by defeating the enemy.
+        * Which can dealt extra 8 damage to all enemy, but triple the current damage for ElanMuske.
+        * Which can be obtained by defeating the enemy.
         * The drop chance is 1%.
     3) Tree Stump
-        * defence: 60%
+        * defence: 60% less damage for all enemy, but 80% less damage for ElanMuske.
         * The sellable price is set to be 1500 gold.
+        * Which can be obtained by defeating the enemy.
+        * The drop chance is 1%.
     4) The confusing rare item
-        * bla
+        * which can be one of rare item above.
     #
 
 7. Behaviour/Features
