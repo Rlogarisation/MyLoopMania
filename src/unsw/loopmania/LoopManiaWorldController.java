@@ -25,9 +25,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -39,16 +38,19 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.effect.Bloom;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import javafx.animation.PauseTransition;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
 import unsw.loopmania.LoopManiaWorld.GAME_MODE;
@@ -113,6 +115,13 @@ public class LoopManiaWorldController {
     private GridPane cards;
 
     /**
+     * hBox contains all frontend parts except shop
+     * when the shop is open, hBox is hidden
+     */
+    @FXML
+     private StackPane stackPane;
+
+    /**
      * anchorPaneRoot is the "background". It is useful since anchorPaneRoot stretches over the entire game world,
      * so we can detect dragging of cards/items over this and accordingly update DragIcon coordinates
      */
@@ -167,6 +176,18 @@ public class LoopManiaWorldController {
     private BorderPane donHaveItem;
 
     /**
+     * it shows a message when the player won the game
+     */
+    @FXML
+    private Group winMessage;
+
+    /**
+     * it shows a message when the player lost the game
+     */
+    @FXML
+    private Group loseMessage;
+
+    /**
      * equippedItems gridpane is for equipped items (e.g. swords, shield, axe)
      */
     @FXML
@@ -217,12 +238,6 @@ public class LoopManiaWorldController {
     
     // Image for items
     private Image swordImage;
-    private Image stakeImage;
-    private Image staffImage;
-    private Image armourImage;
-    private Image shieldImage;
-    private Image helmetImage;
-    private Image potionImage;
     
     private Image heroCastleImage;
 
@@ -297,7 +312,6 @@ public class LoopManiaWorldController {
     @FXML
     public void initialize() {
         // TODO = load more images/entities during initialization
-        
 
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
@@ -406,18 +420,20 @@ public class LoopManiaWorldController {
                 //update ally list
                 updateAllyList();
                 if(world.getCharacter().hasAchievedGoal()){
-                    System.out.println("CONGRATS!!!!!");
                     pause();
+                    winMessage.setEffect(new Bloom());
+                    winMessage.setVisible(true);
                 }
                 printThreadingNotes("HANDLED TIMER");
             }
             //Try reviving character if it has onering
-            else if (!world.getCharacterIsAlive()){
-                world.reviveCharacter();
-            }
-            else{
-                printThreadingNotes("Character is Dead");
-                pause();
+            else {
+                boolean isAlive = world.reviveCharacter();
+                if (!isAlive) {
+                    pause();
+                    loseMessage.setEffect(new Bloom());
+                    loseMessage.setVisible(true);
+                }
             }
             List<Enemy> newEnemies = world.possiblySpawnEnemies();
             for (Enemy newEnemy: newEnemies){
@@ -1318,7 +1334,6 @@ public class LoopManiaWorldController {
                     timeline1.play();
                 }
 
-
             });
             sellButton.setOnAction(event -> {
                 Boolean isSold = world.sellOneItemByItem(item);
@@ -1372,4 +1387,5 @@ public class LoopManiaWorldController {
             j++;
         }
     }
+
 }
