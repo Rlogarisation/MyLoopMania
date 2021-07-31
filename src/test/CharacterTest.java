@@ -1,5 +1,7 @@
 package test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
@@ -151,5 +153,148 @@ public class CharacterTest {
 
     }
 
+    @Test
+    /**
+     * Test for character hasEquipment/wearing equipment functions
+     */
+    public void characterEquipEquipmentsTest() {
+        final double initialXp = 0; 
+        final double initialGold = 0; 
+
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld d = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+        
+        // set the character without equipment
+        Character myHero = new Character(position00);
+        d.setCharacter(myHero);
+
+        
+        Boolean hasHelmet = myHero.getHasHelmet();
+        Boolean hasArmour = myHero.getHasArmour();
+        Boolean hasShield = myHero.getHasShield();
+
+        // check if the character's hasHelmet, hasArmour and hasShield are false
+        assertFalse(hasHelmet);
+        assertFalse(hasArmour);
+        assertFalse(hasShield);
+
+        // add attack/defense equipments in the unequipped inventory
+        d.addUnequippedSword();
+        d.addUnequippedArmour();
+        d.addUnequippedShield();
+        d.addUnequippedHelmet();
+
+        Entity sword = d.getEquippedInventoryItemEntityByCoordinates(0,0);
+        Entity armour = d.getEquippedInventoryItemEntityByCoordinates(1,0);
+        Entity shield = d.getEquippedInventoryItemEntityByCoordinates(2,0);
+        Entity helmet = d.getEquippedInventoryItemEntityByCoordinates(3,0);
+
+        // set the character to wear attack/defense equipment
+        myHero.equipAttackEquipment((AttackEquipment) sword);
+        myHero.equipArmour((Armour) armour);
+        myHero.equipShield((Shield) shield);
+        myHero.equipHelmet((Helmet) helmet);
+        
+        hasHelmet = myHero.getHasHelmet();
+        hasArmour = myHero.getHasArmour();
+        hasShield = myHero.getHasShield();
+
+        // check if the character's hasHelmet, hasArmour and hasShield are true
+        assertTrue(hasHelmet);
+        assertTrue(hasArmour);
+        assertTrue(hasShield);
+    }
+
+    @Test
+    /**
+     * Test for character hasEquipment/unequip equipment functions
+     */
+    public void characterUnequipEquipmentsTest() {
+        final double initialXp = 0; 
+        final double initialGold = 0; 
+
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld d = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+        
+        // set the character without equipment
+        Character myHero = new Character(position00);
+        d.setCharacter(myHero);
+
+        // add attack/defense equipments in the unequipped inventory
+        d.addUnequippedSword();
+        d.addUnequippedArmour();
+        d.addUnequippedShield();
+        d.addUnequippedHelmet();
+
+        Entity sword = d.getEquippedInventoryItemEntityByCoordinates(0,0);
+        Entity armour = d.getEquippedInventoryItemEntityByCoordinates(1,0);
+        Entity shield = d.getEquippedInventoryItemEntityByCoordinates(2,0);
+        Entity helmet = d.getEquippedInventoryItemEntityByCoordinates(3,0);
+
+        // set the character to wear attack/defense equipment
+        myHero.equipAttackEquipment((AttackEquipment) sword);
+        myHero.equipArmour((Armour) armour);
+        myHero.equipShield((Shield) shield);
+        myHero.equipHelmet((Helmet) helmet);
+        
+        Boolean hasHelmet = myHero.getHasHelmet();
+        Boolean hasArmour = myHero.getHasArmour();
+        Boolean hasShield = myHero.getHasShield();
+
+        // check if the character's hasHelmet, hasArmour and hasShield are true
+        assertTrue(hasHelmet);
+        assertTrue(hasArmour);
+        assertTrue(hasShield);
+    
+        // set the character to take off attack/defense equipment
+        myHero.unequipAttackEquipment();
+        myHero.unequipArmour();
+        myHero.unequipShield();
+        myHero.unequipHelmet();
+
+        hasHelmet = myHero.getHasHelmet();
+        hasArmour = myHero.getHasArmour();
+        hasShield = myHero.getHasShield();
+
+        // check if the character's hasHelmet, hasArmour and hasShield are true
+        assertFalse(hasHelmet);
+        assertFalse(hasArmour);
+        assertFalse(hasShield);
+    
+
+
+    }
+
+    
 
 }
