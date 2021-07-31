@@ -5,13 +5,13 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
+import unsw.loopmania.RareItems.TreeStump;
 
 /**
  * the test for character.
@@ -126,8 +126,6 @@ public class CharacterTest {
      * Test for character stats function
      */
     public void characterStatsTest() {
-        final double initialXp = 0; 
-        final double initialGold = 0; 
 
         /**
          * Creating current world.
@@ -158,8 +156,6 @@ public class CharacterTest {
      * Test for character hasEquipment/wearing equipment functions
      */
     public void characterEquipEquipmentsTest() {
-        final double initialXp = 0; 
-        final double initialGold = 0; 
 
         /**
          * Creating current world.
@@ -226,8 +222,6 @@ public class CharacterTest {
      * and character equipment class
      */
     public void characterUnequipEquipmentsTest() {
-        final double initialXp = 0; 
-        final double initialGold = 0; 
 
         /**
          * Creating current world.
@@ -300,9 +294,90 @@ public class CharacterTest {
         assertEquals(cEquipment.getHelmet(),null);
         assertEquals(cEquipment.getStump(),null);
 
-
+        
     }
 
+    @Test
+    /**
+     * Test for equipOneItem(Defense Item)
+     * we check when the character already wore defense items
+     * if the item already worn is removed by the function
+     */
+    public void equipOneDefenseItemTest() {
+
+        /**
+         * Creating current world.
+         */
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<Integer, Integer>(0, 0));
+        orderedPath.add(new Pair<Integer, Integer>(0, 1));
+        orderedPath.add(new Pair<Integer, Integer>(0, 2));
+        orderedPath.add(new Pair<Integer, Integer>(1, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 2));
+        orderedPath.add(new Pair<Integer, Integer>(2, 1));
+        orderedPath.add(new Pair<Integer, Integer>(1, 0));
+        orderedPath.add(new Pair<Integer, Integer>(2, 0));
+        LoopManiaWorld d = new LoopManiaWorld(3, 3, orderedPath);
+
+        // Creating current coordinate for enemy.
+        int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
+        PathPosition position00 = new PathPosition(index00InPath, orderedPath);
+        
+        // set the character without equipment
+        Character myHero = new Character(position00);
+        d.setCharacter(myHero);
+
+        // add defense equipments in the unequipped inventory
+        d.addUnequippedArmour();
+        d.addUnequippedShield();
+        d.addUnequippedHelmet();
+
+        Entity armour = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        Entity shield = d.getUnequippedInventoryItemEntityByCoordinates(1,0);
+        Entity helmet = d.getUnequippedInventoryItemEntityByCoordinates(2,0);
+
+        // set the character to wear all the defense items
+        d.equipOneItem((DefenseEquipment) armour);
+        d.equipOneItem((DefenseEquipment) shield);
+        d.equipOneItem((DefenseEquipment) helmet);
+
+        armour = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        shield = d.getUnequippedInventoryItemEntityByCoordinates(1,0);
+        helmet = d.getUnequippedInventoryItemEntityByCoordinates(2,0);
+
+        // check the items were worn by the character
+        assertEquals(armour, null);
+        assertEquals(armour, null);
+        assertEquals(armour, null);
+
+        d.addUnequippedArmour();
+        d.addUnequippedTreeStump();
+        d.addUnequippedHelmet();
+
+        armour = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        Entity stump = d.getUnequippedInventoryItemEntityByCoordinates(1,0);
+        helmet = d.getUnequippedInventoryItemEntityByCoordinates(2,0);
+
+        // set the character to wear all the defense items
+        d.equipOneItem((DefenseEquipment) armour);
+        d.equipOneItem((DefenseEquipment) stump);
+        d.equipOneItem((DefenseEquipment) helmet);
+
+        // check if the items already worn by the character were removed
+        List<Entity> eItems = d.getEquippedInventoryItems();
+        assertTrue(eItems.size() == 3);
+
+        d.addUnequippedShield();
+        shield = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+
+        // set the character to wear normal shield than tree stump
+        d.equipOneItem((DefenseEquipment) shield);
+
+        // check if the items already worn by the character were removed
+        eItems = d.getEquippedInventoryItems();
+        assertTrue(eItems.size() == 3);
+
+    }        
     
 
 }
