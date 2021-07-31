@@ -577,6 +577,9 @@ public class LoopManiaWorldController {
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
+        loadSword();
+        loadStaff();
+        loadShield();
         if (enemy instanceof Doggie) {
             world.getCharacter().addDoggieCoin(1);
             world.getCharacter().flutuateDoggieCoinPrice();
@@ -586,7 +589,6 @@ public class LoopManiaWorldController {
             world.getCharacter().increaseDoggieCoinDrastically();
         }
         
-        loadRareItem();
     }
 
     /**
