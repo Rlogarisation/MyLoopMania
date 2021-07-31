@@ -586,7 +586,7 @@ public class LoopManiaWorldController {
         }
 
         if (enemy instanceof ElanMuske) {
-            world.getCharacter().increaseDoggieCoinDrastically();
+            world.getCharacter().increaseDoggieCoinPriceDrastically();
         }
         
     }
@@ -1236,7 +1236,7 @@ public class LoopManiaWorldController {
 
         int i = 0; int j = 0;
         for ( String key : shopItems.keySet() ) {
-            Text itemName = new Text("   " + key + "          "); 
+            Text itemName = new Text("   " + key + "      "); 
             Image itemImage = null;
             Button buyButton = new Button();
             Button sellButton = new Button();
@@ -1258,11 +1258,8 @@ public class LoopManiaWorldController {
                 changeToGame();
             });
 
-            if (key == "Health Potion") { 
-                itemName = new Text("   " + key + "            ");
-                itemName.setStyle("-fx-font: 15 arial;"); 
-            } else { itemName.setStyle("-fx-font: 17 arial;"); 
-            }
+            itemName.setStyle("-fx-font: 17 arial;"); 
+            
             
             buyButton.setText("Buy");
             sellButton.setText("Sell");
@@ -1272,16 +1269,28 @@ public class LoopManiaWorldController {
             sellButton.setMinWidth(shop.getPrefWidth());
             
             switch(key) {
-                case "Sword": itemImage = swordImage; break;
-                case "Health Potion": itemImage = swordImage; break;
+                case "Sword": itemImage = new Image((new File("src/images/basic_sword.png")).toURI().toString()); 
+                    break;
+                case "Health Potion": itemImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()); 
+                    break;
+                case "The One Ring": 
+                    itemImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString()); 
+                    break;  
+                case "Anduril": 
+                    itemImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()); 
+                    break;   
+                case "Tree Stump": 
+                    itemImage = new Image((new File("src/images/tree_stump.png")).toURI().toString()); 
+                    break;         
                 default:
-                    itemImage = 
-                    new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
+                    itemImage =  new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
                     break; 
             }
             shop.add(itemName, i, j);
             shop.add(new ImageView(itemImage), i+1, j);
-            shop.add(buyButton, i+2, j);
+            if (key != "The One Ring" && key != "Anduril" && key != "Tree Stump") {
+                shop.add(buyButton, i+2, j);
+            }    
             shop.add(sellButton, i+3, j);
             j++;
         }
