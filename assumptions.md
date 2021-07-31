@@ -149,11 +149,23 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     #
 
 6. Rare Items
-    
-    * We assume that ‘the one ring’ can be obtained from any enemy.
-    * We assume that when ‘the one ring’ is used, the character respawns at the
-    same position in which it is dead.
-    * We assume that the drop rate of ‘the one ring’ is 0.5%.  
+    1) The One Ring
+        * We assume that ‘the one ring’ can be obtained from any enemy.
+        * We assume that when ‘the one ring’ is used, the character respawns at the same position in where it is dead.
+        * We assume that the drop rate of ‘the one ring’ is 0.5%.  
+        * The sellable price is 1500 gold.
+    2) Anduril, Flame of the West
+        * The sellable price is set to be 1500 gold.
+        * Which can dealt extra 8 damage to all enemy, but triple the current damage for ElanMuske.
+        * Which can be obtained by defeating the enemy.
+        * The drop chance is 1%.
+    3) Tree Stump
+        * defence: 60% less damage for all enemy, but 80% less damage for ElanMuske.
+        * The sellable price is set to be 1500 gold.
+        * Which can be obtained by defeating the enemy.
+        * The drop chance is 1%.
+    4) The confusing rare item
+        * which can be one of rare item above.
     #
 
 7. Behaviour/Features
