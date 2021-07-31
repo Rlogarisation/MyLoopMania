@@ -592,24 +592,10 @@ public class LoopManiaWorld {
         for (Entity item : equippedInventoryItems) {
             if (item instanceof AttackEquipment) {
                 
-                // unequip the item from the character
+                // unequip the item from the character -> remove the item already equipped
                 character.unequipAttackEquipment();
-
-                // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-
-                if (item instanceof Sword) {
-                    addUnequippedSword();
-                }
-                if (item instanceof Staff) {
-                    addUnequippedStaff();
-                }
-                if (item instanceof Stake) {
-                    addUnequippedStake();
-                }
-                if (item instanceof AndurilSword){
-                    addUnequippedAndurilSword();
-                }
+                
                 break;
             }
         }
@@ -641,49 +627,28 @@ public class LoopManiaWorld {
      */
     public DefenseEquipment equipOneItem(DefenseEquipment defenseEquipment) {
         
+        // unequip the item from the character
         for (Entity item : equippedInventoryItems) {
-
             if (defenseEquipment instanceof Armour && item instanceof Armour) {
-                
-                // unequip the item from the character
                 character.unequipArmour();
-
-                // move the item the character were wearing into unequipped inventory 
-                removeEquippedInventoryItem(item); 
-                addUnequippedArmour();
+                removeEquippedInventoryItem(item); // -> remove the item already equipped
                 break;
             }
             if (defenseEquipment instanceof Helmet && item instanceof Helmet) {
-                
-                // unequip the item from the character
                 character.unequipHelmet();
-
-                // move the item the character were wearing into unequipped inventory 
-                removeEquippedInventoryItem(item); 
-                addUnequippedHelmet();
+                removeEquippedInventoryItem(item); // -> remove the item already equipped
                 break;
             }
             if ((defenseEquipment instanceof Shield || 
             defenseEquipment instanceof TreeStump) && item instanceof Shield) {
- 
-                // unequip the item from the character
                 character.unequipShield();
-
-                // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-                addUnequippedShield();
                 break;
             }
-            
             if ((defenseEquipment instanceof Shield || 
             defenseEquipment instanceof TreeStump) && item instanceof TreeStump) {
-                
-                // unequip the item from the character
                 character.unequipTreeStump();
-
-                // move the item the character were wearing into unequipped inventory 
                 removeEquippedInventoryItem(item); 
-                addUnequippedTreeStump();
                 break;
             }
         }
@@ -696,8 +661,8 @@ public class LoopManiaWorld {
         if (defenseEquipment instanceof Armour) {
             character.equipArmour((Armour) defenseEquipment);
         }    
-        if (defenseEquipment instanceof Shield) {
-            character.equipShield((Shield) defenseEquipment);
+        if (defenseEquipment instanceof Helmet) {
+            character.equipHelmet((Helmet) defenseEquipment);
         }    
         if (defenseEquipment instanceof Shield) {
             character.equipShield((Shield) defenseEquipment);
@@ -1017,7 +982,19 @@ public class LoopManiaWorld {
                     removeUnequippedInventoryItem(item);
                 }
             }
-        }        
+        } 
+        //Also check equipped inventory to check if oneRing exists
+        for(Entity item: equippedInventoryItems){
+            if(item instanceof ConfusingRareItem){
+                ConfusingRareItem newCrItem = (ConfusingRareItem)item;
+                if(newCrItem.hasOneRing()){
+                    this.character.setHp(100);
+                    item.destroy();
+                    removeEquippedInventoryItem(item);
+                    break;
+                }
+        }
+    }       
     }
 
     /**
@@ -1065,8 +1042,6 @@ public class LoopManiaWorld {
      * @return unequipped inventory item at the input position
      */
     public Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y){
-        
-        System.out.println(unequippedInventoryItems);
         
         for (Entity e: unequippedInventoryItems){
             if ((e.getX() == x) && (e.getY() == y)){
@@ -1246,7 +1221,7 @@ public class LoopManiaWorld {
         Entity chosenItem = null;
         int itemPrice = 0;
         for (Entity item: unequippedInventoryItems) {
-            if (sellingItem.getClass().equals(item.getClass())) {
+            if (sellingItem != null && sellingItem.getClass().equals(item.getClass())) {
                 chosenItem = item;
                 if (chosenItem instanceof Equipment) {
                     itemPrice = ((Equipment) item).getPrice();

@@ -26,6 +26,46 @@ public class CharacterEquipment {
     }
 
     /**
+     * getter for attack equipment
+     * @return attackEquipment
+     */
+    public AttackEquipment getAttackEquipment(){
+        return attackEquipment;
+    }
+
+    /**
+     * getter for armour
+     * @return armour
+     */
+    public Armour getArmour(){
+        return armour;
+    }
+
+    /**
+     * getter for shield
+     * @return shield
+     */
+    public Shield getShield(){
+        return shield;
+    }
+
+    /**
+     * getter for helmet
+     * @return helmet
+     */
+    public Helmet getHelmet(){
+        return helmet;
+    }
+
+    /**
+     * getter for tree stump
+     * @return helmet
+     */
+    public TreeStump getStump(){
+        return treeStump;
+    }
+
+    /**
      * equip the character with an attack equipment
      * @return attackEquipment
      */
