@@ -106,15 +106,15 @@ public class CharacterTest {
         assertEquals(normalStrategy, myHero.getFightStrategy());
 
         //Check goals system
-        assert(myHero.hasAchievedGoal() == false);
+        assert(currentWorld.hasAchievedGoal() == false);
         myHero.addXp(100000);
-        assert(myHero.hasAchievedGoal() == false);
+        assert(currentWorld.hasAchievedGoal() == false);
         myHero.addGold(100000);
-        assert(myHero.hasAchievedGoal() == true);
+        assert(currentWorld.hasAchievedGoal() == true);
         myHero.setGold(1);
-        assert(myHero.hasAchievedGoal() == false);
+        assert(currentWorld.hasAchievedGoal() == false);
         myHero.setCycleCount(80);
-        assert(myHero.hasAchievedGoal() == true);
+        assert(currentWorld.hasAchievedGoal() == true);
 
     }
 

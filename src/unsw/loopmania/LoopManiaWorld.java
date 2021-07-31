@@ -2,10 +2,13 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.javatuples.Pair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Buildings.Building;
@@ -14,6 +17,12 @@ import unsw.loopmania.RareItems.ConfusingRareItem;
 import unsw.loopmania.RareItems.TheOneRing;
 import unsw.loopmania.RareItems.TreeStump;
 import unsw.loopmania.cards.*;
+import unsw.loopmania.goals.AndGoalNode;
+import unsw.loopmania.goals.ExpressionFactory;
+import unsw.loopmania.goals.Goal;
+import unsw.loopmania.goals.GoalEvaluator;
+import unsw.loopmania.goals.GoalNode;
+import unsw.loopmania.goals.OrGoalNode;
 import unsw.loopmania.Buildings.*;
 
 /**
@@ -44,6 +53,11 @@ public class LoopManiaWorld {
      * valid rare items from JSON configuration
      */
     private ArrayList<String> validRareItems;
+
+     /** 
+     * world goals from JSON configuration
+     */
+    private JSONObject goalsJSON;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -146,6 +160,14 @@ public class LoopManiaWorld {
 
     public void setValidRareItems(ArrayList<String> rareItemList){
         this.validRareItems = rareItemList;
+    }
+
+    public JSONObject getGoals(){
+        return this.goalsJSON;
+    }
+
+    public void setGoals(JSONObject goals){
+        this.goalsJSON = goals;
     }
 
     public Character getCharacter(){
@@ -438,6 +460,9 @@ public class LoopManiaWorld {
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
+            if(e instanceof ElanMuske){
+                character.setBossKilled(true);
+            }
             killEnemy(e);
         }
         return defeatedEnemies;
@@ -1323,4 +1348,16 @@ public class LoopManiaWorld {
         }
         return false;
     }
+
+    /**
+     * Check if character has achieved goals depending on chosen assumptions
+     * @return has achieved goal or not
+     */
+    public boolean hasAchievedGoal(){
+        ExpressionFactory ef = new ExpressionFactory(character, goalsJSON);
+        GoalNode expression = ef.getExpression();
+        return GoalEvaluator.evaluate(expression);
+    }
 }
+
+

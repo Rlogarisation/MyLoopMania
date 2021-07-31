@@ -386,7 +386,7 @@ public class LoopManiaWorldController {
                 updateBars();
                 //update ally list
                 updateAllyList();
-                if(world.getCharacter().hasAchievedGoal()){
+                if(world.hasAchievedGoal()){
                     System.out.println("CONGRATS!!!!!");
                     pause();
                 }
