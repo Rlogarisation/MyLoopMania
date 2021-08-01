@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -355,6 +356,7 @@ public class EnemyTest {
         vamp.move(lmw.getBuildingList());
         assertEquals(0, vamp.getX());
         assertEquals(3, vamp.getY());
+        assertFalse(((Vampire)vamp).getCampfireInRange());
     }
 
     @Test
@@ -375,6 +377,7 @@ public class EnemyTest {
         vamp.move(lmw.getBuildingList());
         assertEquals(0, vamp.getX());
         assertEquals(1, vamp.getY());
+        assertFalse(((Vampire)vamp).getCampfireInRange());
     }
 
     @Test
@@ -400,6 +403,7 @@ public class EnemyTest {
         vamp.move(lmw.getBuildingList());
         assertEquals(0, vamp.getX());
         assertEquals(2, vamp.getY());
+        assertFalse(((Vampire)vamp).getCampfireInRange());
     }
 
 }
