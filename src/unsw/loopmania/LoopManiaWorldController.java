@@ -52,6 +52,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.*;
 import javafx.util.Duration;
 import unsw.loopmania.cards.*;
 import unsw.loopmania.Buildings.*;
@@ -228,6 +229,15 @@ public class LoopManiaWorldController {
     private boolean isPaused;
     private LoopManiaWorld world;
 
+    /** Media music attributes
+     * 
+     */
+    private MediaPlayer mediaPlayer;
+    private Media sound;
+    private MediaPlayer mediaPlayerEffects;
+    private Media effect;
+
+
     /**
      * runs the periodic game logic - second-by-second moving of character through maze, as well as enemies, and running of battles
      */
@@ -239,6 +249,9 @@ public class LoopManiaWorldController {
     private Image zombieEnemyImage;
     private Image doggieEnemyImage;
     private Image elanMuskeImage;
+
+    private static final String background_song = "src/game_sounds/bgmusic.mp3";
+    private static final String dead_enemy = "src/game_sounds/death.mp3";
     
     // Image for items
     private Image swordImage;
@@ -300,12 +313,15 @@ public class LoopManiaWorldController {
         zombieEnemyImage = new Image((new File("src/images/zombie.png")).toURI().toString());
         doggieEnemyImage = new Image((new File("src/images/doggie.png")).toURI().toString());
         elanMuskeImage = new Image((new File("src/images/ElanMuske.png")).toURI().toString());
-        
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
-        
         heroCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
+
+        //initialise background mediaPlayer
+        sound = new Media(new File(background_song).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         // initialize them all...
         gridPaneSetOnDragDropped = new EnumMap<DRAGGABLE_TYPE, EventHandler<DragEvent>>(DRAGGABLE_TYPE.class);
@@ -387,6 +403,12 @@ public class LoopManiaWorldController {
         }
     }
 
+    private void playEffect(String path){
+        effect = new Media(new File(path).toURI().toString());
+        mediaPlayerEffects = new MediaPlayer(effect);
+        mediaPlayerEffects.play();
+    }
+
     public void setGameMode(String gameMode){
         switch(gameMode){
             case "Standard":
@@ -407,15 +429,18 @@ public class LoopManiaWorldController {
      * create and run the timer
      */
     public void startTimer(){
-        // TODO = handle more aspects of the behaviour required by the specification
         System.out.println("starting timer");
         System.out.println(world.getGameMode());
         isPaused = false;
         onLoad(world.getHeroCastle());
+        
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
+            //Play background music
+            mediaPlayer.play();
             List<Enemy> defeatedEnemies = world.runBattles();
             for (Enemy e: defeatedEnemies){
+                playEffect(dead_enemy);
                 reactToEnemyDefeat(e);
             }
             if (world.getCharacterIsAlive()){
@@ -463,6 +488,7 @@ public class LoopManiaWorldController {
                 }
             }
             if (openShop){
+                mediaPlayer.pause();
                 changeToShop();
             }
             //shopOpenButton.setVisible(false);
