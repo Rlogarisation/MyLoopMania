@@ -213,8 +213,11 @@ public class ItemTest {
         
         // check the shield was equipped to the character
         item = d.getEquippedInventoryItems().get(2);
+        itemClassSame = (item instanceof TreeStump);
+        assertFalse(itemClassSame);
         itemClassSame = (item instanceof Shield);
         assertTrue(itemClassSame);
+        
         
     }
 
