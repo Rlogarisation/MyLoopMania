@@ -394,6 +394,8 @@ public class EnemyTest {
         lmw.addBuildingToBuildingList(newCampfire);
         Building newCampfire2 = new Campfire(new SimpleIntegerProperty(1), new SimpleIntegerProperty(3));
         lmw.addBuildingToBuildingList(newCampfire2);
+        Building newTower = new Campfire(new SimpleIntegerProperty(1), new SimpleIntegerProperty(2));
+        lmw.addBuildingToBuildingList(newTower);
         lmw.buildingInteractions();
         vamp.move(lmw.getBuildingList());
         assertEquals(0, vamp.getX());
