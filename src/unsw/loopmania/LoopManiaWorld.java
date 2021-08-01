@@ -1155,6 +1155,10 @@ public class LoopManiaWorld {
      */
     public Pair<Integer, Integer> possiblyGetBossSpawnPosition(){
 
+        if (orderedPath.size() <= 1){
+            return null;
+        }
+
         Random rand = new Random();
         List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
         int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
