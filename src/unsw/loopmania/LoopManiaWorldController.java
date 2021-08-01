@@ -597,7 +597,7 @@ public class LoopManiaWorldController {
     private StaticEntity loadRareItem(){
         ArrayList<String> validRareItems = world.getValidRareItems();
         Random random = new Random();
-        int prob = random.nextInt(20);
+        int prob = random.nextInt(24);
         if(validRareItems.contains("the_one_ring") && prob == 1){
             StaticEntity theOneRing = world.addUnequippedTheOneRing();
             onLoadRareItem(theOneRing);
@@ -621,7 +621,7 @@ public class LoopManiaWorldController {
     private void reactToEnemyDefeat(Enemy enemy){
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
-        loadCampFireCard();
+
         if (enemy instanceof Doggie) {
             world.getCharacter().addXp(500);
             world.getCharacter().addDoggieCoin(1);
