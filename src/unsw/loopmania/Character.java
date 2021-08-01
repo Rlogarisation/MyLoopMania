@@ -72,7 +72,12 @@ public class Character extends MovingEntity {
         if(hasHelmet){
            initialDamage =  initialDamage * 0.2;
         }
-        super.attack(initialDamage, entity);
+        //If character is stunned, do not run super.attack
+        if (isStun){
+            this.isStun = false;
+        } else {
+            super.attack(initialDamage, entity);
+        }
     }
 
     /**
@@ -342,23 +347,6 @@ public class Character extends MovingEntity {
         if (hasHelmet) percentRemoved = percentRemoved + 0.2;
 
         currentDamage = (1 - percentRemoved) * currentDamage;
-        return currentDamage;
-    }
-
-    /**
-     * If the character has a helmet equipped, the damage inflicted by 
-     * the character will be reduced by 10% due to reduction in visibility
-     */
-    @Override
-    public double getDamage(){
-        double currentDamage = super.getDamage();
-        if (hasHelmet){
-            currentDamage = (0.9) * currentDamage;
-        }
-        if (isStun){
-            currentDamage = 0;
-            this.isStun = false;
-        }
         return currentDamage;
     }
 
