@@ -200,6 +200,8 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
         - Backend Complex goals with composite pattern creation
         - Rare items implementation from JSON file and random spawning in backend
         - Backend enemyDefeat logic, with random dropping of loot
+        - Defensive items (shields, helmets, armour) effects are calculated in battles - along with relevant testing
+        - Frontend and backend equipping of equipment (drag and drop into slots) + frontend helmet slot
     * New Extensions
         - Main Menu and Game Music added with sound effects
         - Visualistion of character win/lose graphic
