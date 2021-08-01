@@ -137,7 +137,7 @@ public class ItemTest {
         itemClassSame = (item instanceof Stake);
         assertTrue(itemClassSame);
 
-        // case3) equip an Anduril sword
+        // case4) equip an Anduril sword
         d.addUnequippedAndurilSword(); // coordinate -> (0,0)
         item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
         d.equipOneItem((AttackEquipment) item);
@@ -160,7 +160,7 @@ public class ItemTest {
         d.setCharacter(new Character(new PathPosition(0,orderedPath)));
         Character c = d.getCharacter();
 
-        // cas1) equip an armour
+        // case1) equip an armour
         int x = 0;
         SimpleIntegerProperty y = new SimpleIntegerProperty(0);
         d.addUnequippedArmour();
@@ -204,6 +204,16 @@ public class ItemTest {
         // check the tree stump was equipped to the character
         item = d.getEquippedInventoryItems().get(2);
         itemClassSame = (item instanceof TreeStump);
+        assertTrue(itemClassSame);
+
+        // case5) equip an Shield that should replace the tree stump
+        d.addUnequippedShield(); // coordinate -> (0,0)
+        item = d.getUnequippedInventoryItemEntityByCoordinates(0,0);
+        d.equipOneItem((DefenseEquipment) item);
+        
+        // check the shield was equipped to the character
+        item = d.getEquippedInventoryItems().get(2);
+        itemClassSame = (item instanceof Shield);
         assertTrue(itemClassSame);
         
     }
