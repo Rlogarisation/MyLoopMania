@@ -190,3 +190,16 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     the corresponding equipment already exists in equipped inventory is removed from the game.
     #
 
+10. Extensions
+    * From Milestone 2 the following was implemented as part of Milestone 3:
+        - Shop frontend interface
+        - Frontend visualistion of allies
+        - Vampires actively move away from campfire in frontend
+        - Character health, xp and gold stats displayed on frontend
+        - Main menu with GameMode ComboBox added on frontend
+        - Backend Complex goals with composite pattern creation
+        - Rare items implementation from JSON file and random spawning in backend
+        - Backend enemyDefeat logic, with random dropping of loot
+    * New Extensions
+        - Main Menu and Game Music added with sound effects
+        - Visualistion of character win/lose graphic
