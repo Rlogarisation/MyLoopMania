@@ -52,7 +52,7 @@ public class ExpressionFactory {
             return new Goal(false);
         }
         if(goalType.equals("bosses")){
-            if(character.getBossKilled()){
+            if(character.getBossKilled()>=2){
                 return new Goal(true);
             }
             return new Goal(false);

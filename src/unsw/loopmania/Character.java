@@ -33,7 +33,7 @@ public class Character extends MovingEntity {
     private int towerDamage;
     private boolean campfireInRange;
     private int cycleCount;
-    private boolean bossKilled;
+    private int bossesKilled;
 
     public Character(PathPosition position) {
         super(position);
@@ -117,15 +117,15 @@ public class Character extends MovingEntity {
     /**
      * Set the goal of if character has killed boss
      */
-    public void setBossKilled(Boolean bool) {
-        this.bossKilled = bool;
+    public void setBossesKilled(int bossesKilled) {
+        this.bossesKilled = bossesKilled;
     }
 
     /**
      * Set the goal of if character has killed boss
      */
-    public Boolean getBossKilled() {
-        return this.bossKilled;
+    public int getBossKilled() {
+        return this.bossesKilled;
     }
 
     /**

@@ -456,8 +456,8 @@ public class LoopManiaWorld {
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
-            if(e instanceof ElanMuske){
-                character.setBossKilled(true);
+            if(e instanceof ElanMuske || e instanceof Doggie){
+                character.setBossesKilled(character.getBossKilled()+1);
             }
             killEnemy(e);
         }
