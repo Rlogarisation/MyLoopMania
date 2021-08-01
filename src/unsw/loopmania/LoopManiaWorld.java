@@ -643,14 +643,14 @@ public class LoopManiaWorld {
                 break;
             }
             if ((defenseEquipment instanceof TreeStump || 
-            defenseEquipment instanceof Shield) && item instanceof Shield) {
-                character.unequipShield();
+            defenseEquipment instanceof Shield) && item instanceof TreeStump) {
+                character.unequipTreeStump();
                 removeEquippedInventoryItem(item); 
                 break;
             }
             if ((defenseEquipment instanceof TreeStump || 
-            defenseEquipment instanceof Shield) && item instanceof TreeStump) {
-                character.unequipTreeStump();
+            defenseEquipment instanceof Shield) && item instanceof Shield) {
+                character.unequipShield();
                 removeEquippedInventoryItem(item); 
                 break;
             }

@@ -216,9 +216,7 @@ public class ItemTest {
         itemClassSame = (item instanceof TreeStump);
         assertFalse(itemClassSame);
         itemClassSame = (item instanceof Shield);
-        assertTrue(itemClassSame);
-        
-        
+        assertTrue(itemClassSame);        
     }
 
     /**
