@@ -177,6 +177,7 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
     * Condition for a goal
         -> Obtaining 100000 experience points and (completing 80 cycles or amassing
         10000 gold)  
+    * Killing two bosses will meet boss killed goal.
     #
 
 9. Other assumptions
