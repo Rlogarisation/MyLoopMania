@@ -207,7 +207,15 @@ public class CharacterWeaponTest {
         slug.attack(slug.getDamage(),character);
         assert(character.getHp() == 96);
         
+        character.setHasShield(true);
+        character.setHasStump(true);
+        character.setHasHelmet(false);
+        character.setHp(100);
+        slug.attack(slug.getDamage(),character);
+        assert(character.getHp() == 96.25);
+
         //Check that the helmet reduces the character's initial attack damage by 20%
+        character.setHasHelmet(true);
         Vampire vamp = new Vampire(position00);
         character.attack(character.getDamage(), vamp);
         assertEquals(2, vamp.getHp());
