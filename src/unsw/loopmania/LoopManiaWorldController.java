@@ -1194,6 +1194,8 @@ public class LoopManiaWorldController {
                 pause();
             }
             break;
+        case P:
+            world.refillCharacterHealth();
         default:
             break;
         }
