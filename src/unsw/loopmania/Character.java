@@ -18,7 +18,7 @@ public class Character extends MovingEntity {
     final double initialGold = 0; 
     final int initialDoggieCoin = 0;
     final double initialArmour = 0;
-    final int initialDoggieCoinPrice = 1;
+    final int initialDoggieCoinPrice = 10;
 
     private CharacterEquipment equipments;
     private boolean hasHelmet = false;
@@ -185,7 +185,7 @@ public class Character extends MovingEntity {
      */
     public void flutuateDoggieCoinPrice() {
         int currentPrice = this.getDoggieCoinPrice();
-        this.setDoggieCoinQuantity(new Random().nextInt(currentPrice * 2));
+        this.setDoggieCoinPrice(new Random().nextInt(currentPrice * 2));
     }
 
     /**
@@ -199,7 +199,7 @@ public class Character extends MovingEntity {
      */
     public void increaseDoggieCoinPriceDrastically() {
         int currentPrice = this.getDoggieCoinPrice();
-        this.setDoggieCoinQuantity(currentPrice + (new Random()).nextInt(currentPrice * 3));
+        this.setDoggieCoinPrice(currentPrice + (new Random()).nextInt(currentPrice * 3));
     }
 
     /**

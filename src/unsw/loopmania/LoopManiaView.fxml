@@ -244,6 +244,7 @@
                </GridPane>
             
                <Button fx:id="exitButton" layoutX="180.0" layoutY="400.0" style="-fx-font: 16 arial" text="exit" />
+               <Text fx:id="doggiePriceText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" style="-fx-font: 16 arial" textAlignment="CENTER" layoutX="210.0" layoutY="380.0" />
                
             </children>
          </Pane>
@@ -286,4 +287,5 @@
 
       </children>
    </StackPane>
+   <BorderPane prefHeight="200.0" prefWidth="200.0" />
 </AnchorPane>
