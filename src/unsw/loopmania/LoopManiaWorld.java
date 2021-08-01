@@ -195,6 +195,9 @@ public class LoopManiaWorld {
         return this.allyList;
     }
 
+    public List<Entity> getUnequippedInventoryItems(){
+        return this.unequippedInventoryItems;
+    }
 
     /**
      * @return list of trancedAlly in allyList
@@ -660,15 +663,15 @@ public class LoopManiaWorld {
                 removeEquippedInventoryItem(item); // -> remove the item already equipped
                 break;
             }
-            if ((defenseEquipment instanceof Shield || 
-            defenseEquipment instanceof TreeStump) && item instanceof Shield) {
-                character.unequipShield();
+            if ((defenseEquipment instanceof TreeStump || 
+            defenseEquipment instanceof Shield) && item instanceof TreeStump) {
+                character.unequipTreeStump();
                 removeEquippedInventoryItem(item); 
                 break;
             }
-            if ((defenseEquipment instanceof Shield || 
-            defenseEquipment instanceof TreeStump) && item instanceof TreeStump) {
-                character.unequipTreeStump();
+            if ((defenseEquipment instanceof TreeStump || 
+            defenseEquipment instanceof Shield) && item instanceof Shield) {
+                character.unequipShield();
                 removeEquippedInventoryItem(item); 
                 break;
             }
@@ -1135,10 +1138,6 @@ public class LoopManiaWorld {
     public void moveAllEnemies() {
         for (Enemy e: enemyList){
             e.move(buildingList);
-            //Reset the campfireInRange for vampire
-            if (e instanceof Vampire){
-                ((Vampire)e).setCampfireInRange(false);
-            }
         }
     }
 
@@ -1170,6 +1169,33 @@ public class LoopManiaWorld {
             return spawnPosition;
         }
         return null;
+    }
+
+    /**
+     * get a randomly generated position which could be used to spawn an enemy
+     * @return null if random choice is that wont be spawning an enemy or it isn't possible, or random coordinate pair if should go ahead
+     */
+    public Pair<Integer, Integer> possiblyGetBossSpawnPosition(){
+
+        if (orderedPath.size() <= 1){
+            return null;
+        }
+
+        Random rand = new Random();
+        List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
+        int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
+        // inclusive start and exclusive end of range of positions not allowed
+        int startNotAllowed = (indexPosition - 2 + orderedPath.size())%orderedPath.size();
+        int endNotAllowed = (indexPosition + 3)%orderedPath.size();
+        // note terminating condition has to be != rather than < since wrap around...
+        for (int i=endNotAllowed; i!=startNotAllowed; i=(i+1)%orderedPath.size()){
+            orderedPathSpawnCandidates.add(orderedPath.get(i));
+        }
+
+        // choose random choice
+        Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates.get(rand.nextInt(orderedPathSpawnCandidates.size()));
+
+        return spawnPosition;
     }
 
     /**
@@ -1255,29 +1281,35 @@ public class LoopManiaWorld {
      * @param itemNodeX indicates the x-coordinate of the chosen item
      * @param itemNodeY indicates the y-coordinate of the chosen item
      */
-    public boolean sellOneItemByItem(Entity sellingItem) {
-        Entity chosenItem = null;
+    public Boolean sellOneItemByItem(Entity sellingItem) {
+        Boolean isSold = false;
         int itemPrice = 0;
         for (Entity item: unequippedInventoryItems) {
+            System.out.println(item);
+        }    
+        for (Entity item: unequippedInventoryItems) {
             if (sellingItem != null && sellingItem.getClass().equals(item.getClass())) {
-                chosenItem = item;
-                if (chosenItem instanceof Equipment) {
+                isSold = true;
+                //System.out.println("test");
+                if (item instanceof Equipment) {
                     itemPrice = ((Equipment) item).getPrice();
+                    item.destroy();
+                    removeUnequippedInventoryItem(item);
+                    character.addGold((double) (itemPrice / 2));
+                    
                     break;
                 }
-                if (chosenItem instanceof HealthPotion) {
+                if (item instanceof HealthPotion) {
                     itemPrice = ((HealthPotion) item).getPrice();
+                    item.destroy();
+                    removeUnequippedInventoryItem(item);
+                    //System.out.println(item.getX()+" "+item.getY());
+                    character.addGold((double) (itemPrice / 2));
                     break;
                 }    
             }
         }
-        if (chosenItem != null) {
-            chosenItem.destroy();
-            removeUnequippedInventoryItem(chosenItem);
-            this.character.addGold((double) (itemPrice / 2));
-            return true;
-        }    
-        return false;
+        return isSold;
     }
 
 
@@ -1289,9 +1321,9 @@ public class LoopManiaWorld {
      */
     public boolean buyOneItemBycoordinates(int itemNodeX, int itemNodeY) {
         
-        HashMap<String,StaticEntity> itemShop = this.heroCastle.getShopItems();
+        HashMap<String,StaticEntity> itemShop = heroCastle.getShopItems();
         StaticEntity chosenItem = null;
-        Double characterGold = this.character.getGold();
+        Double characterGold = character.getGold();
         int itemPrice = 0;
         
         for (StaticEntity item : itemShop.values()) {
@@ -1300,14 +1332,14 @@ public class LoopManiaWorld {
                 
                 // if the game mode is berserker, set the equipement checker
                 // which checks if the character already got one equipment on this turn 
-                if (gameMode == GAME_MODE.BERSERKER && this.gotOneEquipmentFromShop == null) {
-                    this.setgotOneEquipmentFromShop(false);
+                if (gameMode == GAME_MODE.BERSERKER && gotOneEquipmentFromShop == null) {
+                    setgotOneEquipmentFromShop(false);
                 }
 
                 // if the game mode is survival, set the potion checker
                 // which checks if the character already got one potion on this turn
-                if (gameMode == GAME_MODE.SURVIVAL && this.gotOnePotionFromShop == null) {
-                    this.setgotOnePotionFromShop(false);
+                if (gameMode == GAME_MODE.SURVIVAL && gotOnePotionFromShop == null) {
+                    setgotOnePotionFromShop(false);
                 }
 
                 // case1) get an equipment
@@ -1316,27 +1348,14 @@ public class LoopManiaWorld {
                     
                     if (gameMode == GAME_MODE.BERSERKER && !gotOneEquipmentFromShop 
                         && characterGold >= itemPrice) {
-                        if (chosenItem instanceof Sword) { this.addUnequippedSword(); }
-                        if (chosenItem instanceof Staff) { this.addUnequippedStaff(); }
-                        if (chosenItem instanceof Stake) { this.addUnequippedStake(); }
-                        if (chosenItem instanceof Armour) { this.addUnequippedArmour(); }
-                        if (chosenItem instanceof Shield) { this.addUnequippedShield(); }
-                        if (chosenItem instanceof Helmet) { this.addUnequippedHelmet(); }
-                        
                         // if the game mode is berserker, the equipment price is 50% more expensive
-                        this.character.setGold(characterGold - (1.5)*itemPrice);
-                        this.setgotOneEquipmentFromShop(true);
+                        character.setGold(characterGold - (1.5)*itemPrice);
+                        setgotOneEquipmentFromShop(true);
                         return true;
                     }
 
                     if (gameMode != GAME_MODE.BERSERKER && characterGold >= itemPrice) {
-                        if (chosenItem instanceof Sword) { this.addUnequippedSword(); }
-                        if (chosenItem instanceof Staff) { this.addUnequippedStaff(); }
-                        if (chosenItem instanceof Stake) { this.addUnequippedStake(); }
-                        if (chosenItem instanceof Armour) { this.addUnequippedArmour(); }
-                        if (chosenItem instanceof Shield) { this.addUnequippedShield(); }
-                        if (chosenItem instanceof Helmet) { this.addUnequippedHelmet(); }
-                        this.character.setGold(characterGold - itemPrice);
+                        character.setGold(characterGold - itemPrice);
                         return true;
                     }   
                 }
@@ -1345,15 +1364,13 @@ public class LoopManiaWorld {
                     itemPrice = ((HealthPotion) chosenItem).getPrice();
                     if (gameMode == GAME_MODE.SURVIVAL && !gotOnePotionFromShop 
                         && characterGold >= itemPrice) {
-                        this.addUnequippedHealthPotion();
                         // if the game mode is survival, the equipment is twice as expensive
-                        this.character.setGold(characterGold - 2*itemPrice);
-                        this.setgotOnePotionFromShop(true);
+                        character.setGold(characterGold - 2*itemPrice);
+                        setgotOnePotionFromShop(true);
                         return true;
                     } 
                     if (gameMode != GAME_MODE.SURVIVAL &&  characterGold >= itemPrice) {
-                        this.addUnequippedHealthPotion();
-                        this.character.setGold(characterGold - itemPrice);
+                        character.setGold(characterGold - itemPrice);
                         return true;
                     }   
                 }

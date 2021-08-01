@@ -3,11 +3,13 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import javax.management.openmbean.OpenDataException;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
+import org.javatuples.Pair;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -235,6 +237,8 @@ public class LoopManiaWorldController {
     private Image basicEnemyImage;
     private Image vampireEnemyImage;
     private Image zombieEnemyImage;
+    private Image doggieEnemyImage;
+    private Image elanMuskeImage;
     
     // Image for items
     private Image swordImage;
@@ -294,6 +298,8 @@ public class LoopManiaWorldController {
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         vampireEnemyImage = new Image((new File("src/images/vampire.png")).toURI().toString());
         zombieEnemyImage = new Image((new File("src/images/zombie.png")).toURI().toString());
+        doggieEnemyImage = new Image((new File("src/images/doggie.png")).toURI().toString());
+        elanMuskeImage = new Image((new File("src/images/ElanMuske.png")).toURI().toString());
         
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         
@@ -448,9 +454,13 @@ public class LoopManiaWorldController {
             }
             boolean openShop = world.runHeroCastle();
             if (world.getHeroCastle().getSpawnDoggie()){
-                //onload doggie
+                for (Enemy boss: world.getEnemyList()){
+                    if (boss instanceof Doggie) onLoad(boss);
+                }
             } else if (world.getHeroCastle().getSpawnElanMuske()){
-                //onload elanMuske
+                for (Enemy boss: world.getEnemyList()){
+                    if (boss instanceof ElanMuske) onLoad(boss);
+                }
             }
             if (openShop){
                 changeToShop();
@@ -663,8 +673,11 @@ public class LoopManiaWorldController {
      * Has a 1/3 chance of giving the character a non-rare item
      */
     private void zombieVampireDefeatItem(){
-        int val = new Random().nextInt(6);
-        if (val == 0) loadSword();
+        int val = new Random().nextInt(18);
+        if (val < 6 && world.getUnequippedInventoryItems().size() == 16){
+            world.getCharacter().addGold(200);
+        }
+        else if (val == 0) loadSword();
         else if (val == 1) loadStaff();
         else if (val == 2) loadStake();
         else if (val == 3) loadShield();
@@ -749,7 +762,7 @@ public class LoopManiaWorldController {
         }
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
         addEntity(potion, view);
-        unequippedInventory.getChildren().add(view);
+        unequippedInventory.add(view, potion.getX(), potion.getY());
     }
 
     /**
@@ -796,7 +809,7 @@ public class LoopManiaWorldController {
         }
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
         addEntity(item, view);
-        unequippedInventory.getChildren().add(view);
+        unequippedInventory.add(view, item.getX(), item.getY());
     }
 
     /**
@@ -809,6 +822,10 @@ public class LoopManiaWorldController {
             view = new ImageView(vampireEnemyImage);
         } else if (enemy instanceof Zombie){
             view = new ImageView(zombieEnemyImage);
+        } else if (enemy instanceof Doggie){
+            view = new ImageView(doggieEnemyImage);
+        } else if (enemy instanceof ElanMuske){
+            view = new ImageView(elanMuskeImage);
         }
         addEntity(enemy, view);
         squares.getChildren().add(view);
@@ -1005,7 +1022,7 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * remove an item from the unequipped inventory by its x and y coordinates in the unequipped inventory gridpane
+     * equip an item from the unequipped inventory by its x and y coordinates in the unequipped inventory gridpane
      * @param nodeX x coordinate from 0 to unequippedInventoryWidth-1
      * @param nodeY y coordinate from 0 to unequippedInventoryHeight-1
      */
@@ -1332,11 +1349,23 @@ public class LoopManiaWorldController {
                 if (!isBought) {
                     moreGold.setVisible(true);
                     timeline1.play();
+                } else {
+                    switch(key) {
+                        case "Sword": loadSword(); break;
+                        case "Stake": loadStake(); break; 
+                        case "Staff": loadStaff(); break;
+                        case "Armour": loadArmour(); break;
+                        case "Shield": loadShield(); break;
+                        case "Helmet": loadHelmet(); break;  
+                        case "Health Potion": loadHealthPotion(); break;         
+                        default: break;            
+                    }
+                    System.out.println("I got" + key);
                 }
 
             });
             sellButton.setOnAction(event -> {
-                Boolean isSold = world.sellOneItemByItem(item);
+                boolean isSold = world.sellOneItemByItem(item);
                 Timeline timeline2 = new Timeline();
                     timeline2.getKeyFrames().add(
                         new KeyFrame(Duration.seconds(0.5),
@@ -1344,6 +1373,8 @@ public class LoopManiaWorldController {
                 if (!isSold) {
                     donHaveItem.setVisible(true);
                     timeline2.play();
+                } else {
+                    System.out.println("I sold" + key);
                 }
             });
             exitButton.setOnAction(event -> {
@@ -1361,19 +1392,10 @@ public class LoopManiaWorldController {
             sellButton.setMinWidth(shop.getPrefWidth());
             
             switch(key) {
-                case "Sword": itemImage = new Image((new File("src/images/basic_sword.png")).toURI().toString()); 
+                case "Sword": itemImage = swordImage;
                     break;
                 case "Health Potion": itemImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()); 
                     break;
-                case "The One Ring": 
-                    itemImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString()); 
-                    break;  
-                case "Anduril": 
-                    itemImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()); 
-                    break;   
-                case "Tree Stump": 
-                    itemImage = new Image((new File("src/images/tree_stump.png")).toURI().toString()); 
-                    break;         
                 default:
                     itemImage =  new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
                     break; 

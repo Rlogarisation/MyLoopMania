@@ -12,7 +12,7 @@ import org.javatuples.Pair;
 
 public class HeroCastle extends StaticEntity{ 
 
-    private static final int nItems = 10;
+    private static final int nItems = 7;
 
     private List<VampireCastle> vampireCastles;
     private List<ZombiePit> zombiePits;
@@ -31,10 +31,6 @@ public class HeroCastle extends StaticEntity{
         initializeShop();
         this.spawnDoggie = false;
         this.spawnElanMuske = false;
-    }
-
-    public int getNumCylesGoals(){
-        return numCyclesGoal;
     }
 
     /**
@@ -98,7 +94,7 @@ public class HeroCastle extends StaticEntity{
             notifyAllObservers();
             this.numCyclesComplete = this.numCyclesComplete + 1;
 
-            if (character.getCycleCount() == 20) ;  //spawnBoss("Doggie", lmw);
+            if (character.getCycleCount() == 20) spawnBoss("Doggie", lmw);
             else if (character.getCycleCount() == 40 && character.getXp() >= 10000) spawnBoss("ElanMuske", lmw);
 
             if (this.numCyclesComplete == this.numCyclesGoal){
@@ -125,9 +121,6 @@ public class HeroCastle extends StaticEntity{
         shop.put("Shield", new Shield(x, new SimpleIntegerProperty(y+4)));
         shop.put("Helmet", new Helmet(x, new SimpleIntegerProperty(y+5)));
         shop.put("Health Potion", new HealthPotion(x, new SimpleIntegerProperty(y+6)));
-        shop.put("The One Ring", new HealthPotion(x, new SimpleIntegerProperty(y+7)));
-        shop.put("Anduril", new HealthPotion(x, new SimpleIntegerProperty(y+8)));
-        shop.put("Tree Stump", new HealthPotion(x, new SimpleIntegerProperty(y+9)));
         this.shop = shop;
     }
 
@@ -141,7 +134,7 @@ public class HeroCastle extends StaticEntity{
 
     
     public void spawnBoss(String s, LoopManiaWorld lmw){
-        Pair<Integer, Integer> pos = lmw.possiblyGetBasicEnemySpawnPosition();
+        Pair<Integer, Integer> pos = lmw.possiblyGetBossSpawnPosition();
         if (pos != null){
             int indexInPath = lmw.getOrderedPath().indexOf(pos);
             switch(s){
