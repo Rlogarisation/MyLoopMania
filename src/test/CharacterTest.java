@@ -3,11 +3,17 @@ package test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
@@ -20,7 +26,7 @@ import unsw.loopmania.RareItems.TreeStump;
 public class CharacterTest {
     
     @Test
-    public void characterCreationTest() {
+    public void characterCreationTest() throws JSONException, FileNotFoundException {
         final double initialHp = 100;
         final double initialDamage = 10;
         final double initialMovingSpeed = 2;
@@ -41,7 +47,6 @@ public class CharacterTest {
         orderedPath.add(new Pair<Integer, Integer>(1, 0));
         orderedPath.add(new Pair<Integer, Integer>(2, 0));
         LoopManiaWorld currentWorld = new LoopManiaWorld(3, 3, orderedPath);
-
         // Creating current coordinate for enemy.
         int index00InPath = orderedPath.indexOf(new Pair<Integer, Integer>(0, 0));
         PathPosition position00 = new PathPosition(index00InPath, orderedPath);
@@ -107,16 +112,6 @@ public class CharacterTest {
         myHero.setFightStrategy(normalStrategy);
         assertEquals(normalStrategy, myHero.getFightStrategy());
 
-        //Check goals system
-        assert(myHero.hasAchievedGoal() == false);
-        myHero.addXp(100000);
-        assert(myHero.hasAchievedGoal() == false);
-        myHero.addGold(100000);
-        assert(myHero.hasAchievedGoal() == true);
-        myHero.setGold(1);
-        assert(myHero.hasAchievedGoal() == false);
-        myHero.setCycleCount(80);
-        assert(myHero.hasAchievedGoal() == true);
 
     }
 

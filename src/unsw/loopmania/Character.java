@@ -33,7 +33,7 @@ public class Character extends MovingEntity {
     private int towerDamage;
     private boolean campfireInRange;
     private int cycleCount;
-
+    private int bossesKilled;
 
     public Character(PathPosition position) {
         super(position);
@@ -117,6 +117,20 @@ public class Character extends MovingEntity {
      */
     public void setGold(double gold) {
         this.gold = gold;
+    }
+
+    /**
+     * Set the goal of if character has killed boss
+     */
+    public void setBossesKilled(int bossesKilled) {
+        this.bossesKilled = bossesKilled;
+    }
+
+    /**
+     * Set the goal of if character has killed boss
+     */
+    public int getBossKilled() {
+        return this.bossesKilled;
     }
 
     /**
@@ -258,18 +272,7 @@ public class Character extends MovingEntity {
         this.campfireInRange = status;
     }
 
-    /**
-     * Check if character has achieved goals depending on chosen assumptions
-     * @return has achieved goal or not
-     */
-    public boolean hasAchievedGoal(){
-        if(xp >= 10000){
-            if(cycleCount >= 80 || gold >= 10000){
-                return true;
-            }
-        }
-        return false;
-    }
+    
 
     /**
      * getter for hasArmour

@@ -2,10 +2,13 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.javatuples.Pair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Buildings.Building;
@@ -14,6 +17,12 @@ import unsw.loopmania.RareItems.ConfusingRareItem;
 import unsw.loopmania.RareItems.TheOneRing;
 import unsw.loopmania.RareItems.TreeStump;
 import unsw.loopmania.cards.*;
+import unsw.loopmania.goals.AndGoalNode;
+import unsw.loopmania.goals.ExpressionFactory;
+import unsw.loopmania.goals.Goal;
+import unsw.loopmania.goals.GoalEvaluator;
+import unsw.loopmania.goals.GoalNode;
+import unsw.loopmania.goals.OrGoalNode;
 import unsw.loopmania.Buildings.*;
 
 /**
@@ -44,6 +53,11 @@ public class LoopManiaWorld {
      * valid rare items from JSON configuration
      */
     private ArrayList<String> validRareItems;
+
+     /** 
+     * world goals from JSON configuration
+     */
+    private JSONObject goalsJSON;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -146,6 +160,10 @@ public class LoopManiaWorld {
 
     public void setValidRareItems(ArrayList<String> rareItemList){
         this.validRareItems = rareItemList;
+    }
+
+    public void setGoals(JSONObject goals){
+        this.goalsJSON = goals;
     }
 
     public Character getCharacter(){
@@ -441,6 +459,9 @@ public class LoopManiaWorld {
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from the enemies list
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
+            if(e instanceof ElanMuske || e instanceof Doggie){
+                character.setBossesKilled(character.getBossKilled()+1);
+            }
             killEnemy(e);
         }
         return defeatedEnemies;
@@ -676,7 +697,12 @@ public class LoopManiaWorld {
         
         return defenseEquipment;
     }
-
+    /**
+     * equips a confusing rare items onto character
+     * @param cRareItem the Confusing rare item being equipped
+     * @param newItem the location of equipped (sword or shield)
+     * @return
+     */
     public ConfusingRareItem equipConfusingRareItem(ConfusingRareItem cRareItem, StaticEntity newItem){
         if(newItem instanceof AndurilSword){
             for(Entity item:equippedInventoryItems){
@@ -892,8 +918,8 @@ public class LoopManiaWorld {
     }
 
     /**
-     * spawn 'the one ring' in the world and return 'the one ring' entity
-     * @return 'the one ring' to be spawned in the controller as a JavaFX node
+     * spawn 'AndurilSword' in the world and return 'AndurilSword' entity
+     * @return 'AndurilSword' to be spawned in the controller as a JavaFX node
      */
     public StaticEntity addUnequippedAndurilSword(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -918,8 +944,8 @@ public class LoopManiaWorld {
     }
 
     /**
-     * spawn 'the one ring' in the world and return 'the one ring' entity
-     * @return 'the one ring' to be spawned in the controller as a JavaFX node
+     * spawn 'TreeStump' in the world and return 'TreeStump' entity
+     * @return 'TreeStump' to be spawned in the controller as a JavaFX node
      */
     public StaticEntity addUnequippedTreeStump(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -1352,4 +1378,16 @@ public class LoopManiaWorld {
         }
         return false;
     }
+
+    /**
+     * Check if character has achieved goals depending on JSON file 
+     * @return has achieved goal or not
+     */
+    public boolean hasAchievedGoal(){
+        ExpressionFactory ef = new ExpressionFactory(character, goalsJSON);
+        GoalNode expression = ef.getExpression();
+        return GoalEvaluator.evaluate(expression);
+    }
 }
+
+

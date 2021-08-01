@@ -37,6 +37,7 @@ public abstract class LoopManiaWorldLoader {
         int width = json.getInt("width");
         int height = json.getInt("height");
         JSONArray rareItemsJson = json.getJSONArray("rare_items");
+        JSONObject goalsJson = json.getJSONObject("goal-condition");
         ArrayList<String> rareItemList = new ArrayList<String>();
         // path variable is collection of coordinates with directions of path taken...
         List<Pair<Integer, Integer>> orderedPath = loadPathTiles(json.getJSONObject("path"), width, height);
@@ -54,6 +55,8 @@ public abstract class LoopManiaWorldLoader {
             world.setValidRareItems(rareItemList);
             System.out.println(rareItemList);
         }
+        //load goals into world
+        world.setGoals(goalsJson);
         return world;
     }
 

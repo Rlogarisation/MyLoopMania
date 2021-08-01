@@ -425,7 +425,7 @@ public class LoopManiaWorldController {
                 updateBars();
                 //update ally list
                 updateAllyList();
-                if(world.getCharacter().hasAchievedGoal()){
+                if(world.hasAchievedGoal()){
                     pause();
                     winMessage.setEffect(new Bloom());
                     winMessage.setVisible(true);
