@@ -258,7 +258,13 @@ public class LoopManiaWorldController {
     private Image elanMuskeImage;
 
     private static final String background_song = "src/game_sounds/bgmusic.mp3";
+    //Effects
     private static final String dead_enemy = "src/game_sounds/death.mp3";
+    private static final String win_game = "src/game_sounds/wingame.wav";
+    private static final String lose_game = "src/game_sounds/losegame.mp3";
+    private static final String equip_item = "src/game_sounds/equipitem.mp3";
+    private static final String potion_drink = "src/game_sounds/potiondrink.wav";
+    private static final String revive = "src/game_sounds/revive.wave";
     
     // Image for items
     private Image swordImage;
@@ -463,6 +469,9 @@ public class LoopManiaWorldController {
                 updateAllyList();
                 if(world.hasAchievedGoal()){
                     pause();
+                    mediaPlayer.stop();
+                    //play victory sound
+                    playEffect(win_game);
                     winMessage.setEffect(new Bloom());
                     winMessage.setVisible(true);
                 }
@@ -473,6 +482,9 @@ public class LoopManiaWorldController {
                 boolean isAlive = world.reviveCharacter();
                 if (!isAlive) {
                     pause();
+                    //play lose sound
+                    mediaPlayer.stop();
+                    playEffect(lose_game);
                     loseMessage.setEffect(new Bloom());
                     loseMessage.setVisible(true);
                 }
@@ -977,6 +989,7 @@ public class LoopManiaWorldController {
                                 if(equippedItem == null){
                                     return;
                                 }
+                                playEffect(equip_item);
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 //removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
