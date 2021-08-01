@@ -237,6 +237,8 @@ public class LoopManiaWorldController {
     private Image basicEnemyImage;
     private Image vampireEnemyImage;
     private Image zombieEnemyImage;
+    private Image doggieEnemyImage;
+    private Image elanMuskeImage;
     
     // Image for items
     private Image swordImage;
@@ -296,6 +298,8 @@ public class LoopManiaWorldController {
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         vampireEnemyImage = new Image((new File("src/images/vampire.png")).toURI().toString());
         zombieEnemyImage = new Image((new File("src/images/zombie.png")).toURI().toString());
+        doggieEnemyImage = new Image((new File("src/images/doggie.png")).toURI().toString());
+        elanMuskeImage = new Image((new File("src/images/ElanMuske.png")).toURI().toString());
         
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         
@@ -450,9 +454,13 @@ public class LoopManiaWorldController {
             }
             boolean openShop = world.runHeroCastle();
             if (world.getHeroCastle().getSpawnDoggie()){
-                //onload doggie
+                for (Enemy boss: world.getEnemyList()){
+                    if (boss instanceof Doggie) onLoad(boss);
+                }
             } else if (world.getHeroCastle().getSpawnElanMuske()){
-                //onload elanMuske
+                for (Enemy boss: world.getEnemyList()){
+                    if (boss instanceof ElanMuske) onLoad(boss);
+                }
             }
             if (openShop){
                 changeToShop();
@@ -665,8 +673,11 @@ public class LoopManiaWorldController {
      * Has a 1/3 chance of giving the character a non-rare item
      */
     private void zombieVampireDefeatItem(){
-        int val = new Random().nextInt(6);
-        if (val == 0) loadSword();
+        int val = new Random().nextInt(18);
+        if (val < 6 && world.getUnequippedInventoryItems().size() == 16){
+            world.getCharacter().addGold(200);
+        }
+        else if (val == 0) loadSword();
         else if (val == 1) loadStaff();
         else if (val == 2) loadStake();
         else if (val == 3) loadShield();
@@ -811,6 +822,10 @@ public class LoopManiaWorldController {
             view = new ImageView(vampireEnemyImage);
         } else if (enemy instanceof Zombie){
             view = new ImageView(zombieEnemyImage);
+        } else if (enemy instanceof Doggie){
+            view = new ImageView(doggieEnemyImage);
+        } else if (enemy instanceof ElanMuske){
+            view = new ImageView(elanMuskeImage);
         }
         addEntity(enemy, view);
         squares.getChildren().add(view);

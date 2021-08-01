@@ -271,6 +271,70 @@ public class BuildingTest {
     }
 
     @Test
+    public void HeroCastle_SpawnDoggie(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        orderedPath.add(new Pair<>(0, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+
+        //not enough cycles
+        lmw.getCharacter().setCycleCount(18);
+        lmw.runHeroCastle();
+        assertEquals(0, lmw.getEnemyList().size());
+
+        //should spawn -> enough cycles
+        lmw.runHeroCastle();
+        assertEquals(1, lmw.getEnemyList().size());
+        assert(lmw.getEnemyList().get(0) instanceof Doggie);
+        assert(lmw.getHeroCastle().getSpawnDoggie());
+    }
+
+    @Test
+    public void HeroCastle_InvalidSpawnDoggie(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+        //not enough cycles
+        lmw.getCharacter().setCycleCount(18);
+        lmw.runHeroCastle();
+        assertEquals(0, lmw.getEnemyList().size());
+
+        //should not spawn -> can't spawn enemy on Hero's Castle
+        lmw.runHeroCastle();
+        assertEquals(0, lmw.getEnemyList().size());
+        assertFalse(lmw.getHeroCastle().getSpawnDoggie());
+    }
+
+    @Test
+    public void HeroCastle_SpawnElanMuske(){
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 0));
+        orderedPath.add(new Pair<>(0, 1));
+        LoopManiaWorld lmw = newLmw(orderedPath);
+        PathPosition charPos = new PathPosition(0, orderedPath);
+        lmw.setCharacter(new Character(charPos));
+        //not enough xp
+        lmw.runHeroCastle();
+        assertEquals(0, lmw.getEnemyList().size());
+
+        //not enough cycles
+        lmw.getCharacter().addXp(10000);
+        lmw.getCharacter().setCycleCount(38);
+        lmw.runHeroCastle();
+        assertEquals(0, lmw.getEnemyList().size());
+
+        //successfull
+        lmw.runHeroCastle();
+        assertEquals(1, lmw.getEnemyList().size());
+        assert(lmw.getEnemyList().get(0) instanceof ElanMuske);
+        assert(lmw.getHeroCastle().getSpawnElanMuske());
+    }
+
+    @Test
     //Character is in range of the tower
     //The character's towerDamge should increase from 0 to 5
     public void TowerTest_CharacterInRange(){

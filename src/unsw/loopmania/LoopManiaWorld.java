@@ -177,6 +177,9 @@ public class LoopManiaWorld {
         return this.allyList;
     }
 
+    public List<Entity> getUnequippedInventoryItems(){
+        return this.unequippedInventoryItems;
+    }
 
     /**
      * @return list of trancedAlly in allyList
@@ -639,15 +642,15 @@ public class LoopManiaWorld {
                 removeEquippedInventoryItem(item); // -> remove the item already equipped
                 break;
             }
-            if ((defenseEquipment instanceof Shield || 
-            defenseEquipment instanceof TreeStump) && item instanceof Shield) {
-                character.unequipShield();
+            if ((defenseEquipment instanceof TreeStump || 
+            defenseEquipment instanceof Shield) && item instanceof TreeStump) {
+                character.unequipTreeStump();
                 removeEquippedInventoryItem(item); 
                 break;
             }
-            if ((defenseEquipment instanceof Shield || 
-            defenseEquipment instanceof TreeStump) && item instanceof TreeStump) {
-                character.unequipTreeStump();
+            if ((defenseEquipment instanceof TreeStump || 
+            defenseEquipment instanceof Shield) && item instanceof Shield) {
+                character.unequipShield();
                 removeEquippedInventoryItem(item); 
                 break;
             }
@@ -1109,10 +1112,6 @@ public class LoopManiaWorld {
     public void moveAllEnemies() {
         for (Enemy e: enemyList){
             e.move(buildingList);
-            //Reset the campfireInRange for vampire
-            if (e instanceof Vampire){
-                ((Vampire)e).setCampfireInRange(false);
-            }
         }
     }
 
@@ -1144,6 +1143,33 @@ public class LoopManiaWorld {
             return spawnPosition;
         }
         return null;
+    }
+
+    /**
+     * get a randomly generated position which could be used to spawn an enemy
+     * @return null if random choice is that wont be spawning an enemy or it isn't possible, or random coordinate pair if should go ahead
+     */
+    public Pair<Integer, Integer> possiblyGetBossSpawnPosition(){
+
+        if (orderedPath.size() <= 1){
+            return null;
+        }
+
+        Random rand = new Random();
+        List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
+        int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
+        // inclusive start and exclusive end of range of positions not allowed
+        int startNotAllowed = (indexPosition - 2 + orderedPath.size())%orderedPath.size();
+        int endNotAllowed = (indexPosition + 3)%orderedPath.size();
+        // note terminating condition has to be != rather than < since wrap around...
+        for (int i=endNotAllowed; i!=startNotAllowed; i=(i+1)%orderedPath.size()){
+            orderedPathSpawnCandidates.add(orderedPath.get(i));
+        }
+
+        // choose random choice
+        Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates.get(rand.nextInt(orderedPathSpawnCandidates.size()));
+
+        return spawnPosition;
     }
 
     /**

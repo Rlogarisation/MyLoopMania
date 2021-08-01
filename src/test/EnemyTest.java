@@ -1,15 +1,18 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
 
 import unsw.loopmania.*;
 import unsw.loopmania.Character;
+import unsw.loopmania.Buildings.*;
 
 /**
  * Tests for enemy.
@@ -335,5 +338,72 @@ public class EnemyTest {
         
     }
 
-    
+    @Test
+    public void vampireCampfireUpPosition() {
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 1));
+        orderedPath.add(new Pair<>(0, 2));
+        orderedPath.add(new Pair<>(0, 3));
+        LoopManiaWorld lmw = new LoopManiaWorld(10, 10, orderedPath);
+        PathPosition vampPathPos = new PathPosition(1, orderedPath);
+        Enemy vamp = new Vampire(vampPathPos);
+        lmw.setCharacter(new Character(vampPathPos));
+        lmw.addEnemy(vamp);
+        //Campfire in range of up position
+        Building newCampfire = new Campfire(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newCampfire);
+        lmw.buildingInteractions();
+        vamp.move(lmw.getBuildingList());
+        assertEquals(0, vamp.getX());
+        assertEquals(3, vamp.getY());
+        assertFalse(((Vampire)vamp).getCampfireInRange());
+    }
+
+    @Test
+    public void vampireCampfireDownPosition() {
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 1));
+        orderedPath.add(new Pair<>(0, 2));
+        orderedPath.add(new Pair<>(0, 3));
+        LoopManiaWorld lmw = new LoopManiaWorld(10, 10, orderedPath);
+        PathPosition vampPathPos = new PathPosition(1, orderedPath);
+        Enemy vamp = new Vampire(vampPathPos);
+        lmw.setCharacter(new Character(vampPathPos));
+        lmw.addEnemy(vamp);
+        //Campfire in range of down position
+        Building newCampfire = new Campfire(new SimpleIntegerProperty(1), new SimpleIntegerProperty(3));
+        lmw.addBuildingToBuildingList(newCampfire);
+        lmw.buildingInteractions();
+        vamp.move(lmw.getBuildingList());
+        assertEquals(0, vamp.getX());
+        assertEquals(1, vamp.getY());
+        assertFalse(((Vampire)vamp).getCampfireInRange());
+    }
+
+    @Test
+    public void vampireCampfireBetweenTwoNotInRange() {
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+        orderedPath.add(new Pair<>(0, 1));
+        orderedPath.add(new Pair<>(0, 2));
+        orderedPath.add(new Pair<>(0, 3));
+        LoopManiaWorld lmw = new LoopManiaWorld(10, 10, orderedPath);
+        PathPosition vampPathPos = new PathPosition(1, orderedPath);
+        Enemy vamp = new Vampire(vampPathPos);
+        lmw.setCharacter(new Character(vampPathPos));
+        lmw.addEnemy(vamp);
+        //Campfire in range of up and down position but not current position
+        //Vampire should remain in current position
+        Building newCampfire = new Campfire(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        lmw.addBuildingToBuildingList(newCampfire);
+        Building newCampfire2 = new Campfire(new SimpleIntegerProperty(1), new SimpleIntegerProperty(3));
+        lmw.addBuildingToBuildingList(newCampfire2);
+        Building newTower = new Tower(new SimpleIntegerProperty(1), new SimpleIntegerProperty(2));
+        lmw.addBuildingToBuildingList(newTower);
+        lmw.buildingInteractions();
+        vamp.move(lmw.getBuildingList());
+        assertEquals(0, vamp.getX());
+        assertEquals(2, vamp.getY());
+        assertFalse(((Vampire)vamp).getCampfireInRange());
+    }
+
 }

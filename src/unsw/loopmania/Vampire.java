@@ -96,6 +96,8 @@ public class Vampire extends Enemy {
         if (notComplete){
             moveRandom();
         }
+
+        this.campfireInRange = false;
     }
 
     public boolean inRangeOfCampfire(List<Building> buildingList, Pair<Integer, Integer> newPos){
