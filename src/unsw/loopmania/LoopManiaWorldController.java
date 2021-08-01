@@ -626,10 +626,12 @@ public class LoopManiaWorldController {
             world.getCharacter().addXp(500);
             world.getCharacter().addDoggieCoin(1);
             world.getCharacter().flutuateDoggieCoinPrice();
+            loadRareItem();
         }
 
         if (enemy instanceof ElanMuske) {
             world.getCharacter().increaseDoggieCoinPriceDrastically();
+            loadRareItem();
         }
 
         if (enemy instanceof Slug) {
@@ -648,6 +650,7 @@ public class LoopManiaWorldController {
             world.getCharacter().addXp(100);
             zombieVampireDefeatCards();
             zombieVampireDefeatItem();
+            loadRareItem();
         }
 
         if (enemy instanceof Vampire){
@@ -655,9 +658,10 @@ public class LoopManiaWorldController {
             world.getCharacter().addXp(150);
             zombieVampireDefeatCards();
             zombieVampireDefeatItem();
+            loadRareItem();
         }
 
-        loadRareItem();
+       
     }
 
 
