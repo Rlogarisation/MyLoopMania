@@ -621,8 +621,9 @@ public class LoopManiaWorldController {
     private void reactToEnemyDefeat(Enemy enemy){
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
-
+        loadCampFireCard();
         if (enemy instanceof Doggie) {
+            world.getCharacter().addXp(500);
             world.getCharacter().addDoggieCoin(1);
             world.getCharacter().flutuateDoggieCoinPrice();
         }
@@ -633,6 +634,7 @@ public class LoopManiaWorldController {
 
         if (enemy instanceof Slug) {
             world.getCharacter().addGold(50);
+            world.getCharacter().addXp(50);
             int val = new Random().nextInt(4);
             if (val == 0){
                 loadVampireCastleCard();
@@ -643,12 +645,14 @@ public class LoopManiaWorldController {
 
         if (enemy instanceof Zombie) {
             world.getCharacter().addGold(100);
+            world.getCharacter().addXp(100);
             zombieVampireDefeatCards();
             zombieVampireDefeatItem();
         }
 
         if (enemy instanceof Vampire){
             world.getCharacter().addGold(150);
+            world.getCharacter().addXp(150);
             zombieVampireDefeatCards();
             zombieVampireDefeatItem();
         }
