@@ -343,7 +343,7 @@ public class Character extends MovingEntity {
 
         if (hasArmour) percentRemoved = percentRemoved + 0.5;
         if (hasStump) percentRemoved = percentRemoved + 0.25;
-        else if (hasShield && !hasStump) percentRemoved = percentRemoved + 0.15;
+        else if (hasShield) percentRemoved = percentRemoved + 0.15;
         if (hasHelmet) percentRemoved = percentRemoved + 0.2;
 
         currentDamage = (1 - percentRemoved) * currentDamage;
