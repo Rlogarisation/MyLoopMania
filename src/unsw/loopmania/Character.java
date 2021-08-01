@@ -18,7 +18,7 @@ public class Character extends MovingEntity {
     final double initialGold = 0; 
     final int initialDoggieCoin = 0;
     final double initialArmour = 0;
-    final int initialDoggieCoinPrice = 10;
+    final int initialDoggieCoinPrice = 1;
 
     private CharacterEquipment equipments;
     private boolean hasHelmet = false;

@@ -442,7 +442,7 @@ public class LoopManiaWorldController {
         onLoad(world.getHeroCastle());
         
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.03), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             //Play background music
             mediaPlayer.play();
         
