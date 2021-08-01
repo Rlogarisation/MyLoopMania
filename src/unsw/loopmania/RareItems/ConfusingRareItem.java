@@ -7,9 +7,8 @@ import unsw.loopmania.AttackEquipment;
 import unsw.loopmania.StaticEntity;
 
 public class ConfusingRareItem extends StaticEntity{
-    StaticEntity initialRareItem;
-    StaticEntity newRareItem;
-    StaticEntity equipped;
+    private StaticEntity initialRareItem;
+    private StaticEntity newRareItem;
 
     public ConfusingRareItem(SimpleIntegerProperty x, SimpleIntegerProperty y, StaticEntity initalRareItem){
             super(x,y);

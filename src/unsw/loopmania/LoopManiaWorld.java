@@ -162,10 +162,6 @@ public class LoopManiaWorld {
         this.validRareItems = rareItemList;
     }
 
-    public JSONObject getGoals(){
-        return this.goalsJSON;
-    }
-
     public void setGoals(JSONObject goals){
         this.goalsJSON = goals;
     }
@@ -698,7 +694,12 @@ public class LoopManiaWorld {
         
         return defenseEquipment;
     }
-
+    /**
+     * equips a confusing rare items onto character
+     * @param cRareItem the Confusing rare item being equipped
+     * @param newItem the location of equipped (sword or shield)
+     * @return
+     */
     public ConfusingRareItem equipConfusingRareItem(ConfusingRareItem cRareItem, StaticEntity newItem){
         if(newItem instanceof AndurilSword){
             for(Entity item:equippedInventoryItems){
@@ -914,8 +915,8 @@ public class LoopManiaWorld {
     }
 
     /**
-     * spawn 'the one ring' in the world and return 'the one ring' entity
-     * @return 'the one ring' to be spawned in the controller as a JavaFX node
+     * spawn 'AndurilSword' in the world and return 'AndurilSword' entity
+     * @return 'AndurilSword' to be spawned in the controller as a JavaFX node
      */
     public StaticEntity addUnequippedAndurilSword(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -940,8 +941,8 @@ public class LoopManiaWorld {
     }
 
     /**
-     * spawn 'the one ring' in the world and return 'the one ring' entity
-     * @return 'the one ring' to be spawned in the controller as a JavaFX node
+     * spawn 'TreeStump' in the world and return 'TreeStump' entity
+     * @return 'TreeStump' to be spawned in the controller as a JavaFX node
      */
     public StaticEntity addUnequippedTreeStump(){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -1350,7 +1351,7 @@ public class LoopManiaWorld {
     }
 
     /**
-     * Check if character has achieved goals depending on chosen assumptions
+     * Check if character has achieved goals depending on JSON file 
      * @return has achieved goal or not
      */
     public boolean hasAchievedGoal(){
