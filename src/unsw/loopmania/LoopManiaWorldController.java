@@ -1357,24 +1357,30 @@ public class LoopManiaWorldController {
                         case "Armour": loadArmour(); break;
                         case "Shield": loadShield(); break;
                         case "Helmet": loadHelmet(); break;  
-                        case "Health Potion": loadHealthPotion(); break;         
+                        case "Health Potion": loadHealthPotion(); break;
                         default: break;            
                     }
-                    System.out.println("I got" + key);
                 }
 
             });
             sellButton.setOnAction(event -> {
-                boolean isSold = world.sellOneItemByItem(item);
+                boolean isSold = false;
+                if (item instanceof DoggieCoin) {
+                    isSold = world.sellOneDoggieCoin();
+                } else {
+                    isSold = world.sellOneItemByItem(item);
+                }
+                
                 Timeline timeline2 = new Timeline();
                     timeline2.getKeyFrames().add(
                         new KeyFrame(Duration.seconds(0.5),
                         new KeyValue(donHaveItem.visibleProperty(), false)));
+                
                 if (!isSold) {
                     donHaveItem.setVisible(true);
                     timeline2.play();
                 } else {
-                    System.out.println("I sold" + key);
+                    System.out.println("You sold it");
                 }
             });
             exitButton.setOnAction(event -> {
@@ -1382,7 +1388,6 @@ public class LoopManiaWorldController {
             });
 
             itemName.setStyle("-fx-font: 17 arial;"); 
-            
             
             buyButton.setText("Buy");
             sellButton.setText("Sell");
@@ -1402,7 +1407,7 @@ public class LoopManiaWorldController {
             }
             shop.add(itemName, i, j);
             shop.add(new ImageView(itemImage), i+1, j);
-            if (key != "The One Ring" && key != "Anduril" && key != "Tree Stump") {
+            if (key != "DoggieCoin") {
                 shop.add(buyButton, i+2, j);
             }    
             shop.add(sellButton, i+3, j);

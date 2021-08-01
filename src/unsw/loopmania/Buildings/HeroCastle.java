@@ -121,6 +121,7 @@ public class HeroCastle extends StaticEntity{
         shop.put("Shield", new Shield(x, new SimpleIntegerProperty(y+4)));
         shop.put("Helmet", new Helmet(x, new SimpleIntegerProperty(y+5)));
         shop.put("Health Potion", new HealthPotion(x, new SimpleIntegerProperty(y+6)));
+        shop.put("DoggieCoin", new DoggieCoin(x, new SimpleIntegerProperty(y+6)));
         this.shop = shop;
     }
 
