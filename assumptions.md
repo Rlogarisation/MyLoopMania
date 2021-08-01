@@ -124,9 +124,9 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
         
     2) Shield
         * price : standard: 500 gold / berserker: 750 gold
-        * We assume that when the character is equipped with a shield, only 80% of the total damage except shield effect is taken.
+        * We assume that when the character is equipped with a shield, only 85% of the damage except shield effect is taken.
             (e.g) a slug attacks the character wearing an armour, a shield and a helmet 
-                -> total damage = (1 * (1 - (0.5+0.2)) * 0.8 = 0.24)
+                -> total damage = (1 * (1 - (0.5+0.2)) * 0.85 = 0.255)
         
         
     3) Helmet 
@@ -160,7 +160,7 @@ the damage of the bite is 10. And also, when a critical bite was occured by a va
         * Which can be obtained by defeating the enemy.
         * The drop chance is 1%.
     3) Tree Stump
-        * defence: 60% less damage for all enemy, but 80% less damage for ElanMuske.
+        * defence: 25% less damage for all enemy, but 80% less damage for ElanMuske.
         * Which can be obtained by defeating the enemy.
         * The drop chance is 1%.
     4) The confusing rare item
