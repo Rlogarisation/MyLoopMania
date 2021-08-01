@@ -35,6 +35,9 @@ public class Trap extends Building{
                 if (enemy.getHp() <= 0){
                     lmw.killEnemy(enemy);
                     newChanges.addEnemyKilled(enemy);
+                    if (newChanges.getNewEmeies().contains(enemy)){
+                        newChanges.getNewEmeies().remove(enemy);
+                    }
                 }
                 lmw.removeBuilding(this);
                 break;

@@ -623,7 +623,7 @@ public class LoopManiaWorldController {
     private StaticEntity loadRareItem(){
         ArrayList<String> validRareItems = world.getValidRareItems();
         Random random = new Random();
-        int prob = random.nextInt(20);
+        int prob = random.nextInt(24);
         if(validRareItems.contains("the_one_ring") && prob == 1){
             StaticEntity theOneRing = world.addUnequippedTheOneRing();
             onLoadRareItem(theOneRing);
@@ -649,16 +649,20 @@ public class LoopManiaWorldController {
         // in starter code, spawning extra card/weapon...
 
         if (enemy instanceof Doggie) {
+            world.getCharacter().addXp(500);
             world.getCharacter().addDoggieCoin(1);
             world.getCharacter().flutuateDoggieCoinPrice();
+            loadRareItem();
         }
 
         if (enemy instanceof ElanMuske) {
             world.getCharacter().increaseDoggieCoinPriceDrastically();
+            loadRareItem();
         }
 
         if (enemy instanceof Slug) {
             world.getCharacter().addGold(50);
+            world.getCharacter().addXp(50);
             int val = new Random().nextInt(4);
             if (val == 0){
                 loadVampireCastleCard();
@@ -669,17 +673,21 @@ public class LoopManiaWorldController {
 
         if (enemy instanceof Zombie) {
             world.getCharacter().addGold(100);
+            world.getCharacter().addXp(100);
             zombieVampireDefeatCards();
             zombieVampireDefeatItem();
+            loadRareItem();
         }
 
         if (enemy instanceof Vampire){
             world.getCharacter().addGold(150);
+            world.getCharacter().addXp(150);
             zombieVampireDefeatCards();
             zombieVampireDefeatItem();
+            loadRareItem();
         }
 
-        loadRareItem();
+       
     }
 
 
