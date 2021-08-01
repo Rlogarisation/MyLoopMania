@@ -1285,12 +1285,8 @@ public class LoopManiaWorld {
         Boolean isSold = false;
         int itemPrice = 0;
         for (Entity item: unequippedInventoryItems) {
-            System.out.println(item);
-        }    
-        for (Entity item: unequippedInventoryItems) {
             if (sellingItem != null && sellingItem.getClass().equals(item.getClass())) {
                 isSold = true;
-                //System.out.println("test");
                 if (item instanceof Equipment) {
                     itemPrice = ((Equipment) item).getPrice();
                     item.destroy();
@@ -1303,15 +1299,34 @@ public class LoopManiaWorld {
                     itemPrice = ((HealthPotion) item).getPrice();
                     item.destroy();
                     removeUnequippedInventoryItem(item);
-                    //System.out.println(item.getX()+" "+item.getY());
                     character.addGold((double) (itemPrice / 2));
                     break;
                 }    
             }
         }
+
         return isSold;
     }
 
+    /**
+     * it sells doggie coin from the character 
+     * and the character receives gold as a reward.
+     * @param itemNodeX indicates the x-coordinate of the chosen item
+     * @param itemNodeY indicates the y-coordinate of the chosen item
+     */
+    public Boolean sellOneDoggieCoin() {
+        Boolean isSold = false;
+        int nDoggieCoin = character.getDoggieCoinQuantity();
+        int itemPrice = 0;
+        
+        if (nDoggieCoin > 0) {
+            itemPrice = character.getDoggieCoinPrice();
+            character.setDoggieCoinQuantity(nDoggieCoin-1);
+            character.addGold((double) itemPrice);
+            isSold = true;
+        }
+        return isSold;
+    }
 
     /**
      * character buys one item from the shop in hero castle 

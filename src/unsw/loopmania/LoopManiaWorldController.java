@@ -50,6 +50,7 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.*;
@@ -157,6 +158,12 @@ public class LoopManiaWorldController {
      */
     @FXML
     private Button shopOpenButton;
+
+    /**
+     * this text shows current doggie coin price
+     */
+    @FXML
+    private Text doggiePriceText;
 
     /**
      * this button is used to close the store
@@ -438,6 +445,10 @@ public class LoopManiaWorldController {
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             //Play background music
             mediaPlayer.play();
+        
+            // update doggie coin price
+            dogginCoinPriceUpdate();
+
             List<Enemy> defeatedEnemies = world.runBattles();
             for (Enemy e: defeatedEnemies){
                 playEffect(dead_enemy);
@@ -1338,7 +1349,7 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * 
+     * change the scene from the game to the shop
      */
     private void changeToShop() {
         pause();
@@ -1348,13 +1359,12 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * 
+     * change the scene from the shop to the game
      */
     private void changeToGame() {
         hBox.setVisible(true);
         shopPane.setVisible(false);
         startTimer();
-        //shopOpenButton.setVisible(true);
     }
 
     @FXML
@@ -1362,8 +1372,13 @@ public class LoopManiaWorldController {
         changeToShop();         
     }
 
+    /**
+     * set hero shop on frontend
+     * all the buy and sell buttons are connected to the loopmainaworld.
+     */
     private void setHeroShop() {
-
+        
+        // set the shop to be empty
         shop.getChildren().removeAll();
 
         HashMap<String,StaticEntity> shopItems = world.getHeroCastle().getShopItems();
@@ -1375,6 +1390,7 @@ public class LoopManiaWorldController {
             Button buyButton = new Button();
             Button sellButton = new Button();
 
+
             StaticEntity item = shopItems.get(key);
             buyButton.setOnAction(event -> {
                 Timeline timeline1 = new Timeline();
@@ -1382,6 +1398,13 @@ public class LoopManiaWorldController {
                     new KeyFrame(Duration.seconds(0.5),
                     new KeyValue(moreGold.visibleProperty(), false)));
                 Boolean isBought = world.buyOneItemBycoordinates(item.getX(),item.getY());
+                
+                /** 
+                 * If the chracter doesn't have enough money to get the item or
+                 * can't get the item for some reason (i.e) berserker mode..etc),
+                 * it shows a message on frontend. 
+                 * Otherwise, get a item and add the item in the inventory.
+                 */
                 if (!isBought) {
                     moreGold.setVisible(true);
                     timeline1.play();
@@ -1393,33 +1416,45 @@ public class LoopManiaWorldController {
                         case "Armour": loadArmour(); break;
                         case "Shield": loadShield(); break;
                         case "Helmet": loadHelmet(); break;  
-                        case "Health Potion": loadHealthPotion(); break;         
+                        case "Health Potion": loadHealthPotion(); break;
                         default: break;            
                     }
-                    System.out.println("I got" + key);
                 }
 
             });
+
+
             sellButton.setOnAction(event -> {
-                boolean isSold = world.sellOneItemByItem(item);
+                boolean isSold = false;
+                if (item instanceof DoggieCoin) {
+                    isSold = world.sellOneDoggieCoin();
+                } else {
+                    isSold = world.sellOneItemByItem(item);
+                }
+                
                 Timeline timeline2 = new Timeline();
                     timeline2.getKeyFrames().add(
                         new KeyFrame(Duration.seconds(0.5),
                         new KeyValue(donHaveItem.visibleProperty(), false)));
+                
+                /** 
+                 * If the chracter doesn't have selected item to sell
+                 * it shows a message on frontend. 
+                 * Otherwise, sell a item and get some gold
+                 */
                 if (!isSold) {
                     donHaveItem.setVisible(true);
                     timeline2.play();
                 } else {
-                    System.out.println("I sold" + key);
+                    System.out.println("You sold it");
                 }
             });
             exitButton.setOnAction(event -> {
                 changeToGame();
             });
 
+            // set text, loaction and style for all buttons and items
             itemName.setStyle("-fx-font: 17 arial;"); 
-            
-            
             buyButton.setText("Buy");
             sellButton.setText("Sell");
             buyButton.setStyle("-fx-font: 13 arial;");
@@ -1427,6 +1462,7 @@ public class LoopManiaWorldController {
             buyButton.setMinWidth(shop.getPrefWidth());
             sellButton.setMinWidth(shop.getPrefWidth());
             
+
             switch(key) {
                 case "Sword": itemImage = swordImage;
                     break;
@@ -1436,14 +1472,21 @@ public class LoopManiaWorldController {
                     itemImage =  new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
                     break; 
             }
+
+            // add all variables in the shop frontend
             shop.add(itemName, i, j);
             shop.add(new ImageView(itemImage), i+1, j);
-            if (key != "The One Ring" && key != "Anduril" && key != "Tree Stump") {
+            if (key != "DoggieCoin") {
                 shop.add(buyButton, i+2, j);
             }    
             shop.add(sellButton, i+3, j);
             j++;
         }
+    }
+    
+    // this function updates current doggie coin price on frontend
+    private void dogginCoinPriceUpdate() {
+        doggiePriceText.setText("    =  "+world.getCharacter().getDoggieCoinPrice()+"$");
     }
 
 }

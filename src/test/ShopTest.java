@@ -240,7 +240,7 @@ public class ShopTest {
 
     /**
      * This test checks if the character can sell items in the shop
-     * when it has no items at all in the inventory.
+     * and balance remaining after selling items is correct.
      */
     @Test
     public void testSellByItem() {
@@ -302,5 +302,57 @@ public class ShopTest {
         isSuccess = d.sellOneItemByItem(potion);
         assertTrue(isSuccess);
         assertEquals(c.getGold(),2000);
+    }
+
+    /**
+     * This test checks if the character can sell doggie coin in the shop
+     * and balance remaining after selling items is correct. 
+     */
+    @Test
+    public void testSellDoggieCoin() {
+        LoopManiaWorld d = new LoopManiaWorld(1, 1, new ArrayList<>());
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<Pair<Integer,Integer>>();
+        orderedPath.add(new Pair<Integer,Integer>(0,0));
+        Character c = new Character(new PathPosition(0,orderedPath));
+        c.setGold(0);
+
+        d.setHeroCastle(new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0)));
+        d.setCharacter(c);
+
+        // sell nothing at the shop -> price = 0
+        Boolean isSuccess = d.sellOneDoggieCoin();
+        assertFalse(isSuccess);
+        assertEquals(c.getGold(),0);
+
+        // add 3 doggie coins
+        d.getCharacter().addDoggieCoin(3);
+        d.getCharacter().setDoggieCoinPrice(100);
+        
+        // sell a doggie coin at the shop -> price = 100
+        isSuccess = d.sellOneDoggieCoin();
+        assertTrue(isSuccess);
+        assertEquals(c.getGold(),100);
+
+        d.getCharacter().setDoggieCoinPrice(450);
+        
+        // sell a doggie coin at the shop -> price = 450
+        isSuccess = d.sellOneDoggieCoin();
+        assertTrue(isSuccess);
+        assertEquals(c.getGold(),550);
+
+        d.getCharacter().setDoggieCoinPrice(10);
+        
+        // sell a doggie coin at the shop -> price = 10
+        isSuccess = d.sellOneDoggieCoin();
+        assertTrue(isSuccess);
+        assertEquals(c.getGold(),560);
+
+        // sell nothing at the shop -> price = 0
+        isSuccess = d.sellOneDoggieCoin();
+        assertFalse(isSuccess);
+        assertEquals(c.getGold(),560);
+
+
+
     }
 }

@@ -185,7 +185,7 @@ public class Character extends MovingEntity {
      */
     public void flutuateDoggieCoinPrice() {
         int currentPrice = this.getDoggieCoinPrice();
-        this.setDoggieCoinQuantity(new Random().nextInt(currentPrice * 2));
+        this.setDoggieCoinPrice(new Random().nextInt(currentPrice * 2));
     }
 
     /**
@@ -199,7 +199,7 @@ public class Character extends MovingEntity {
      */
     public void increaseDoggieCoinPriceDrastically() {
         int currentPrice = this.getDoggieCoinPrice();
-        this.setDoggieCoinQuantity(currentPrice + (new Random()).nextInt(currentPrice * 3));
+        this.setDoggieCoinPrice(currentPrice + (new Random()).nextInt(currentPrice * 3));
     }
 
     /**
