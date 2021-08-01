@@ -12,7 +12,7 @@ import org.javatuples.Pair;
 
 public class HeroCastle extends StaticEntity{ 
 
-    private static final int nItems = 10;
+    private static final int nItems = 7;
 
     private List<VampireCastle> vampireCastles;
     private List<ZombiePit> zombiePits;
@@ -121,9 +121,6 @@ public class HeroCastle extends StaticEntity{
         shop.put("Shield", new Shield(x, new SimpleIntegerProperty(y+4)));
         shop.put("Helmet", new Helmet(x, new SimpleIntegerProperty(y+5)));
         shop.put("Health Potion", new HealthPotion(x, new SimpleIntegerProperty(y+6)));
-        shop.put("The One Ring", new HealthPotion(x, new SimpleIntegerProperty(y+7)));
-        shop.put("Anduril", new HealthPotion(x, new SimpleIntegerProperty(y+8)));
-        shop.put("Tree Stump", new HealthPotion(x, new SimpleIntegerProperty(y+9)));
         this.shop = shop;
     }
 

@@ -3,11 +3,13 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import javax.management.openmbean.OpenDataException;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
+import org.javatuples.Pair;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -760,7 +762,7 @@ public class LoopManiaWorldController {
         }
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
         addEntity(potion, view);
-        unequippedInventory.getChildren().add(view);
+        unequippedInventory.add(view, potion.getX(), potion.getY());
     }
 
     /**
@@ -807,7 +809,7 @@ public class LoopManiaWorldController {
         }
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
         addEntity(item, view);
-        unequippedInventory.getChildren().add(view);
+        unequippedInventory.add(view, item.getX(), item.getY());
     }
 
     /**
@@ -1020,7 +1022,7 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * remove an item from the unequipped inventory by its x and y coordinates in the unequipped inventory gridpane
+     * equip an item from the unequipped inventory by its x and y coordinates in the unequipped inventory gridpane
      * @param nodeX x coordinate from 0 to unequippedInventoryWidth-1
      * @param nodeY y coordinate from 0 to unequippedInventoryHeight-1
      */
@@ -1347,11 +1349,23 @@ public class LoopManiaWorldController {
                 if (!isBought) {
                     moreGold.setVisible(true);
                     timeline1.play();
+                } else {
+                    switch(key) {
+                        case "Sword": loadSword(); break;
+                        case "Stake": loadStake(); break; 
+                        case "Staff": loadStaff(); break;
+                        case "Armour": loadArmour(); break;
+                        case "Shield": loadShield(); break;
+                        case "Helmet": loadHelmet(); break;  
+                        case "Health Potion": loadHealthPotion(); break;         
+                        default: break;            
+                    }
+                    System.out.println("I got" + key);
                 }
 
             });
             sellButton.setOnAction(event -> {
-                Boolean isSold = world.sellOneItemByItem(item);
+                boolean isSold = world.sellOneItemByItem(item);
                 Timeline timeline2 = new Timeline();
                     timeline2.getKeyFrames().add(
                         new KeyFrame(Duration.seconds(0.5),
@@ -1359,6 +1373,8 @@ public class LoopManiaWorldController {
                 if (!isSold) {
                     donHaveItem.setVisible(true);
                     timeline2.play();
+                } else {
+                    System.out.println("I sold" + key);
                 }
             });
             exitButton.setOnAction(event -> {
@@ -1376,19 +1392,10 @@ public class LoopManiaWorldController {
             sellButton.setMinWidth(shop.getPrefWidth());
             
             switch(key) {
-                case "Sword": itemImage = new Image((new File("src/images/basic_sword.png")).toURI().toString()); 
+                case "Sword": itemImage = swordImage;
                     break;
                 case "Health Potion": itemImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()); 
                     break;
-                case "The One Ring": 
-                    itemImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString()); 
-                    break;  
-                case "Anduril": 
-                    itemImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()); 
-                    break;   
-                case "Tree Stump": 
-                    itemImage = new Image((new File("src/images/tree_stump.png")).toURI().toString()); 
-                    break;         
                 default:
                     itemImage =  new Image((new File("src/images/"+key.toLowerCase()+".png")).toURI().toString());
                     break; 
