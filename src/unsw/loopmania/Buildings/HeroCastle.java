@@ -33,10 +33,6 @@ public class HeroCastle extends StaticEntity{
         this.spawnElanMuske = false;
     }
 
-    public int getNumCylesGoals(){
-        return numCyclesGoal;
-    }
-
     /**
      * Attach new VampireCastles to the observer list vampireCastles
      * @param building is added to vampireCastles list
