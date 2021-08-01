@@ -440,13 +440,13 @@ public class LoopManiaWorld {
             }
 
             currentEnemy.attack(currentEnemy.getDamage(), character);
-            if (character.getHp() <= 0) {
-                characterIsAlive = false;
-                break;
-            }
             if (currentEnemy.getHp() <= 0) {
                 enemyIndex++;
                 defeatedEnemies.add(currentEnemy);
+            }
+            if (character.getHp() <= 0) {
+                characterIsAlive = false;
+                break;
             }
             
         }
@@ -682,8 +682,8 @@ public class LoopManiaWorld {
         if (defenseEquipment instanceof Armour) {
             character.equipArmour((Armour) defenseEquipment);
         }    
-        if (defenseEquipment instanceof Shield) {
-            character.equipShield((Shield) defenseEquipment);
+        if (defenseEquipment instanceof Helmet) {
+            character.equipHelmet((Helmet) defenseEquipment);
         }    
         if (defenseEquipment instanceof Shield) {
             character.equipShield((Shield) defenseEquipment);
@@ -992,13 +992,18 @@ public class LoopManiaWorld {
      * @pre this.character.getHp() == 0, confusingrareitem only exists if in confusing game mode
      * @post this.character.getHp() == 100
      */
-    public void reviveCharacter() {
+    public boolean reviveCharacter() {
+
+        boolean isAlive = false;
+
         for (Entity item : unequippedInventoryItems) {
             if (item instanceof TheOneRing) {
                 this.character.setHp(100);
+                this.characterIsAlive = true;
                 item.destroy();
                 removeUnequippedInventoryItem(item);
-                break;
+                isAlive = true;
+                return isAlive;
             }
             else if(item instanceof ConfusingRareItem){
                 ConfusingRareItem newCrItem = (ConfusingRareItem)item;
@@ -1006,9 +1011,13 @@ public class LoopManiaWorld {
                     this.character.setHp(100);
                     item.destroy();
                     removeUnequippedInventoryItem(item);
+                    isAlive = true;
+                    return isAlive; 
                 }
             }
-        } 
+            
+        }
+        
         //Also check equipped inventory to check if oneRing exists
         for(Entity item: equippedInventoryItems){
             if(item instanceof ConfusingRareItem){
@@ -1017,10 +1026,13 @@ public class LoopManiaWorld {
                     this.character.setHp(100);
                     item.destroy();
                     removeEquippedInventoryItem(item);
-                    break;
+                    isAlive = true;
+                    return isAlive;
                 }
         }
-    }       
+        return isAlive;
+    }
+        return false;   
     }
 
     /**
@@ -1247,7 +1259,7 @@ public class LoopManiaWorld {
         Entity chosenItem = null;
         int itemPrice = 0;
         for (Entity item: unequippedInventoryItems) {
-            if (sellingItem.getClass().equals(item.getClass())) {
+            if (sellingItem != null && sellingItem.getClass().equals(item.getClass())) {
                 chosenItem = item;
                 if (chosenItem instanceof Equipment) {
                     itemPrice = ((Equipment) item).getPrice();
