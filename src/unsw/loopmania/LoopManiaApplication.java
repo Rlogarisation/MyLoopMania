@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 /**
@@ -38,6 +39,10 @@ public class LoopManiaApplication extends Application {
 
         // load the main menu
         MainMenuController mainMenuController = new MainMenuController();
+        //Play main menu music
+        MediaPlayer mainMenuMusic = mainMenuController.getPlayer();
+        mainMenuMusic.setVolume(0.5f);
+        mainMenuMusic.play();
         FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("MainMenuView.fxml"));
         menuLoader.setController(mainMenuController);
         Parent mainMenuRoot = menuLoader.load();
@@ -49,6 +54,8 @@ public class LoopManiaApplication extends Application {
         // e.g. from main menu to start the game, or from the game to return to main menu
         mainController.setMainMenuSwitcher(() -> {switchToRoot(scene, mainMenuRoot, primaryStage);});
         mainMenuController.setGameSwitcher(() -> {
+            //Stop music when switching out from main menu
+            mainMenuMusic.stop();
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.setGameMode(mainMenuController.getGameMode());
             mainController.startTimer();
